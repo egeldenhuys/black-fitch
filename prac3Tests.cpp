@@ -7,6 +7,24 @@
 
 using namespace std;
 
+bool BookContructor()
+{
+    cout << "Test: BookContructor() = ";
+    string title = "My Title";
+    string author = "Some Author";
+    string ISBN = "7345";
+
+    Book testBook(title, author, ISBN);
+
+    assert(title==testBook.getTitle());
+    assert(author==testBook.getAuthor());
+    assert(ISBN==testBook.getISBN());
+
+    cout << "PASS\n";
+
+    return true;
+}
+
 bool BookSetAndGetFunctions()
 {
     cout << "Test: BookSetAndGetFunctions() = ";
@@ -61,6 +79,7 @@ bool BookExtractionOperator()
 
 bool runTests()
 {
+    BookContructor();
     BookSetAndGetFunctions();
     BookExtractionOperator();
 
