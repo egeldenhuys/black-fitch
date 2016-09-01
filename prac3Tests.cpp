@@ -2,8 +2,10 @@
 #include <sstream>
 #include <cassert>
 
-#include "book.h"
 #include "prac3Tests.h"
+
+#include "book.h"
+#include "Library.h"
 
 using namespace std;
 
@@ -77,11 +79,51 @@ bool BookExtractionOperator()
 
 }
 
+bool LibraryCopyContructor()
+{
+    cout << "Test: LibraryCopyContructor() = ";
+
+    string name = "My Library Name";
+
+    // Create books
+    for ()
+
+    cout << "PASS" << endl;
+
+    return true;
+}
+
 bool runTests()
 {
+
     BookContructor();
     BookSetAndGetFunctions();
     BookExtractionOperator();
+
+    LibraryCopyContructor();
+    LibraryConstructorWithName();
+    LibraryDefaultSizeOf5();
+
+    LibraryAddBookOperator();
+    LibraryDoesNotAddBookWhenFull();
+
+    LibraryRemoveBookOperator();
+    LibraryReturnsWhenEmptyAndRemoveBook();
+
+    LibraryAssignmentOperatorCreatesCopy();
+    LibraryPostIncrementIncreasesLibrarySize();
+    LibraryPreDecrementDecreasesLibrarySize();
+    LibraryPreDecrementRemovesLastBookIfFull();
+
+    LibraryGetBook();
+    LibraryGetBookReturnsNullIfNotFound();
+
+    LibraryIsFullReturnsTrueIfFull();
+    LibraryIsFullReturnsFalseIfNotFull();
+
+    LibraryPrint();
+    LibraryPrintWhenEmpty();
+
 
     return true;
 }
