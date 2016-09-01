@@ -2,13 +2,15 @@
 #include <sstream>
 #include <cassert>
 
-#include "Book.h"
+#include "book.h"
 #include "prac3Tests.h"
 
 using namespace std;
 
 bool BookSetAndGetFunctions()
 {
+    cout << "Test: BookSetAndGetFunctions() = ";
+
     Book testBook;
     string title = "Book Title";
     string author = "Book Author";
@@ -25,11 +27,15 @@ bool BookSetAndGetFunctions()
     assert(ISBN==testBook.getISBN());
     assert(genre==testBook.getGenre());
 
+    cout << "PASS\n";
+
     return true;
 }
 
 bool BookExtractionOperator()
 {
+    cout << "Test: BookExtractionOperator() = ";
+
     Book testBook;
     string title = "Book Title";
     string author = "Book Author";
@@ -48,6 +54,7 @@ bool BookExtractionOperator()
     output << testBook;
 
     assert(expectedOutput.str()==output.str());
+    cout << "PASS\n";
     return true;
 
 }
