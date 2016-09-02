@@ -79,29 +79,98 @@ bool BookExtractionOperator()
 
 }
 
-bool LibraryCopyContructor()
+/*
+PROCESS
+- Create library
+- Create 4 books
+- Add these 4 books to library
+- Print library and compare output
+*/
+bool LibraryBaseFunctions()
 {
-    cout << "Test: LibraryCopyContructor() = ";
+	cout << "Test: LibraryBaseFunctions() = ";
+	
+	ostringstream output;
+	ostringstream expectedOutput;
+	
+	// Library Constructor with string
+	string libName = "Lib Name";
+	
+	Library lib(libName);
+	expectedOutput << "Inventory of " << libName << endl;
+	expectedOutput << "===================================\n";
+	
+	int bookCount = 4;
+	
+	// Create books
+	Book *books[bookCount];
 
-    string name = "My Library Name";
+	for (int i = 0; i < bookCount; i++) {
+		
+		Book *tmpBook = new Book(string("Title_" + to_string(i)), string("Author_" + to_string(i)), string("ISBN_" + to_string(i)));
+		
+		expectedOutput << i + 1<< ". " << "Title_" + to_string(i) << " - " << "Author_" + to_string(i) << " - " << "ISBN_" + to_string(i) << endl;
+		
+		books[i] = tmpBook;
+		
+		// Add books
+		lib += tmpBook;
+	}
 
-    // Create and add 5 books
-    //for ()
+	expectedOutput << "5. [Empty Space]\n";
+	expectedOutput << "==================================" << endl;
 
-    cout << "PASS" << endl;
+// http://stackoverflow.com/questions/4810516/c-redirecting-stdout
 
-    return true;
+	
+	// Redirect cout to our output stream
+	streambuf *oldCoutBuffer = cout.rdbuf();
+	cout.rdbuf(output.rdbuf());
+	
+	// Capture output
+	cout << flush;
+	
+	lib.print();
+	
+	// Reset cout
+	cout.rdbuf(oldCoutBuffer);
+	
+	//cout << expectedOutput.str();
+	//cout << output.str();
+	
+	assert(expectedOutput.str()==output.str());
+	
+	for (int i = 0; i < bookCount; i++) {
+		delete books[i];
+	}
+	
+	cout << "PASS" << endl;
+	
+	return true;
 }
+//~ bool LibraryCopyContructor()
+//~ {
+	//~ // Create library using known variables
+	//~ // Invoke CC
+	//~ // Compare print output
+	
+	//~ return true;
+//~ }
 
 bool runTests()
 {
 
-    BookContructor();
-    BookSetAndGetFunctions();
-    BookExtractionOperator();
+	BookContructor();
+	BookSetAndGetFunctions();
+	BookExtractionOperator();
 
+	LibraryBaseFunctions();
+	
+	//LibraryPrint();
+	
 /*
     LibraryCopyContructor();
+
     LibraryConstructorWithName();
     LibraryDefaultSizeOf5();
 
@@ -122,7 +191,7 @@ bool runTests()
     LibraryIsFullReturnsTrueIfFull();
     LibraryIsFullReturnsFalseIfNotFull();
 
-    LibraryPrint();
+
     LibraryPrintWhenEmpty();
 */
 
