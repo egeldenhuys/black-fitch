@@ -85,8 +85,8 @@ bool LibraryCopyContructor()
 
     string name = "My Library Name";
 
-    // Create books
-    for ()
+    // Create and add 5 books
+    //for ()
 
     cout << "PASS" << endl;
 
@@ -100,6 +100,7 @@ bool runTests()
     BookSetAndGetFunctions();
     BookExtractionOperator();
 
+/*
     LibraryCopyContructor();
     LibraryConstructorWithName();
     LibraryDefaultSizeOf5();
@@ -123,7 +124,7 @@ bool runTests()
 
     LibraryPrint();
     LibraryPrintWhenEmpty();
-
+*/
 
     return true;
 }
