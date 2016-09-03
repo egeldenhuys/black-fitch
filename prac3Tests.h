@@ -23,12 +23,9 @@ bool BookSetAndGetFunctions();
 bool BookExtractionOperator();
 bool LibraryAdd5BooksAndPrint();
 bool LibraryCopyContructorCreatesDeepCopy();
+bool LibraryDoesNotAddBookWhenFull();
 
 /*
-bool LibraryConstructorWithName();
-bool LibraryDefaultSizeOf5();
-bool LibraryAddBookOperator();
-bool LibraryDoesNotAddBookWhenFull();
 bool LibraryRemoveBookOperator();
 bool LibraryReturnsWhenEmptyAndRemoveBook();
 bool LibraryAssignmentOperatorCreatesCopy();

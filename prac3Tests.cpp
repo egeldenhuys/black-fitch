@@ -92,6 +92,24 @@ ostringstream createMockLibraryPrintOutput(Book **books, string libraryName, int
     return expectedOutput;
 }
 
+ostringstream captureLibraryAddBookOutput(Library &lib, Book* book)
+{
+    // Redirect cout to our output stream
+    ostringstream output;
+
+	streambuf *oldCoutBuffer = cout.rdbuf();
+	cout.rdbuf(output.rdbuf());
+    cout << flush;
+
+	// Capture output
+	lib += book;
+
+	// Reset cout
+	cout.rdbuf(oldCoutBuffer);
+
+    return output;
+}
+
 ostringstream captureLibraryPrintOutput(Library &lib)
 {
     // http://stackoverflow.com/questions/4810516/c-redirecting-stdout
@@ -182,6 +200,17 @@ bool BookExtractionOperator()
 
 }
 
+Book** getBooksFromLibraryByName(Book** books, Library &lib, int numBooks)
+{
+    Book **copyBooks = new Book*[numBooks];
+
+    for (int i = 0; i < numBooks; i++) {
+        copyBooks[i] = lib.getBook(books[i]->getTitle());
+    }
+
+    return copyBooks;
+}
+
 /*
 TESTS:
 - Adds books correctly using +=
@@ -190,7 +219,7 @@ TESTS:
 */
 bool LibraryAdd5BooksAndPrint()
 {
-	cout << "Test: LibraryAdd4BooksAndPrint() = ";
+	cout << "Test: LibraryAdd5BooksAndPrint() = ";
 
 	ostringstream output;
 	ostringstream expectedOutput;
@@ -220,25 +249,13 @@ bool LibraryAdd5BooksAndPrint()
 	return true;
 }
 
-
-Book** getBooksFromLibraryByName(Book** books, Library &lib, int numBooks)
-{
-    Book **copyBooks = new Book*[numBooks];
-
-    for (int i = 0; i < numBooks; i++) {
-        copyBooks[i] = lib.getBook(books[i]->getTitle());
-    }
-
-    return copyBooks;
-}
-
 /*
 The copy constructor needs to make a copy of each book in the inventory
 of the old library and add it to the new library.
 */
 bool LibraryCopyContructorCreatesDeepCopy()
 {
-	cout << "Test: LibraryCopyContructor() = ";
+	cout << "Test: LibraryCopyContructorCreatesDeepCopy() = ";
     int numBooks = 5;
     string libName = "Library A";
 
@@ -271,9 +288,37 @@ bool LibraryCopyContructorCreatesDeepCopy()
 
     assert(expectedLibA.str()==outputLibA.str());
     assert(expectedLibB.str()==outputLibB.str());
+    assert(outputLibA.str()!=outputLibB.str());
 
     deleteBooks(booksA, numBooks);
     deleteBooks(booksB, numBooks);
+
+    cout << "PASS" << endl;
+    return true;
+}
+
+bool LibraryDoesNotAddBookWhenFull()
+{
+    cout << "Test: LibraryDoesNotAddBookWhenFull() = ";
+    string libName = "My Library";
+
+    Library lib(libName);
+
+    // Fill it with books
+    Book **books = createBooks(libName, 6);
+    addBooksToLibrary(books, lib, 5);
+
+    ostringstream expectedLibA = createMockLibraryPrintOutput(books, libName, 5, 5);
+
+    ostringstream addOutput = captureLibraryAddBookOutput(lib, books[5]);
+    ostringstream expectedAddOutput;
+    expectedAddOutput << "Library is full!" << endl;
+
+    assert(addOutput.str()==expectedAddOutput.str());
+
+    ostringstream outputLibA = captureLibraryPrintOutput(lib);
+
+    assert(expectedLibA.str()==outputLibA.str());
 
     cout << "PASS" << endl;
     return true;
@@ -288,14 +333,9 @@ bool runTests()
 
 	LibraryAdd5BooksAndPrint();
     LibraryCopyContructorCreatesDeepCopy();
-
-/*
-    LibraryConstructorWithName();
-    LibraryDefaultSizeOf5();
-
-    LibraryAddBookOperator();
     LibraryDoesNotAddBookWhenFull();
 
+/*
     LibraryRemoveBookOperator();
     LibraryReturnsWhenEmptyAndRemoveBook();
 
