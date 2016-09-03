@@ -80,82 +80,155 @@ bool BookExtractionOperator()
 }
 
 /*
-PROCESS
-- Create library
-- Create 4 books
-- Add these 4 books to library
-- Print library and compare output
+TESTS:
+- Adds books correctly using +=
+- Default library size of 5
+- Print outputs correctly
 */
-bool LibraryBaseFunctions()
+bool LibraryAdd4BooksAndPrint()
 {
-	cout << "Test: LibraryBaseFunctions() = ";
-	
+	cout << "Test: LibraryAdd4BooksAndPrint() = ";
+
 	ostringstream output;
 	ostringstream expectedOutput;
-	
+
 	// Library Constructor with string
 	string libName = "Lib Name";
-	
 	Library lib(libName);
-	expectedOutput << "Inventory of " << libName << endl;
-	expectedOutput << "===================================\n";
-	
+
 	int bookCount = 4;
-	
+
 	// Create books
-	Book *books[bookCount];
+    Book **books = createBooks("A",bookCount);
 
-	for (int i = 0; i < bookCount; i++) {
-		
-		Book *tmpBook = new Book(string("Title_" + to_string(i)), string("Author_" + to_string(i)), string("ISBN_" + to_string(i)));
-		
-		expectedOutput << i + 1<< ". " << "Title_" + to_string(i) << " - " << "Author_" + to_string(i) << " - " << "ISBN_" + to_string(i) << endl;
-		
-		books[i] = tmpBook;
-		
-		// Add books
-		lib += tmpBook;
-	}
+    addBooksToLibrary(books, lib, bookCount);
+    expectedOutput = createMockLibraryPrintOutput(books, libName, bookCount, 5);
+	output = captureLibraryPrintOutput(lib);
 
-	expectedOutput << "5. [Empty Space]\n";
-	expectedOutput << "==================================" << endl;
-
-// http://stackoverflow.com/questions/4810516/c-redirecting-stdout
-
-	
-	// Redirect cout to our output stream
-	streambuf *oldCoutBuffer = cout.rdbuf();
-	cout.rdbuf(output.rdbuf());
-	
-	// Capture output
-	cout << flush;
-	
-	lib.print();
-	
-	// Reset cout
-	cout.rdbuf(oldCoutBuffer);
-	
 	//cout << expectedOutput.str();
 	//cout << output.str();
-	
+
 	assert(expectedOutput.str()==output.str());
-	
-	for (int i = 0; i < bookCount; i++) {
-		delete books[i];
-	}
-	
+
+    deleteBooks(books, bookCount);
+
 	cout << "PASS" << endl;
-	
+
 	return true;
 }
-//~ bool LibraryCopyContructor()
-//~ {
-	//~ // Create library using known variables
-	//~ // Invoke CC
-	//~ // Compare print output
-	
-	//~ return true;
-//~ }
+
+void addBooksToLibrary(Book **books, Library &lib, int numBooks)
+{
+    	for (int i = 0; i < numBooks; i++) {
+    		lib += books[i];
+    	}
+}
+
+/*
+Returns a pointer to an array of book pointers
+*/
+Book** createBooks(string prefix, int numBooks)
+{
+    // **books -> *bookArray[numBooks] -> book
+
+    //cout << endl << "POINTERS: ------------" << endl;
+
+    Book **books = new Book*[numBooks];
+    //cout << &books << endl;
+
+    //cout << "\t" << books << endl;
+
+    for (int i = 0; i < numBooks; i++) {
+        Book *tmpBook = new Book(prefix + "_Title_" + to_string(i), \
+        prefix + "_Author_" + to_string(i), prefix + "_ISBN_" + to_string(i));
+
+        *(books + i) = tmpBook;
+        //cout << "\t\t" << (*books + i) << endl;
+    }
+
+    return books;
+}
+
+void deleteBooks(Book **books, int numBooks)
+{
+    // **books -> *bookPtrArray[numBooks] -> book
+
+    // Delete each book
+    for (int i = 0; i < numBooks; i++) {
+        //cout << "delete: " << *(books + i) << endl;
+
+        // Each pointer in array
+        delete *(books + i);
+        *(books + i) = 0;
+    }
+
+    //cout << "delete array: " << books << endl;
+
+    delete [] books;
+    books = 0;
+}
+
+/*
+Produces mock output for Library::print()
+
+*/
+ostringstream createMockLibraryPrintOutput(Book **books, string libraryName, int numBooks, int librarySize)
+{
+    ostringstream expectedOutput;
+
+    expectedOutput << "Inventory of " << libraryName << endl;
+	expectedOutput << "===================================\n";
+
+    // Books
+    for (int i = 0; i < numBooks; i++) {
+		expectedOutput << i + 1 << ". " << books[i]->getTitle() \
+        << " - " << books[i]->getAuthor() \
+        << " - " << books[i]->getISBN() << endl;
+	}
+
+    // Empty slots
+    for (int i = numBooks; i < librarySize; i++)
+    {
+        expectedOutput << i + 1 << ". [Empty Space]\n";
+    }
+
+    expectedOutput << "==================================" << endl;
+
+    return expectedOutput;
+}
+
+ostringstream captureLibraryPrintOutput(Library &lib)
+{
+    // http://stackoverflow.com/questions/4810516/c-redirecting-stdout
+
+	// Redirect cout to our output stream
+    ostringstream output;
+
+	streambuf *oldCoutBuffer = cout.rdbuf();
+	cout.rdbuf(output.rdbuf());
+    cout << flush;
+
+	// Capture output
+	lib.print();
+
+	// Reset cout
+	cout.rdbuf(oldCoutBuffer);
+
+    return output;
+}
+
+/*
+The copy constructor needs to make a copy of each book in the inventory
+of the old library and add it to the new library.
+*/
+bool LibraryCopyContructorCreatesDeepCopy()
+{
+	cout << "Test: LibraryCopyContructor() = ";
+
+
+    cout << "PASS" << endl;
+    return true;
+}
 
 bool runTests()
 {
@@ -164,13 +237,10 @@ bool runTests()
 	BookSetAndGetFunctions();
 	BookExtractionOperator();
 
-	LibraryBaseFunctions();
-	
-	//LibraryPrint();
-	
-/*
-    LibraryCopyContructor();
+	LibraryAdd4BooksAndPrint();
+    //LibraryCopyContructorCreatesDeepCopy();
 
+/*
     LibraryConstructorWithName();
     LibraryDefaultSizeOf5();
 
