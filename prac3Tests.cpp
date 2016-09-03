@@ -407,6 +407,48 @@ bool LibraryRemoveBookOperator()
     return true;
 }
 
+bool LibraryAssignmentOperatorCreatesDeepCopy()
+{
+    cout << "Test: LibraryAssignmentOperatorCreatesDeepCopy() = ";
+    int numBooks = 5;
+    string libName = "Library A";
+    string libNameB = "Library B";
+
+    // Create a library
+    Library libA(libName);
+
+    // Fill it with books
+    Book **booksA = createBooks(libName, numBooks);
+    addBooksToLibrary(booksA, libA, numBooks);
+
+    // Create deep copy
+    Library libB(libNameB);
+    libB = libA;
+
+    Book **booksB = getBooksFromLibraryByName(booksA, libB, numBooks);
+
+    // Change all the books in Library A
+    for (int i = 0; i < numBooks; i++) {
+        booksA[i]->setTitle("EDIT_" + to_string(i));
+    }
+
+    // Compare with the books in the other library
+    ostringstream expectedLibA = createMockLibraryPrintOutput(booksA, libName, numBooks, numBooks);
+    ostringstream expectedLibB = createMockLibraryPrintOutput(booksB, libName, numBooks, numBooks);
+    ostringstream outputLibA = captureLibraryPrintOutput(libA);
+    ostringstream outputLibB = captureLibraryPrintOutput(libB);
+
+    assert(expectedLibA.str()==outputLibA.str());
+    assert(expectedLibB.str()==outputLibB.str());
+    assert(outputLibA.str()!=outputLibB.str());
+
+    deleteBooks(booksA, numBooks);
+    deleteBooks(booksB, numBooks);
+
+    cout << "PASS" << endl;
+    return true;
+}
+
 bool runTests()
 {
 
@@ -418,11 +460,9 @@ bool runTests()
     LibraryCopyContructorCreatesDeepCopy();
     LibraryDoesNotAddBookWhenFull();
     LibraryRemoveBookOperator();
+    LibraryAssignmentOperatorCreatesDeepCopy();
 
 /*
-    LibraryReturnsWhenEmptyAndRemoveBook();
-
-    LibraryAssignmentOperatorCreatesCopy();
     LibraryPostIncrementIncreasesLibrarySize();
     LibraryPreDecrementDecreasesLibrarySize();
     LibraryPreDecrementRemovesLastBookIfFull();

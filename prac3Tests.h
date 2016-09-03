@@ -27,9 +27,9 @@ bool LibraryCopyContructorCreatesDeepCopy();
 bool LibraryDoesNotAddBookWhenFull();
 bool LibraryRemoveBookOperator();
 
+bool LibraryAssignmentOperatorCreatesDeepCopy();
+
 /*
-bool LibraryReturnsWhenEmptyAndRemoveBook();
-bool LibraryAssignmentOperatorCreatesCopy();
 bool LibraryPostIncrementIncreasesLibrarySize();
 bool LibraryPreDecrementDecreasesLibrarySize();
 bool LibraryPreDecrementRemovesLastBookIfFull();
