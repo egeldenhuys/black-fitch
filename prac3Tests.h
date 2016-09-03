@@ -34,5 +34,6 @@ bool LibraryPreDecrementDecreasesLibrarySize();
 bool LibraryPreDecrementRemovesLastBookIfFull();
 bool LibraryGetBook();
 bool LibraryIsFull();
+bool LibraryRemoveAllSpace();
 
 #endif

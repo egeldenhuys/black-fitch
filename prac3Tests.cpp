@@ -40,6 +40,105 @@ FAIL Test 19: Check getBook() when the book doesn't exist.
 
 */
 
+/*
+Execute FAILED
+Test case '1' => Produced 1956 bytes of output, exit code 2
+
+church
+library
+Inventory of library
+===================================
+EMPTY
+==================================
+Inventory of library
+===================================
+1. book1 - author1 - isbn1
+2. [Empty Space]
+3. [Empty Space]
+4. [Empty Space]
+5. [Empty Space]
+==================================
+Inventory of library
+===================================
+1. book1 - author1 - isbn1
+2. book2 - author2 - isbn2
+3. book3 - author3 - isbn3
+4. book4 - author4 - isbn4
+5. book5 - author5 - isbn5
+==================================
+Inventory of library
+===================================
+1. book2 - author2 - isbn2
+2. book3 - author3 - isbn3
+3. book4 - author4 - isbn4
+4. book5 - author5 - isbn5
+5. [Empty Space]
+==================================
+full: YES
+Library is full!
+Inventory of library
+===================================
+1. book2 - author2 - isbn2
+2. book3 - author3 - isbn3
+3. book4 - author4 - isbn4
+4. book5 - author5 - isbn5
+5. book1 - author1 - isbn1
+6. book6 - author6 - isbn6
+==================================
+Inventory of library
+===================================
+1. book2 - author2 - isbn2
+2. book3 - author3 - isbn3
+3. book4 - author4 - isbn4
+4. book5 - author5 - isbn5
+5. book1 - author1 - isbn1
+==================================
+book3 - author3 - isbn3
+Inventory of library
+===================================
+1. book2 - author2 - isbn2
+2. book3 - author3 - isbn3
+3. book4 - author4 - isbn4
+4. book5 - author5 - isbn5
+5. book1 - author1 - isbn1
+==================================
+Inventory of library2
+===================================
+1. book2 - author2 - isbn2
+2. book4 - author4 - isbn4
+3. book5 - author5 - isbn5
+4. book1 - author1 - isbn1
+5. [Empty Space]
+==================================
+Inventory of library
+===================================
+==================================
+YES
+*** Error in `./main': free(): invalid pointer: 0x000000000220dfb0 ***
+makefile:11: recipe for target 'run' failed
+make: *** [run] Aborted
+
+PASS Test 1
+PASS Test 2
+PASS Test 3
+PASS Test 4
+PASS Test 5
+PASS Test 6
+PASS Test 7
+PASS Test 8
+PASS Test 9
+PASS Test 10
+PASS Test 11
+PASS Test 12
+PASS Test 13
+PASS Test 14
+PASS Test 15
+PASS Test 16
+PASS Test 17
+FAIL Test 18: Check output of print function when Library is empty.
+FAIL Test 19: Check getBook() when the book doesn't exist.
+*/
+
 #include <iostream>
 #include <sstream>
 #include <cassert>
@@ -663,8 +762,7 @@ bool LibraryGetBook()
     assert(books[0]==tmp);
 
     // return non-existing book
-    tmp = lib.getBook("John and the giant dog");
-    assert(0==tmp);
+    assert(NULL==lib.getBook("John and the giant dog"));
 
     deleteBooks(books, 5);
     cout << "PASS" << endl;
@@ -708,6 +806,46 @@ bool LibraryIsFull()
     return true;
 
 }
+
+bool LibraryRemoveAllSpace()
+{
+    cout << "Test: LibraryRemoveAllSpace() = ";
+
+    string libName = "WATATA";
+
+    Library lib;
+    lib.setName(libName);
+
+    Book **books = createBooks("LIBA", 5);
+    addBooksToLibrary(books, lib, 5);
+    Book *tmp = books[0];
+
+    // Remove all space and break stuff
+
+    for (int i = 0; i < 10; i++)
+    {
+        --lib;
+    }
+
+    assert(tmp==books[0]);
+
+    // Check output
+    ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 0, 0);
+    ostringstream outputLib = captureLibraryPrintOutput(lib);
+    assert(expectedLib.str()==outputLib.str());
+
+    // Add a book
+    addBooksToLibrary(books, lib, 1);
+    expectedLib = createMockLibraryPrintOutput(books, libName, 0, 0);
+    outputLib = captureLibraryPrintOutput(lib);
+    assert(expectedLib.str()==outputLib.str());
+
+    deleteBooks(books, 5);
+
+    cout << "PASS" << endl;
+    return true;
+}
+
 bool runTests()
 {
 
@@ -726,6 +864,7 @@ bool runTests()
     LibraryPreDecrementRemovesLastBookIfFull();
     LibraryGetBook();
     LibraryIsFull();
+    LibraryRemoveAllSpace();
 
     return true;
 }
