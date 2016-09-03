@@ -21,10 +21,10 @@ void deleteBooks(Book **books, int numBooks);
 bool BookContructor();
 bool BookSetAndGetFunctions();
 bool BookExtractionOperator();
-bool LibraryAdd4BooksAndPrint();
+bool LibraryAdd5BooksAndPrint();
+bool LibraryCopyContructorCreatesDeepCopy();
 
 /*
-bool LibraryCopyContructorCreatesDeepCopy();
 bool LibraryConstructorWithName();
 bool LibraryDefaultSizeOf5();
 bool LibraryAddBookOperator();
