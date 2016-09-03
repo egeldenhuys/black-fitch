@@ -62,8 +62,10 @@ void deleteBooks(Book **books, int numBooks)
         //cout << "delete: " << *(books + i) << endl;
 
         // Each pointer in array
-        delete *(books + i);
-        *(books + i) = 0;
+        if (*(books + i) != 0) {
+            delete *(books + i);
+            *(books + i) = 0;
+        }
         //cout << " = " << *(books + i) << endl;
     }
 
@@ -402,6 +404,7 @@ bool LibraryRemoveBookOperator()
     assert(expectedLibA.str()==outputLibA.str());
 
     delete tmpBook;
+    deleteBooks(books, 5);
 
     cout << "PASS" << endl;
     return true;
@@ -480,6 +483,8 @@ bool LibraryPostIncrementIncreasesLibrarySize()
 
     assert(expectedLib.str()==outputLib.str());
 
+    deleteBooks(books, 6);
+
     cout << "PASS" << endl;
     return true;
 }
@@ -493,7 +498,7 @@ bool LibraryPreDecrementDecreasesLibrarySize()
     // Create a library
     Library lib(libName);
 
-    // Fill it with books
+    // Fill it with books, but leave empty space
     Book **books = createBooks(libName, 4);
     addBooksToLibrary(books, lib, 4);
 
@@ -504,6 +509,37 @@ bool LibraryPreDecrementDecreasesLibrarySize()
     ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 4, 4);
     ostringstream outputLib = captureLibraryPrintOutput(lib);
     assert(expectedLib.str()==outputLib.str());
+
+    deleteBooks(books, 4);
+
+    cout << "PASS" << endl;
+    return true;
+}
+
+bool LibraryPreDecrementRemovesLastBookIfFull()
+{
+    cout << "Test: LibraryPreDecrementRemovesLastBookIfFull() = ";
+
+    string libName = "K";
+
+    // Create a library
+    Library lib(libName);
+
+    // Fill it with books
+    Book **books = createBooks(libName, 5);
+    addBooksToLibrary(books, lib, 5);
+
+    // Decrease size
+    --lib;
+
+    // Check output
+    ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 4, 4);
+    ostringstream outputLib = captureLibraryPrintOutput(lib);
+    cout << outputLib.str();
+    cout << expectedLib.str();
+    assert(expectedLib.str()==outputLib.str());
+
+    deleteBooks(books, 5);
 
     cout << "PASS" << endl;
     return true;
@@ -523,9 +559,9 @@ bool runTests()
     LibraryAssignmentOperatorCreatesDeepCopy();
     LibraryPostIncrementIncreasesLibrarySize();
     LibraryPreDecrementDecreasesLibrarySize();
+    LibraryPreDecrementRemovesLastBookIfFull();
 
 /*
-    LibraryPreDecrementRemovesLastBookIfFull();
 
     LibraryGetBook();
     LibraryGetBookReturnsNullIfNotFound();
