@@ -449,6 +449,41 @@ bool LibraryAssignmentOperatorCreatesDeepCopy()
     return true;
 }
 
+bool LibraryPostIncrementIncreasesLibrarySize()
+{
+    cout << "Test: LibraryPostIncrementIncreasesLibrarySize() = ";
+
+    string libName = "Library A";
+
+    // Create a library
+    Library lib(libName);
+
+    // Fill it with books
+    Book **books = createBooks(libName, 6);
+    addBooksToLibrary(books, lib, 5);
+
+    // Increase size
+    lib++;
+
+    // Check output
+    ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 5, 6);
+    ostringstream outputLib = captureLibraryPrintOutput(lib);
+
+    assert(expectedLib.str()==outputLib.str());
+
+    // Add a book
+    lib += books[5];
+
+    // Check output
+    expectedLib = createMockLibraryPrintOutput(books, libName, 6, 6);
+    outputLib = captureLibraryPrintOutput(lib);
+
+    assert(expectedLib.str()==outputLib.str());
+
+    cout << "PASS" << endl;
+    return true;
+}
+
 bool runTests()
 {
 
@@ -461,9 +496,9 @@ bool runTests()
     LibraryDoesNotAddBookWhenFull();
     LibraryRemoveBookOperator();
     LibraryAssignmentOperatorCreatesDeepCopy();
+    LibraryPostIncrementIncreasesLibrarySize();
 
 /*
-    LibraryPostIncrementIncreasesLibrarySize();
     LibraryPreDecrementDecreasesLibrarySize();
     LibraryPreDecrementRemovesLastBookIfFull();
 

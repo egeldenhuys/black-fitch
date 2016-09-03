@@ -26,11 +26,10 @@ bool LibraryAdd5BooksAndPrint();
 bool LibraryCopyContructorCreatesDeepCopy();
 bool LibraryDoesNotAddBookWhenFull();
 bool LibraryRemoveBookOperator();
-
 bool LibraryAssignmentOperatorCreatesDeepCopy();
+bool LibraryPostIncrementIncreasesLibrarySize();
 
 /*
-bool LibraryPostIncrementIncreasesLibrarySize();
 bool LibraryPreDecrementDecreasesLibrarySize();
 bool LibraryPreDecrementRemovesLastBookIfFull();
 bool LibraryGetBook();
