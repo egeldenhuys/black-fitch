@@ -484,6 +484,31 @@ bool LibraryPostIncrementIncreasesLibrarySize()
     return true;
 }
 
+bool LibraryPreDecrementDecreasesLibrarySize()
+{
+    cout << "Test: LibraryPreDecrementDecreasesLibrarySize() = ";
+
+    string libName = "Wat";
+
+    // Create a library
+    Library lib(libName);
+
+    // Fill it with books
+    Book **books = createBooks(libName, 4);
+    addBooksToLibrary(books, lib, 4);
+
+    // Decrease size
+    --lib;
+
+    // Check output
+    ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 4, 4);
+    ostringstream outputLib = captureLibraryPrintOutput(lib);
+    assert(expectedLib.str()==outputLib.str());
+
+    cout << "PASS" << endl;
+    return true;
+}
+
 bool runTests()
 {
 
@@ -497,9 +522,9 @@ bool runTests()
     LibraryRemoveBookOperator();
     LibraryAssignmentOperatorCreatesDeepCopy();
     LibraryPostIncrementIncreasesLibrarySize();
+    LibraryPreDecrementDecreasesLibrarySize();
 
 /*
-    LibraryPreDecrementDecreasesLibrarySize();
     LibraryPreDecrementRemovesLastBookIfFull();
 
     LibraryGetBook();
