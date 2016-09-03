@@ -376,7 +376,32 @@ bool LibraryRemoveBookOperator()
     //cout << expectedLibA.str();
     assert(expectedLibA.str()==outputLibA.str());
 
-    deleteBooks(books, 2);
+    // Pop second last
+    lib -= books[0];
+    popFromBookArray(books, 0, libSize);
+
+    // Pop last
+    lib -= books[0];
+    popFromBookArray(books, 0, libSize);
+    expectedLibA = createMockLibraryPrintOutput(books, libName, 0, libSize);
+    outputLibA = captureLibraryPrintOutput(lib);
+    assert(expectedLibA.str()==outputLibA.str());
+
+    // Pop invalid
+    cout << endl << "\t" << "About to remove non-existing book from library..." << endl;
+
+    string prefix = "";
+    int i = 69;
+    Book *tmpBook = new Book(prefix + "_Title_" + to_string(i), \
+    prefix + "_Author_" + to_string(i), prefix + "_ISBN_" + to_string(i));
+
+    lib -= tmpBook;
+
+    expectedLibA = createMockLibraryPrintOutput(books, libName, 0, libSize);
+    outputLibA = captureLibraryPrintOutput(lib);
+    assert(expectedLibA.str()==outputLibA.str());
+
+    delete tmpBook;
 
     cout << "PASS" << endl;
     return true;
