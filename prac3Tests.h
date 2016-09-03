@@ -19,12 +19,11 @@ ostringstream createMockLibraryPrintOutput(Book **books, std::string libraryName
 ostringstream captureLibraryAddBookOutput(Library &lib, Book* book);
 ostringstream captureLibraryPrintOutput(Library &lib);
 
-
-
 // Tests
 bool BookConstructor();
 bool BookSetAndGetFunctions();
 bool BookExtractionOperator();
+bool LibrarySetAndGetName();
 bool LibraryAdd5BooksAndPrint();
 bool LibraryCopyContructorCreatesDeepCopy();
 bool LibraryDoesNotAddBookWhenFull();

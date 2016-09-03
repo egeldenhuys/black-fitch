@@ -1,3 +1,45 @@
+/*
+Execute FAILED
+Test case '1' => Produced 564 bytes of output, exit code 2
+
+main.cpp: In function 'int main(int, const char**)':
+main.cpp:9:14: error: 'class Library' has no member named 'getName'
+  cout << lib.getName() << endl;
+              ^
+main.cpp:12:6: error: 'class Library' has no member named 'setName'
+  lib.setName("library");
+      ^
+main.cpp:13:14: error: 'class Library' has no member named 'getName'
+  cout << lib.getName() << endl;
+              ^
+main.cpp:56:7: error: 'class Library' has no member named 'setName'
+  lib2.setName("library2");
+       ^
+makefile:8: recipe for target 'main' failed
+make: *** [main] Error 1
+
+FAIL Test 1: Check getName()
+FAIL Test 2: Check setName()
+FAIL Test 3: Check output of print function.
+FAIL Test 4: Check output of print function.
+FAIL Test 5: Check output of print function when Library is empty.
+FAIL Test 6: Check output of print function.
+FAIL Test 7: Adding a book failed, or the print function is incorrect.
+FAIL Test 8: Check output of print function.
+FAIL Test 9: Printing a full library failed.
+FAIL Test 10: Removing one book failed, or the print function is incorrect
+FAIL Test 11: Check isFull()
+FAIL Test 12: Check output when adding a book to a full Library
+FAIL Test 13: Check ++ operator.
+FAIL Test 14: Check -- operator.
+FAIL Test 15: Check getBook().
+FAIL Test 16: Check copy constructor.
+FAIL Test 17: Check copy constructor.
+FAIL Test 18: Check output of print function when Library is empty.
+FAIL Test 19: Check getBook() when the book doesn't exist.
+
+*/
+
 #include <iostream>
 #include <sstream>
 #include <cassert>
@@ -157,6 +199,17 @@ ostringstream captureLibraryPrintOutput(Library &lib)
     return output;
 }
 
+Book** getBooksFromLibraryByName(Book** books, Library &lib, int numBooks)
+{
+    Book **copyBooks = new Book*[numBooks];
+
+    for (int i = 0; i < numBooks; i++) {
+        copyBooks[i] = lib.getBook(books[i]->getTitle());
+    }
+
+    return copyBooks;
+}
+
 bool BookConstructor()
 {
     cout << "Test: BookContructor() = ";
@@ -227,15 +280,36 @@ bool BookExtractionOperator()
 
 }
 
-Book** getBooksFromLibraryByName(Book** books, Library &lib, int numBooks)
+bool LibrarySetAndGetName()
 {
-    Book **copyBooks = new Book*[numBooks];
+    cout << "Test: LibrarySetAndGetName() = ";
 
-    for (int i = 0; i < numBooks; i++) {
-        copyBooks[i] = lib.getBook(books[i]->getTitle());
-    }
+    string libName = "bitchfork";
 
-    return copyBooks;
+    Library lib;
+    lib.setName(libName);
+    assert(libName==lib.getName());
+
+    Book **books = createBooks("fitchfork", 5);
+    ostringstream expectedOutput = createMockLibraryPrintOutput(books, libName, 0, 5);
+    ostringstream output = captureLibraryPrintOutput(lib);
+
+    assert(expectedOutput.str()==output.str());
+
+    libName = "EDIT";
+
+    lib.setName(libName);
+    assert(libName==lib.getName());
+    addBooksToLibrary(books, lib, 5);
+
+    expectedOutput = createMockLibraryPrintOutput(books, libName, 5, 5);
+    output = captureLibraryPrintOutput(lib);
+    assert(expectedOutput.str()==output.str());
+
+    deleteBooks(books, 5);
+
+    cout << "PASS" << endl;
+	return true;
 }
 
 /*
@@ -641,6 +715,7 @@ bool runTests()
 	BookSetAndGetFunctions();
 	BookExtractionOperator();
 
+    LibrarySetAndGetName();
 	LibraryAdd5BooksAndPrint();
     LibraryCopyContructorCreatesDeepCopy();
     LibraryDoesNotAddBookWhenFull();
