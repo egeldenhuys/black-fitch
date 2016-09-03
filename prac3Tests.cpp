@@ -18,6 +18,16 @@ void addBooksToLibrary(Book **books, Library &lib, int numBooks)
     }
 }
 
+void popFromBookArray(Book** books, int index, int numBooks)
+{
+    delete books[index];
+    books[index] = 0;
+
+    for (int j = index; j < numBooks - 1; j++) {
+        books[j] = books[j + 1];
+        books[j + 1] = 0;
+    }
+}
 /*
 Returns a pointer to an array of book pointers
 */
@@ -320,6 +330,54 @@ bool LibraryDoesNotAddBookWhenFull()
 
     assert(expectedLibA.str()==outputLibA.str());
 
+    deleteBooks(books, 6);
+
+    cout << "PASS" << endl;
+    return true;
+}
+
+bool LibraryRemoveBookOperator()
+{
+    cout << "Test: LibraryRemoveBookOperator() = ";
+
+    string libName = "My Library";
+    int libSize = 5;
+
+    Library lib(libName);
+
+    // Fill it with books
+    Book **books = createBooks(libName, libSize);
+    addBooksToLibrary(books, lib, libSize);
+
+    // Pop first book
+    lib -= books[0];
+    popFromBookArray(books, 0, libSize);
+
+    ostringstream expectedLibA = createMockLibraryPrintOutput(books, libName, 4, libSize);
+    ostringstream outputLibA = captureLibraryPrintOutput(lib);
+    //cout << outputLibA.str();
+    assert(expectedLibA.str()==outputLibA.str());
+
+    // Pop last book
+    lib -= books[3];
+    popFromBookArray(books, 3, libSize);
+
+    expectedLibA = createMockLibraryPrintOutput(books, libName, 3, libSize);
+    outputLibA = captureLibraryPrintOutput(lib);
+    //cout << outputLibA.str();
+    assert(expectedLibA.str()==outputLibA.str());
+
+    // pop Middle book
+    lib -= books[1];
+    popFromBookArray(books, 1, libSize);
+
+    expectedLibA = createMockLibraryPrintOutput(books, libName, 2, libSize);
+    outputLibA = captureLibraryPrintOutput(lib);
+    //cout << expectedLibA.str();
+    assert(expectedLibA.str()==outputLibA.str());
+
+    deleteBooks(books, 2);
+
     cout << "PASS" << endl;
     return true;
 }
@@ -334,9 +392,9 @@ bool runTests()
 	LibraryAdd5BooksAndPrint();
     LibraryCopyContructorCreatesDeepCopy();
     LibraryDoesNotAddBookWhenFull();
+    LibraryRemoveBookOperator();
 
 /*
-    LibraryRemoveBookOperator();
     LibraryReturnsWhenEmptyAndRemoveBook();
 
     LibraryAssignmentOperatorCreatesCopy();

@@ -16,6 +16,7 @@ Book** createBooks(std::string prefix, int numBooks);
 ostringstream createMockLibraryPrintOutput(Book **books, std::string libraryName, int numBooks, int librarySize);
 ostringstream captureLibraryPrintOutput(Library &lib);
 void deleteBooks(Book **books, int numBooks);
+void popFromBookArray(Book** books, int index, int numBooks);
 
 // Tests
 bool BookContructor();
@@ -24,9 +25,9 @@ bool BookExtractionOperator();
 bool LibraryAdd5BooksAndPrint();
 bool LibraryCopyContructorCreatesDeepCopy();
 bool LibraryDoesNotAddBookWhenFull();
+bool LibraryRemoveBookOperator();
 
 /*
-bool LibraryRemoveBookOperator();
 bool LibraryReturnsWhenEmptyAndRemoveBook();
 bool LibraryAssignmentOperatorCreatesCopy();
 bool LibraryPostIncrementIncreasesLibrarySize();
