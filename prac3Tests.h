@@ -11,15 +11,18 @@ using namespace std;
 bool runTests();
 
 // Utility functions
-void addBooksToLibrary(Book **books, Library &lib, int numBooks);
-Book** createBooks(std::string prefix, int numBooks);
-ostringstream createMockLibraryPrintOutput(Book **books, std::string libraryName, int numBooks, int librarySize);
-ostringstream captureLibraryPrintOutput(Library &lib);
-void deleteBooks(Book **books, int numBooks);
+bool addBooksToLibrary(Book **books, Library &lib, int numBooks);
 void popFromBookArray(Book** books, int index, int numBooks);
+Book** createBooks(std::string prefix, int numBooks);
+void deleteBooks(Book **books, int numBooks);
+ostringstream createMockLibraryPrintOutput(Book **books, std::string libraryName, int numBooks, int librarySize);
+ostringstream captureLibraryAddBookOutput(Library &lib, Book* book);
+ostringstream captureLibraryPrintOutput(Library &lib);
+
+
 
 // Tests
-bool BookContructor();
+bool BookConstructor();
 bool BookSetAndGetFunctions();
 bool BookExtractionOperator();
 bool LibraryAdd5BooksAndPrint();
@@ -31,12 +34,6 @@ bool LibraryPostIncrementIncreasesLibrarySize();
 bool LibraryPreDecrementDecreasesLibrarySize();
 bool LibraryPreDecrementRemovesLastBookIfFull();
 bool LibraryGetBook();
+bool LibraryIsFull();
 
-/*
-bool LibraryGetBookReturnsNullIfNotFound();
-bool LibraryIsFullReturnsTrueIfFull();
-bool LibraryIsFullReturnsFalseIfNotFull();
-bool LibraryPrint();
-bool LibraryPrintWhenEmpty();
-*/
 #endif

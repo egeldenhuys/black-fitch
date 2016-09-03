@@ -9,13 +9,24 @@
 
 using namespace std;
 
-void addBooksToLibrary(Book **books, Library &lib, int numBooks)
+// 1 = success
+bool addBooksToLibrary(Book **books, Library &lib, int numBooks)
 {
+    ostringstream fullString;
+    fullString << "Library is full!" << endl;
+    bool full = false;
+
     for (int i = 0; i < numBooks; i++) {
         //cout << books[i]->getTitle() << endl;
 
-    	lib += books[i];
+        ostringstream output = captureLibraryAddBookOutput(lib, books[i]);
+
+        if (output.str() == fullString.str()) {
+            full = true;
+        }
     }
+
+    return full;
 }
 
 void popFromBookArray(Book** books, int index, int numBooks)
@@ -94,9 +105,13 @@ ostringstream createMockLibraryPrintOutput(Book **books, string libraryName, int
 	}
 
     // Empty slots
-    for (int i = numBooks; i < librarySize; i++)
-    {
-        expectedOutput << i + 1 << ". [Empty Space]\n";
+    if (numBooks == 0) {
+        expectedOutput << "EMPTY" << endl;
+    } else {
+        for (int i = numBooks; i < librarySize; i++)
+        {
+            expectedOutput << i + 1 << ". [Empty Space]\n";
+        }
     }
 
     expectedOutput << "==================================" << endl;
@@ -142,7 +157,7 @@ ostringstream captureLibraryPrintOutput(Library &lib)
     return output;
 }
 
-bool BookContructor()
+bool BookConstructor()
 {
     cout << "Test: BookContructor() = ";
     string title = "My Title";
@@ -387,6 +402,10 @@ bool LibraryRemoveBookOperator()
     popFromBookArray(books, 0, libSize);
     expectedLibA = createMockLibraryPrintOutput(books, libName, 0, libSize);
     outputLibA = captureLibraryPrintOutput(lib);
+
+    //cout << expectedLibA.str();
+    //cout << outputLibA.str();
+
     assert(expectedLibA.str()==outputLibA.str());
 
     // Pop invalid
@@ -576,13 +595,49 @@ bool LibraryGetBook()
     deleteBooks(books, 5);
     cout << "PASS" << endl;
     return true;
-
 }
 
+bool LibraryIsFull()
+{
+    cout << "Test: LibraryIsFull() = ";
+
+    string libName = "Fill me up";
+
+    // Create a library
+    Library lib(libName);
+
+    // Fill it with books
+    Book **books = createBooks(libName, 6);
+    addBooksToLibrary(books, lib, 5);
+    assert(true==lib.isFull());
+
+    // Increase size
+    lib++;
+    assert(false==lib.isFull());
+
+    // Add book
+    addBooksToLibrary(books, lib, 6);
+
+    assert(true==lib.isFull());
+
+    // Pop a book
+    lib -= books[3];
+    popFromBookArray(books, 3, 6);
+    assert(false==lib.isFull());
+
+    // Add book
+    addBooksToLibrary(books, lib, 6);
+    assert(true==lib.isFull());
+
+    deleteBooks(books, 6);
+    cout << "PASS" << endl;
+    return true;
+
+}
 bool runTests()
 {
 
-	BookContructor();
+	BookConstructor();
 	BookSetAndGetFunctions();
 	BookExtractionOperator();
 
@@ -595,16 +650,7 @@ bool runTests()
     LibraryPreDecrementDecreasesLibrarySize();
     LibraryPreDecrementRemovesLastBookIfFull();
     LibraryGetBook();
-
-/*
-    LibraryGetBookReturnsNullIfNotFound();
-
-    LibraryIsFullReturnsTrueIfFull();
-    LibraryIsFullReturnsFalseIfNotFull();
-
-
-    LibraryPrintWhenEmpty();
-*/
+    LibraryIsFull();
 
     return true;
 }
