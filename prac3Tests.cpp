@@ -1,4 +1,7 @@
 /*
+fitchfork Test Cases
+====================
+
 Execute FAILED
 Test case '1' => Produced 564 bytes of output, exit code 2
 
@@ -37,107 +40,9 @@ FAIL Test 16: Check copy constructor.
 FAIL Test 17: Check copy constructor.
 FAIL Test 18: Check output of print function when Library is empty.
 FAIL Test 19: Check getBook() when the book doesn't exist.
-
 */
 
-/*
-Execute FAILED
-Test case '1' => Produced 1956 bytes of output, exit code 2
 
-church
-library
-Inventory of library
-===================================
-EMPTY
-==================================
-Inventory of library
-===================================
-1. book1 - author1 - isbn1
-2. [Empty Space]
-3. [Empty Space]
-4. [Empty Space]
-5. [Empty Space]
-==================================
-Inventory of library
-===================================
-1. book1 - author1 - isbn1
-2. book2 - author2 - isbn2
-3. book3 - author3 - isbn3
-4. book4 - author4 - isbn4
-5. book5 - author5 - isbn5
-==================================
-Inventory of library
-===================================
-1. book2 - author2 - isbn2
-2. book3 - author3 - isbn3
-3. book4 - author4 - isbn4
-4. book5 - author5 - isbn5
-5. [Empty Space]
-==================================
-full: YES
-Library is full!
-Inventory of library
-===================================
-1. book2 - author2 - isbn2
-2. book3 - author3 - isbn3
-3. book4 - author4 - isbn4
-4. book5 - author5 - isbn5
-5. book1 - author1 - isbn1
-6. book6 - author6 - isbn6
-==================================
-Inventory of library
-===================================
-1. book2 - author2 - isbn2
-2. book3 - author3 - isbn3
-3. book4 - author4 - isbn4
-4. book5 - author5 - isbn5
-5. book1 - author1 - isbn1
-==================================
-book3 - author3 - isbn3
-Inventory of library
-===================================
-1. book2 - author2 - isbn2
-2. book3 - author3 - isbn3
-3. book4 - author4 - isbn4
-4. book5 - author5 - isbn5
-5. book1 - author1 - isbn1
-==================================
-Inventory of library2
-===================================
-1. book2 - author2 - isbn2
-2. book4 - author4 - isbn4
-3. book5 - author5 - isbn5
-4. book1 - author1 - isbn1
-5. [Empty Space]
-==================================
-Inventory of library
-===================================
-==================================
-YES
-*** Error in `./main': free(): invalid pointer: 0x000000000220dfb0 ***
-makefile:11: recipe for target 'run' failed
-make: *** [run] Aborted
-
-PASS Test 1
-PASS Test 2
-PASS Test 3
-PASS Test 4
-PASS Test 5
-PASS Test 6
-PASS Test 7
-PASS Test 8
-PASS Test 9
-PASS Test 10
-PASS Test 11
-PASS Test 12
-PASS Test 13
-PASS Test 14
-PASS Test 15
-PASS Test 16
-PASS Test 17
-FAIL Test 18: Check output of print function when Library is empty.
-FAIL Test 19: Check getBook() when the book doesn't exist.
-*/
 
 #include <iostream>
 #include <sstream>
