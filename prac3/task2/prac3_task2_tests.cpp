@@ -48,7 +48,7 @@ FAIL Test 19: Check getBook() when the book doesn't exist.
 #include <sstream>
 #include <cassert>
 
-#include "prac3Tests.h"
+#include "prac3_task2_tests.h"
 
 #include "book.h"
 #include "library.h"
