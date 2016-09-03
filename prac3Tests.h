@@ -30,9 +30,9 @@ bool LibraryAssignmentOperatorCreatesDeepCopy();
 bool LibraryPostIncrementIncreasesLibrarySize();
 bool LibraryPreDecrementDecreasesLibrarySize();
 bool LibraryPreDecrementRemovesLastBookIfFull();
+bool LibraryGetBook();
 
 /*
-bool LibraryGetBook();
 bool LibraryGetBookReturnsNullIfNotFound();
 bool LibraryIsFullReturnsTrueIfFull();
 bool LibraryIsFullReturnsFalseIfNotFull();

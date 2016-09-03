@@ -535,14 +535,48 @@ bool LibraryPreDecrementRemovesLastBookIfFull()
     // Check output
     ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 4, 4);
     ostringstream outputLib = captureLibraryPrintOutput(lib);
-    cout << outputLib.str();
-    cout << expectedLib.str();
     assert(expectedLib.str()==outputLib.str());
 
     deleteBooks(books, 5);
 
     cout << "PASS" << endl;
     return true;
+}
+
+bool LibraryGetBook()
+{
+    cout << "Test: LibraryGetBook() = ";
+
+    string libName = "Get a book";
+
+    // Create a library
+    Library lib(libName);
+
+    // Fill it with books
+    Book **books = createBooks(libName, 5);
+    addBooksToLibrary(books, lib, 5);
+
+    // Request valid book
+    Book *tmp = lib.getBook(books[0]->getTitle());
+    assert(books[0]==tmp);
+
+    // Return first name
+    for (int i = 0; i < 4; i++)
+    {
+        books[i]->setTitle("LOLCAT");
+    }
+
+    tmp = lib.getBook(books[3]->getTitle());
+    assert(books[0]==tmp);
+
+    // return non-existing book
+    tmp = lib.getBook("John and the giant dog");
+    assert(0==tmp);
+
+    deleteBooks(books, 5);
+    cout << "PASS" << endl;
+    return true;
+
 }
 
 bool runTests()
@@ -560,10 +594,9 @@ bool runTests()
     LibraryPostIncrementIncreasesLibrarySize();
     LibraryPreDecrementDecreasesLibrarySize();
     LibraryPreDecrementRemovesLastBookIfFull();
+    LibraryGetBook();
 
 /*
-
-    LibraryGetBook();
     LibraryGetBookReturnsNullIfNotFound();
 
     LibraryIsFullReturnsTrueIfFull();
