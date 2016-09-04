@@ -11,6 +11,7 @@ using namespace std;
 
 // Utility functions
 bool addBooksToLibrary(Book **books, Librarian &john, int numBooks, string librarianName);
+bool addBookToLibrary(Book *book, Librarian &john, string librarianName);
 void popFromBookArray(Book** books, int index, int numBooks);
 Book** createBooks(std::string prefix, int numBooks);
 void deleteBooks(Book **books, int numBooks);

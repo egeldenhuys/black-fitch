@@ -1,43 +1,54 @@
 /*
-Task 3: Librarian Information Class [15]
-The library ensures that an updated database is always available for all library users. Hence,
-it’s not very safe to allow anyone to add and remove books from the library without the
-knowledge of the librarian. It would be wise to have an interface class that allows one to
-interact with the Library without changing it directly.
-Change the Library class from Task 2 so that the +=, -=, =, ++, -- operators are private
-instead of public .
-Declare Librarian to be a friend in the Library class (so that librarian may access these private
-methods). Take note that your library.h will be overwritten if uploading to fitchfork, so make
-sure that Librarian only interfaces with library via the specified methods and overloaded
-operators in task 2.
-The following private variable should be added to the Librarian class.
-•
-Library &lib :
-The Library that the Librarian ’works’ at. Note that member reference variables need
-to be initialized at construction.
-•
-const string name :
-The librarians name.
-The following public methods should be added to the Librarian class. All output from these
-methods should be prepended by the librarian’s name (See the example output for more
-information):
-•
-Book* lendBook(String name) :
-Lends a book from the Library, returning a pointer to the book. Remove that book
-from the Library. If the book is found, print out a message which includes the title of
-the book. If the book is not found, print out "Sorry, we don’t have that book!".
-Example output:
-Mary: Sorry, we don’t have that book!
-John: Here is the Harry Potter, we hope you enjoy it!
-•
-void returnBook(Book* book) :
-Returns a book to the Library, and adds it back to the inventory. Prints out a message
-including the title of the book. If the Library is full, increase it’s size and then add the
-book.
-Example output:
-Sandy: Thanks for returning Harry Potter!
-Create a tarball containing all the source code of the system and upload it using the active
-fitchfork assignment called Practical3 - Librarian Class.
+Compile WARNING => Possible compile warnings and/or errors follow, try to get rid of them.
+prac3-t3-main.cpp: In function 'int main(int, const char**)':
+prac3-t3-main.cpp:15:30: error: no matching function for call to 'Librarian::Librarian(Library&, const char [7])'
+  Librarian libr(lib, "Markus");
+                              ^
+In file included from prac3-t3-main.cpp:7:0:
+librarian.h:13:5: note: candidate: Librarian::Librarian(std::__cxx11::string, Library&)
+     Librarian(string name, Library &lib);
+     ^
+librarian.h:13:5: note:   no known conversion for argument 1 from 'Library' to 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}'
+librarian.h:10:7: note: candidate: Librarian::Librarian(const Librarian&)
+ class Librarian
+       ^
+librarian.h:10:7: note:   candidate expects 1 argument, 2 provided
+makefile:7: recipe for target 'main.o' failed
+make: *** [main.o] Error 1
+
+Compile FAILURE
+Execute FAILED
+Test case '1' => Produced 805 bytes of output, exit code 2
+
+prac3-t3-main.cpp: In function 'int main(int, const char**)':
+prac3-t3-main.cpp:15:30: error: no matching function for call to 'Librarian::Librarian(Library&, const char [7])'
+  Librarian libr(lib, "Markus");
+                              ^
+In file included from prac3-t3-main.cpp:7:0:
+librarian.h:13:5: note: candidate: Librarian::Librarian(std::__cxx11::string, Library&)
+     Librarian(string name, Library &lib);
+     ^
+librarian.h:13:5: note:   no known conversion for argument 1 from 'Library' to 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}'
+librarian.h:10:7: note: candidate: Librarian::Librarian(const Librarian&)
+ class Librarian
+       ^
+librarian.h:10:7: note:   candidate expects 1 argument, 2 provided
+makefile:7: recipe for target 'main.o' failed
+make: *** [main.o] Error 1
+
+FAIL TEST 1: It appears that your source code did not compile
+FAIL TEST 2
+FAIL TEST 3
+
+
+FAIL TEST 4: Librarian::lendBook did not print the expected book title
+FAIL TEST 5: Librarian.NAME might not be set
+FAIL TEST 6: Librarian::lendBook returned an unexpected book
+FAIL TEST 7: Librarian::lendBook failed a specific test
+FAIL TEST 8: Librarian::lendBook failed for a specific case
+FAIL TEST 9: Librarian::returnBook failed to print the book title
+FAIL TEST 10: Librarian::returnBook failed for a specific case
+
 */
 #include <iostream>
 #include <sstream>
@@ -67,6 +78,21 @@ ostringstream captureLibraryAddBookOutput(Librarian &john, Book* book)
 	cout.rdbuf(oldCoutBuffer);
 
     return output;
+}
+
+bool addBookToLibrary(Book *book, Librarian &john, string librarianName)
+{
+    ostringstream expectedOutput;
+    ostringstream receivedOutput;
+
+    expectedOutput << librarianName << ": Thanks for returning " << book->getTitle() << "!" << endl;
+    receivedOutput = captureLibraryAddBookOutput(john, book);
+    assert(receivedOutput.str()==expectedOutput.str());
+
+    expectedOutput.str("");
+    receivedOutput.str("");
+
+    return true;
 }
 
 // 1 = success
@@ -389,10 +415,108 @@ bool librarianReturnSixtyNineBooks()
     return true;
 }
 
+/*
+Compile WARNING => Possible compile warnings and/or errors follow, try to get rid of them.
+prac3-t3-main.cpp: In function 'int main(int, const char**)':
+prac3-t3-main.cpp:15:30: error: no matching function for call to 'Librarian::Librarian(Library&, const char [7])'
+  Librarian libr(lib, "Markus");
+                              ^
+In file included from prac3-t3-main.cpp:7:0:
+librarian.h:13:5: note: candidate: Librarian::Librarian(std::__cxx11::string, Library&)
+     Librarian(string name, Library &lib);
+     ^
+librarian.h:13:5: note:   no known conversion for argument 1 from 'Library' to 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}'
+librarian.h:10:7: note: candidate: Librarian::Librarian(const Librarian&)
+ class Librarian
+       ^
+librarian.h:10:7: note:   candidate expects 1 argument, 2 provided
+makefile:7: recipe for target 'main.o' failed
+make: *** [main.o] Error 1
+
+Compile FAILURE
+Execute FAILED
+Test case '1' => Produced 805 bytes of output, exit code 2
+
+prac3-t3-main.cpp: In function 'int main(int, const char**)':
+prac3-t3-main.cpp:15:30: error: no matching function for call to 'Librarian::Librarian(Library&, const char [7])'
+  Librarian libr(lib, "Markus");
+                              ^
+In file included from prac3-t3-main.cpp:7:0:
+librarian.h:13:5: note: candidate: Librarian::Librarian(std::__cxx11::string, Library&)
+     Librarian(string name, Library &lib);
+     ^
+librarian.h:13:5: note:   no known conversion for argument 1 from 'Library' to 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}'
+librarian.h:10:7: note: candidate: Librarian::Librarian(const Librarian&)
+ class Librarian
+       ^
+librarian.h:10:7: note:   candidate expects 1 argument, 2 provided
+makefile:7: recipe for target 'main.o' failed
+make: *** [main.o] Error 1
+*/
+bool librarianConstructors()
+{
+    cout << "TEST: librarianConstructors() = ";
+
+    ostringstream received;
+    ostringstream expected;
+
+    string libName = "ERRORS LiB";
+    Library lib(libName);
+
+    Book **books = createBooks("ORIGINAL", 5);
+
+    // Not sure what they want, give them both.
+    // Librarian::Librarian(Library&, const char [7])
+    Librarian john(lib, "John");
+
+    // add books to lib through john
+    addBooksToLibrary(books, john, 5, "John");
+
+    // Verifiy library
+    expected = createMockLibraryPrintOutput(books, libName, 5, 5);
+    received = captureLibraryPrintOutput(lib);
+    assert(received.str()==expected.str());
+
+    // Add bob to work at lib as well
+    // Librarian::Librarian(std::__cxx11::string, Library&)
+    Librarian bob("Bob", lib);
+
+    // Get a book from bob
+    Book *myBook = captureLibrarianLend(bob, books[0]->getTitle(), received);
+    expected = createMockLibrarianLendOutput("Bob", books[0]->getTitle());
+    popFromBookArray(books, 0, 5, false);
+    assert(received.str()==expected.str());
+
+    // Verifiy library
+    expected = createMockLibraryPrintOutput(books, libName, 4, 5);
+    received = captureLibraryPrintOutput(lib);
+    assert(received.str()==expected.str());
+
+    // Clone bob?
+    // Librarian::Librarian(const Librarian&)
+    Librarian james(bob);
+
+    // Return a book through james (bob's twin)
+    received = captureLibraryAddBookOutput(james, myBook);
+    books[4] = myBook;
+
+    // Verifiy library
+    expected = createMockLibraryPrintOutput(books, libName, 5, 5);
+    received = captureLibraryPrintOutput(lib);
+    //cout << expected.str();
+    //cout << received.str();
+    assert(received.str()==expected.str());
+
+    deleteBooks(books, 5);
+    cout << "PASS" << endl;
+    return true;
+};
+
 bool runTests()
 {
     cout << "Prac 3 - Task 2 Tests:\n";
 
+    librarianConstructors();
     librarianLendBook();
     librarianReturnFiveBooks();
     librarianReturnSixtyNineBooks();
