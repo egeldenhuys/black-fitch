@@ -1,5 +1,5 @@
-#ifndef PRAC3_TESTS_H
-#define PRAC3_TESTS_H
+#ifndef PRAC3_TASK2_TESTS_H
+#define PRAC3_TASK2_TESTS_H
 
 class Book;
 class Library;
@@ -15,9 +15,10 @@ bool addBooksToLibrary(Book **books, Library &lib, int numBooks);
 void popFromBookArray(Book** books, int index, int numBooks);
 Book** createBooks(std::string prefix, int numBooks);
 void deleteBooks(Book **books, int numBooks);
-ostringstream createMockLibraryPrintOutput(Book **books, std::string libraryName, int numBooks, int librarySize);
-ostringstream captureLibraryAddBookOutput(Library &lib, Book* book);
-ostringstream captureLibraryPrintOutput(Library &lib);
+void createMockLibraryPrintOutput(Book **books, std::string libraryName, int numBooks, int librarySize, ostringstream &);
+void captureLibraryAddBookOutput(Library &lib, Book* book, ostringstream &);
+void captureLibraryPrintOutput(Library &lib, ostringstream &);
+Book** getBooksFromLibraryByName(Book** books, Library &lib, int numBooks);
 
 // Tests
 bool BookConstructor();

@@ -60,12 +60,14 @@ bool addBooksToLibrary(Book **books, Library &lib, int numBooks)
 {
     ostringstream fullString;
     fullString << "Library is full!" << endl;
+    ostringstream output;
+
     bool full = false;
 
     for (int i = 0; i < numBooks; i++) {
         //cout << books[i]->getTitle() << endl;
 
-        ostringstream output = captureLibraryAddBookOutput(lib, books[i]);
+        captureLibraryAddBookOutput(lib, books[i], output);
 
         if (output.str() == fullString.str()) {
             full = true;
@@ -98,10 +100,21 @@ Book** createBooks(string prefix, int numBooks)
     //cout << &books << endl;
 
     //cout << "\t" << books << endl;
+    ostringstream title;
+    ostringstream author;
+    ostringstream isbn;
 
     for (int i = 0; i < numBooks; i++) {
-        Book *tmpBook = new Book(prefix + "_Title_" + to_string(i), \
-        prefix + "_Author_" + to_string(i), prefix + "_ISBN_" + to_string(i));
+        title.str("");
+        title << prefix << "_Title_" << i;
+
+        author.str("");
+        author << prefix << "_Author_" << i;
+
+        isbn.str("");
+        isbn << prefix << "_ISBN_" << i;
+
+        Book *tmpBook = new Book(title.str(), author.str(), isbn.str());
 
         *(books + i) = tmpBook;
         //cout << "\t\t" << (*books + i) << endl;
@@ -136,9 +149,9 @@ void deleteBooks(Book **books, int numBooks)
 Produces mock output for Library::print()
 
 */
-ostringstream createMockLibraryPrintOutput(Book **books, string libraryName, int numBooks, int librarySize)
+void createMockLibraryPrintOutput(Book **books, string libraryName, int numBooks, int librarySize, ostringstream &expectedOutput)
 {
-    ostringstream expectedOutput;
+    expectedOutput.str("");
 
     expectedOutput << "Inventory of " << libraryName << endl;
 	expectedOutput << "===================================\n";
@@ -162,13 +175,12 @@ ostringstream createMockLibraryPrintOutput(Book **books, string libraryName, int
 
     expectedOutput << "==================================" << endl;
 
-    return expectedOutput;
 }
 
-ostringstream captureLibraryAddBookOutput(Library &lib, Book* book)
+void captureLibraryAddBookOutput(Library &lib, Book* book, ostringstream &output)
 {
     // Redirect cout to our output stream
-    ostringstream output;
+    output.str("");
 
 	streambuf *oldCoutBuffer = cout.rdbuf();
 	cout.rdbuf(output.rdbuf());
@@ -180,15 +192,14 @@ ostringstream captureLibraryAddBookOutput(Library &lib, Book* book)
 	// Reset cout
 	cout.rdbuf(oldCoutBuffer);
 
-    return output;
 }
 
-ostringstream captureLibraryPrintOutput(Library &lib)
+void captureLibraryPrintOutput(Library &lib, ostringstream &output)
 {
     // http://stackoverflow.com/questions/4810516/c-redirecting-stdout
 
 	// Redirect cout to our output stream
-    ostringstream output;
+    output.str("");
 
 	streambuf *oldCoutBuffer = cout.rdbuf();
 	cout.rdbuf(output.rdbuf());
@@ -200,7 +211,6 @@ ostringstream captureLibraryPrintOutput(Library &lib)
 	// Reset cout
 	cout.rdbuf(oldCoutBuffer);
 
-    return output;
 }
 
 Book** getBooksFromLibraryByName(Book** books, Library &lib, int numBooks)
@@ -295,8 +305,10 @@ bool LibrarySetAndGetName()
     assert(libName==lib.getName());
 
     Book **books = createBooks("fitchfork", 5);
-    ostringstream expectedOutput = createMockLibraryPrintOutput(books, libName, 0, 5);
-    ostringstream output = captureLibraryPrintOutput(lib);
+    ostringstream expectedOutput;
+    createMockLibraryPrintOutput(books, libName, 0, 5, expectedOutput);
+    ostringstream output;
+    captureLibraryPrintOutput(lib, output);
 
     assert(expectedOutput.str()==output.str());
 
@@ -306,8 +318,8 @@ bool LibrarySetAndGetName()
     assert(libName==lib.getName());
     addBooksToLibrary(books, lib, 5);
 
-    expectedOutput = createMockLibraryPrintOutput(books, libName, 5, 5);
-    output = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 5, 5, expectedOutput);
+    captureLibraryPrintOutput(lib, output);
     assert(expectedOutput.str()==output.str());
 
     deleteBooks(books, 5);
@@ -339,8 +351,8 @@ bool LibraryAdd5BooksAndPrint()
     Book **books = createBooks("A",numBooks);
 
     addBooksToLibrary(books, lib, numBooks);
-    expectedOutput = createMockLibraryPrintOutput(books, libName, numBooks, 5);
-	output = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, numBooks, 5, expectedOutput);
+	captureLibraryPrintOutput(lib, output);
 
 	//cout << expectedOutput.str();
 	//cout << output.str();
@@ -377,16 +389,25 @@ bool LibraryCopyContructorCreatesDeepCopy()
     Library libB(libA);
     Book **booksB = getBooksFromLibraryByName(booksA, libB, numBooks);
 
+    ostringstream title;
+
     // Change all the books in Library A
     for (int i = 0; i < numBooks; i++) {
-        booksA[i]->setTitle("EDIT_" + to_string(i));
+        title.str("");
+        title << "EDIT_" << i;
+
+        booksA[i]->setTitle(title.str());
     }
 
     // Compare with the books in the other library
-    ostringstream expectedLibA = createMockLibraryPrintOutput(booksA, libName, numBooks, numBooks);
-    ostringstream expectedLibB = createMockLibraryPrintOutput(booksB, libName, numBooks, numBooks);
-    ostringstream outputLibA = captureLibraryPrintOutput(libA);
-    ostringstream outputLibB = captureLibraryPrintOutput(libB);
+    ostringstream expectedLibA;
+    createMockLibraryPrintOutput(booksA, libName, numBooks, numBooks, expectedLibA);
+    ostringstream expectedLibB;
+    createMockLibraryPrintOutput(booksB, libName, numBooks, numBooks, expectedLibB);
+    ostringstream outputLibA;
+    captureLibraryPrintOutput(libA, outputLibA);
+    ostringstream outputLibB;
+    captureLibraryPrintOutput(libB, outputLibB);
 
     //cout << outputLibA.str();
     //cout << outputLibB.str();
@@ -413,15 +434,19 @@ bool LibraryDoesNotAddBookWhenFull()
     Book **books = createBooks(libName, 6);
     addBooksToLibrary(books, lib, 5);
 
-    ostringstream expectedLibA = createMockLibraryPrintOutput(books, libName, 5, 5);
+    ostringstream expectedLibA;
+    createMockLibraryPrintOutput(books, libName, 5, 5, expectedLibA);
 
-    ostringstream addOutput = captureLibraryAddBookOutput(lib, books[5]);
+    ostringstream addOutput;
+    captureLibraryAddBookOutput(lib, books[5], addOutput);
+
     ostringstream expectedAddOutput;
     expectedAddOutput << "Library is full!" << endl;
 
     assert(addOutput.str()==expectedAddOutput.str());
 
-    ostringstream outputLibA = captureLibraryPrintOutput(lib);
+    ostringstream outputLibA;
+    captureLibraryPrintOutput(lib, outputLibA);
 
     assert(expectedLibA.str()==outputLibA.str());
 
@@ -448,8 +473,10 @@ bool LibraryRemoveBookOperator()
     lib -= books[0];
     popFromBookArray(books, 0, libSize);
 
-    ostringstream expectedLibA = createMockLibraryPrintOutput(books, libName, 4, libSize);
-    ostringstream outputLibA = captureLibraryPrintOutput(lib);
+    ostringstream expectedLibA;
+    createMockLibraryPrintOutput(books, libName, 4, libSize, expectedLibA);
+    ostringstream outputLibA;
+    captureLibraryPrintOutput(lib, outputLibA);
     //cout << outputLibA.str();
     assert(expectedLibA.str()==outputLibA.str());
 
@@ -457,8 +484,8 @@ bool LibraryRemoveBookOperator()
     lib -= books[3];
     popFromBookArray(books, 3, libSize);
 
-    expectedLibA = createMockLibraryPrintOutput(books, libName, 3, libSize);
-    outputLibA = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 3, libSize, expectedLibA);
+    captureLibraryPrintOutput(lib, outputLibA);
     //cout << outputLibA.str();
     assert(expectedLibA.str()==outputLibA.str());
 
@@ -466,8 +493,9 @@ bool LibraryRemoveBookOperator()
     lib -= books[1];
     popFromBookArray(books, 1, libSize);
 
-    expectedLibA = createMockLibraryPrintOutput(books, libName, 2, libSize);
-    outputLibA = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 2, libSize, expectedLibA);
+    captureLibraryPrintOutput(lib, outputLibA);
+
     //cout << expectedLibA.str();
     assert(expectedLibA.str()==outputLibA.str());
 
@@ -478,8 +506,8 @@ bool LibraryRemoveBookOperator()
     // Pop last
     lib -= books[0];
     popFromBookArray(books, 0, libSize);
-    expectedLibA = createMockLibraryPrintOutput(books, libName, 0, libSize);
-    outputLibA = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 0, libSize, expectedLibA);
+    captureLibraryPrintOutput(lib, outputLibA);
 
     //cout << expectedLibA.str();
     //cout << outputLibA.str();
@@ -489,15 +517,12 @@ bool LibraryRemoveBookOperator()
     // Pop invalid
     cout << endl << "\t" << "About to remove non-existing book from library..." << endl;
 
-    string prefix = "";
-    int i = 69;
-    Book *tmpBook = new Book(prefix + "_Title_" + to_string(i), \
-    prefix + "_Author_" + to_string(i), prefix + "_ISBN_" + to_string(i));
+    Book *tmpBook = new Book("TITLE", "AUTHRO:", "ISBN422");
 
     lib -= tmpBook;
 
-    expectedLibA = createMockLibraryPrintOutput(books, libName, 0, libSize);
-    outputLibA = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 0, libSize, expectedLibA);
+    captureLibraryPrintOutput(lib, outputLibA);
     assert(expectedLibA.str()==outputLibA.str());
 
     delete tmpBook;
@@ -528,15 +553,25 @@ bool LibraryAssignmentOperatorCreatesDeepCopy()
     Book **booksB = getBooksFromLibraryByName(booksA, libB, numBooks);
 
     // Change all the books in Library A
+
+    ostringstream title;
+
     for (int i = 0; i < numBooks; i++) {
-        booksA[i]->setTitle("EDIT_" + to_string(i));
+        title.str("");
+        title << "EDIT_" << i;
+
+        booksA[i]->setTitle(title.str());
     }
 
     // Compare with the books in the other library
-    ostringstream expectedLibA = createMockLibraryPrintOutput(booksA, libName, numBooks, numBooks);
-    ostringstream expectedLibB = createMockLibraryPrintOutput(booksB, libName, numBooks, numBooks);
-    ostringstream outputLibA = captureLibraryPrintOutput(libA);
-    ostringstream outputLibB = captureLibraryPrintOutput(libB);
+    ostringstream expectedLibA;
+	createMockLibraryPrintOutput(booksA, libName, numBooks, numBooks, expectedLibA);
+    ostringstream expectedLibB;
+	createMockLibraryPrintOutput(booksB, libName, numBooks, numBooks, expectedLibB);
+    ostringstream outputLibA;
+	captureLibraryPrintOutput(libA, outputLibA);
+    ostringstream outputLibB;
+	captureLibraryPrintOutput(libB, outputLibB);
 
     assert(expectedLibA.str()==outputLibA.str());
     assert(expectedLibB.str()==outputLibB.str());
@@ -566,8 +601,10 @@ bool LibraryPostIncrementIncreasesLibrarySize()
     lib++;
 
     // Check output
-    ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 5, 6);
-    ostringstream outputLib = captureLibraryPrintOutput(lib);
+    ostringstream expectedLib;
+	createMockLibraryPrintOutput(books, libName, 5, 6, expectedLib);
+    ostringstream outputLib;
+	captureLibraryPrintOutput(lib, outputLib);
 
     assert(expectedLib.str()==outputLib.str());
 
@@ -575,8 +612,8 @@ bool LibraryPostIncrementIncreasesLibrarySize()
     lib += books[5];
 
     // Check output
-    expectedLib = createMockLibraryPrintOutput(books, libName, 6, 6);
-    outputLib = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 6, 6, expectedLib);
+    captureLibraryPrintOutput(lib, outputLib);
 
     assert(expectedLib.str()==outputLib.str());
 
@@ -603,8 +640,10 @@ bool LibraryPreDecrementDecreasesLibrarySize()
     --lib;
 
     // Check output
-    ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 4, 4);
-    ostringstream outputLib = captureLibraryPrintOutput(lib);
+    ostringstream expectedLib;
+	createMockLibraryPrintOutput(books, libName, 4, 4, expectedLib);
+    ostringstream outputLib;
+	captureLibraryPrintOutput(lib, outputLib);
     assert(expectedLib.str()==outputLib.str());
 
     deleteBooks(books, 4);
@@ -630,8 +669,10 @@ bool LibraryPreDecrementRemovesLastBookIfFull()
     --lib;
 
     // Check output
-    ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 4, 4);
-    ostringstream outputLib = captureLibraryPrintOutput(lib);
+    ostringstream expectedLib;
+	createMockLibraryPrintOutput(books, libName, 4, 4, expectedLib);
+    ostringstream outputLib;
+	captureLibraryPrintOutput(lib, outputLib);
     assert(expectedLib.str()==outputLib.str());
 
     deleteBooks(books, 5);
@@ -735,14 +776,16 @@ bool LibraryRemoveAllSpace()
     assert(tmp==books[0]);
 
     // Check output
-    ostringstream expectedLib = createMockLibraryPrintOutput(books, libName, 0, 0);
-    ostringstream outputLib = captureLibraryPrintOutput(lib);
+    ostringstream expectedLib;
+	createMockLibraryPrintOutput(books, libName, 0, 0, expectedLib);
+    ostringstream outputLib;
+	captureLibraryPrintOutput(lib, outputLib);
     assert(expectedLib.str()==outputLib.str());
 
     // Add a book
     addBooksToLibrary(books, lib, 1);
-    expectedLib = createMockLibraryPrintOutput(books, libName, 0, 0);
-    outputLib = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 0, 0, expectedLib);
+    captureLibraryPrintOutput(lib, outputLib);
     assert(expectedLib.str()==outputLib.str());
 
     deleteBooks(books, 5);

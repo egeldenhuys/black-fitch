@@ -65,10 +65,10 @@ FAIL TEST 10: Librarian::returnBook failed for a specific case
 
 using namespace std;
 
-ostringstream captureLibraryAddBookOutput(Librarian &john, Book* book)
+void captureLibraryAddBookOutput(Librarian &john, Book* book, ostringstream &output)
 {
     // Redirect cout to our output stream
-    ostringstream output;
+    output.str("");
 
 	streambuf *oldCoutBuffer = cout.rdbuf();
 	cout.rdbuf(output.rdbuf());
@@ -80,7 +80,6 @@ ostringstream captureLibraryAddBookOutput(Librarian &john, Book* book)
 	// Reset cout
 	cout.rdbuf(oldCoutBuffer);
 
-    return output;
 }
 
 bool addBookToLibrary(Book *book, Librarian &john, string librarianName)
@@ -89,7 +88,7 @@ bool addBookToLibrary(Book *book, Librarian &john, string librarianName)
     ostringstream receivedOutput;
 
     expectedOutput << librarianName << ": Thanks for returning " << book->getTitle() << "!" << endl;
-    receivedOutput = captureLibraryAddBookOutput(john, book);
+    captureLibraryAddBookOutput(john, book, receivedOutput);
     assert(receivedOutput.str()==expectedOutput.str());
 
     expectedOutput.str("");
@@ -108,7 +107,7 @@ bool addBooksToLibrary(Book **books, Librarian &john, int numBooks, string libra
         expectedOutput << librarianName << ": Thanks for returning " << books[i]->getTitle() << "!" << endl;
         //cout << books[i]->getTitle() << endl;
         //output.str("");
-        receivedOutput = captureLibraryAddBookOutput(john, books[i]);
+        captureLibraryAddBookOutput(john, books[i], receivedOutput);
         assert(receivedOutput.str()==expectedOutput.str());
 
         expectedOutput.str("");
@@ -144,10 +143,21 @@ Book** createBooks(string prefix, int numBooks)
     //cout << &books << endl;
 
     //cout << "\t" << books << endl;
+    ostringstream title;
+    ostringstream author;
+    ostringstream isbn;
 
     for (int i = 0; i < numBooks; i++) {
-        Book *tmpBook = new Book(prefix + "_Title_" + to_string(i), \
-        prefix + "_Author_" + to_string(i), prefix + "_ISBN_" + to_string(i));
+        title.str("");
+        title << prefix << "_Title_" << i;
+
+        author.str("");
+        author << prefix << "_Author_" << i;
+
+        isbn.str("");
+        isbn << prefix << "_ISBN_" << i;
+
+        Book *tmpBook = new Book(title.str(), author.str(), isbn.str());
 
         *(books + i) = tmpBook;
         //cout << "\t\t" << (*books + i) << endl;
@@ -182,9 +192,9 @@ void deleteBooks(Book **books, int numBooks)
 Produces mock output for Library::print()
 
 */
-ostringstream createMockLibraryPrintOutput(Book **books, string libraryName, int numBooks, int librarySize)
+void createMockLibraryPrintOutput(Book **books, string libraryName, int numBooks, int librarySize, ostringstream &expectedOutput)
 {
-    ostringstream expectedOutput;
+    expectedOutput.str("");
 
     expectedOutput << "Inventory of " << libraryName << endl;
 	expectedOutput << "===================================\n";
@@ -208,15 +218,15 @@ ostringstream createMockLibraryPrintOutput(Book **books, string libraryName, int
 
     expectedOutput << "==================================" << endl;
 
-    return expectedOutput;
 }
 
-ostringstream captureLibraryPrintOutput(Library &lib)
+void captureLibraryPrintOutput(Library &lib, ostringstream &output)
 {
     // http://stackoverflow.com/questions/4810516/c-redirecting-stdout
 
 	// Redirect cout to our output stream
-    ostringstream output;
+
+    output.str("");
 
 	streambuf *oldCoutBuffer = cout.rdbuf();
 	cout.rdbuf(output.rdbuf());
@@ -227,8 +237,6 @@ ostringstream captureLibraryPrintOutput(Library &lib)
 
 	// Reset cout
 	cout.rdbuf(oldCoutBuffer);
-
-    return output;
 }
 
 Book* captureLibrarianLend(Librarian &john, string title, ostringstream &out)
@@ -254,19 +262,17 @@ Book* captureLibrarianLend(Librarian &john, string title, ostringstream &out)
     return borrowed;
 }
 
-ostringstream createMockLibrarianLendOutput(string name, string title)
+void createMockLibrarianLendOutput(string name, string title, ostringstream &expectedOutput)
 {
-    ostringstream expectedOutput;
+    expectedOutput.str("");
     expectedOutput << name << ": Here is the " << title << ", we hope you enjoy it!" << endl;
-    return expectedOutput;
 }
 
-ostringstream createMockLibrarianLendOutput(string name)
+void createFailedMockLibrarianLendOutput(string name, ostringstream &expectedOutput)
 {
-    ostringstream expectedOutput;
+    expectedOutput.str("");
     expectedOutput << name << ": Sorry, we don’t have that book!" << endl;
 
-    return expectedOutput;
 }
 
 /*
@@ -303,31 +309,31 @@ bool librarianLendBook()
     borrowed[0] = captureLibrarianLend(john, books[0]->getTitle(), receivedOutput);
     // Verify it is the book we wanted
     assert(borrowed[0]==books[0]);
-    expectedOutput = createMockLibrarianLendOutput(librarianName, books[0]->getTitle());
+    createMockLibrarianLendOutput(librarianName, books[0]->getTitle(), expectedOutput);
     assert(receivedOutput.str()==expectedOutput.str());
     popFromBookArray(books, 0, 5, false); // pop from mock
 
     // Verify it has been removed from library
-    expectedOutput = createMockLibraryPrintOutput(books, libName, 4, 5);
-    receivedOutput = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 4, 5, expectedOutput);
+    captureLibraryPrintOutput(lib, receivedOutput);
     assert(receivedOutput.str()==expectedOutput.str());
 
     // Remove Last book
     borrowed[1] = captureLibrarianLend(john, books[3]->getTitle(), receivedOutput);
     // Verify it is the book we wanted
     assert(borrowed[1]==books[3]);
-    expectedOutput = createMockLibrarianLendOutput(librarianName, books[3]->getTitle());
+    createMockLibrarianLendOutput(librarianName, books[3]->getTitle(), expectedOutput);
 
     assert(receivedOutput.str()==expectedOutput.str());
     popFromBookArray(books, 3, 5, false); // pop from mock
 
     // Verify it has been removed from library
-    expectedOutput = createMockLibraryPrintOutput(books, libName, 3, 5);
-    receivedOutput = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 3, 5, expectedOutput);
+    captureLibraryPrintOutput(lib, receivedOutput);
     assert(receivedOutput.str()==expectedOutput.str());
 
     // Request invalid book
-    expectedOutput = createMockLibrarianLendOutput(librarianName);
+    createFailedMockLibrarianLendOutput(librarianName, expectedOutput);
     captureLibrarianLend(john, "INVALID BOOK... lele", receivedOutput);
     assert(receivedOutput.str()==expectedOutput.str());
 
@@ -337,8 +343,8 @@ bool librarianLendBook()
     borrowed[4] = captureLibrarianLend(john, books[0]->getTitle(), receivedOutput);
 
     // Verify it has been removed from library
-    expectedOutput = createMockLibraryPrintOutput(books, libName, 0, 5);
-    receivedOutput = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 0, 5, expectedOutput);
+    captureLibraryPrintOutput(lib, receivedOutput);
     //cout << receivedOutput.str();
     assert(receivedOutput.str()==expectedOutput.str());
 
@@ -374,8 +380,8 @@ bool librarianReturnFiveBooks()
     addBooksToLibrary(books, john, 5, librarianName);
 
     // Verifiy library
-    expectedOutput = createMockLibraryPrintOutput(books, libName, 5, 5);
-    receivedOutput = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 5, 5, expectedOutput);
+    captureLibraryPrintOutput(lib, receivedOutput);
     assert(receivedOutput.str()==expectedOutput.str());
 
 
@@ -408,8 +414,8 @@ bool librarianReturnSixtyNineBooks()
     addBooksToLibrary(books, john, 69, librarianName);
 
     // Verifiy library
-    expectedOutput = createMockLibraryPrintOutput(books, libName, 69, 69);
-    receivedOutput = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 69, 69, expectedOutput);
+    captureLibraryPrintOutput(lib, receivedOutput);
     assert(receivedOutput.str()==expectedOutput.str());
 
 
@@ -476,8 +482,8 @@ bool librarianConstructors()
     addBooksToLibrary(books, john, 5, "John");
 
     // Verifiy library
-    expected = createMockLibraryPrintOutput(books, libName, 5, 5);
-    received = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 5, 5, expected);
+    captureLibraryPrintOutput(lib, received);
     assert(received.str()==expected.str());
 
     // Add bob to work at lib as well
@@ -486,13 +492,13 @@ bool librarianConstructors()
 
     // Get a book from bob
     Book *myBook = captureLibrarianLend(bob, books[0]->getTitle(), received);
-    expected = createMockLibrarianLendOutput("Bob", books[0]->getTitle());
+    createMockLibrarianLendOutput("Bob", books[0]->getTitle(), expected);
     popFromBookArray(books, 0, 5, false);
     assert(received.str()==expected.str());
 
     // Verifiy library
-    expected = createMockLibraryPrintOutput(books, libName, 4, 5);
-    received = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 4, 5, expected);
+    captureLibraryPrintOutput(lib, received);
     assert(received.str()==expected.str());
 
     // Clone bob?
@@ -500,12 +506,12 @@ bool librarianConstructors()
     Librarian james(bob);
 
     // Return a book through james (bob's twin)
-    received = captureLibraryAddBookOutput(james, myBook);
+    captureLibraryAddBookOutput(james, myBook, received);
     books[4] = myBook;
 
     // Verifiy library
-    expected = createMockLibraryPrintOutput(books, libName, 5, 5);
-    received = captureLibraryPrintOutput(lib);
+    createMockLibraryPrintOutput(books, libName, 5, 5, expected);
+    captureLibraryPrintOutput(lib, received);
     //cout << expected.str();
     //cout << received.str();
     assert(received.str()==expected.str());
