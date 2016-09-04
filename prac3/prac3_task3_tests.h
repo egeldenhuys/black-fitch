@@ -1,5 +1,5 @@
-#ifndef PRAC3_TASK3
-#define PRAC3_TASK3
+#ifndef PRAC3_TASK3_TESTS
+#define PRAC3_TASK3_TESTS
 
 bool runTests();
 
