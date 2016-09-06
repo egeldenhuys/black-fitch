@@ -1,0 +1,311 @@
+#define CATCH_CONFIG_MAIN
+
+#include "../catch.hpp"
+#include "Wizard.h"
+#include "Spell.h"
+#include "sstream"
+
+TEST_CASE( "wizard default constructor", "[wizard]")
+{
+    Wizard wiz;
+
+    SECTION( "default values are set" ) {
+        REQUIRE( wiz.getNumberOfSpells() == 0 );
+        REQUIRE( wiz.getMaxNumberOfSpells() == 10 );
+        REQUIRE( wiz.getAge() == 20 );
+        REQUIRE( wiz.getNumberOfLossedSpells() == 0 );
+    }
+
+    SECTION( "initializes all spells to empty names") {
+        for (int i = 0; i < wiz.getMaxNumberOfSpells(); i++) {
+
+            Spell tmpSpell = wiz.getSpell(i);
+            REQUIRE( tmpSpell.getName() == "" );
+        }
+    }
+
+}
+/*
+void setMaxNumberOfSpells(int m);
+int getMaxNumberOfSpells() const;
+void setAge(int a);
+int getAge() const;
+*/
+TEST_CASE( "wizard set and get functions")
+{
+    Wizard wiz;
+
+    wiz.setAge(69);
+    wiz.setMaxNumberOfSpells(72);
+
+    REQUIRE( wiz.getAge() == 69 );
+    REQUIRE( wiz.getMaxNumberOfSpells() == 72 );
+
+}
+
+/*
+Spell(string name="Unknown", int difficultyLevel=10, int skillLevel = 5);
+*/
+TEST_CASE( "spell default constructor and get/set functions", "[spell]" )
+{
+    Spell spell;
+
+    SECTION( "get default values set by construtor" ) {
+        REQUIRE( spell.getName() == "Unknown" );
+        REQUIRE( spell.getDifficultyLevel() == 10 );
+        REQUIRE( spell.getSkillLevel() == 5 );
+    }
+
+    SECTION( "set and get values using set and get functions" ) {
+        spell.setName("NAME");
+        REQUIRE( spell.getName() == "NAME" );
+
+        spell.setDifficultyLevel(69);
+        REQUIRE( spell.getDifficultyLevel() == 69 );
+
+        spell.setSkillLevel(77);
+        REQUIRE( spell.getSkillLevel() == 77 );
+    }
+
+    /*
+    When setting the skillLevel, remember to check the bounds, i.e. it must be greater or equal
+    to zero.
+    */
+    SECTION( "skillLevel must be greater or equal to zero") {
+            spell.setSkillLevel(-1);
+            REQUIRE( spell.getSkillLevel() == 5);
+
+            spell.setSkillLevel(0);
+            REQUIRE( spell.getSkillLevel() == 0);
+    }
+
+
+}
+/*
+addSpell(const Spell& s): function to add a Spell to spells. If the numberOfSpells has not reached the
+maxNumberOfSpells yet, the Spell should be added to the first slot in spells where the Spell’s name is an
+empty string. If the maxNumberOfSpells has been reached, the array should be resized and the new Spell
+should be added to the end of the newly created array. Remember to u
+*/
+TEST_CASE( "adding spells to wizard using addSpell()", "[wizard]")
+{
+    // Wizard
+    Wizard wiz;
+    int spellCount = 69;
+
+    // Spells
+    Spell spells[spellCount];
+
+    for (int i = 0; i < spellCount; i++)
+    {
+        spells[i].setName("SPELL_" + to_string(i));
+    }
+
+    SECTION( "adding single spell to new wizard" ) {
+        wiz.addSpell(spells[0]);
+        Spell tmp;
+        tmp = wiz.getSpell(0);
+
+        REQUIRE( tmp.getName() == "SPELL_0" );
+        REQUIRE( wiz.getNumberOfSpells() == 1);
+    }
+
+    SECTION( "adding multiple (9) spells to new wizard" ) {
+        int spellsToAdd = 10;
+
+        for (int i = 0; i < spellsToAdd; i++) {
+            INFO( "Index = " << i << ", Adding spell: " << spells[i].getName());
+            wiz.addSpell(spells[i]);
+
+            Spell tmp = wiz.getSpell(i);
+            REQUIRE( tmp.getName() == spells[i].getName() );
+            REQUIRE( wiz.getNumberOfSpells() == i + 1 );
+            REQUIRE( wiz.getMaxNumberOfSpells() == 10 );
+
+        }
+    }
+
+    SECTION( "spells array resized when max reached" ) {
+
+        int spellsToAdd = 25;
+
+        for (int i = 0; i < spellsToAdd; i++) {
+            INFO( "Index = " << i << ", Adding spell: " << spells[i].getName());
+            wiz.addSpell(spells[i]);
+
+            Spell tmp = wiz.getSpell(i);
+            REQUIRE( tmp.getName() == spells[i].getName() );
+            REQUIRE( wiz.getNumberOfSpells() == i + 1 );
+
+            if (i > 10)
+                REQUIRE( wiz.getMaxNumberOfSpells() == i + 1);
+        }
+    }
+}
+
+/*
+deleteSpell(string name): function to remove a Spell from the array of spells. Remember to update the
+value of numberOfSpells and to set the values of the deleted value in the array to the values specified for the
+default constructor. In addition, remember to update numberOfLossedSpells.
+*/
+TEST_CASE( "deleting spells from a wizard" )
+{
+    // Wizard
+    Wizard wiz;
+    int spellCount = 10;
+
+    // Spells
+    Spell spells[spellCount];
+
+    for (int i = 0; i < spellCount; i++)
+    {
+        spells[i].setName("SPELL_" + to_string(i));
+        spells[i].setSkillLevel((i + 1) * 2 ); // even
+        spells[i].setDifficultyLevel(i + 1); // odd
+
+        wiz.addSpell(spells[i]);
+    }
+
+    SECTION( "when spell is deleted, the spell at index is reset to default" ) {
+
+        for (int i = 0; i < spellCount; i++) {
+            wiz.deleteSpell(spells[i].getName());
+
+            REQUIRE( wiz.getNumberOfSpells() == spellCount - i - 1);
+            REQUIRE( wiz.getMaxNumberOfSpells() == 10);
+            REQUIRE( wiz.getNumberOfLossedSpells() == i + 1);
+
+            Spell tmp = wiz.getSpell(i);
+
+            REQUIRE( tmp.getName() == "" );
+
+            CAPTURE( i );
+            CAPTURE( tmp.getName() );
+            CAPTURE( tmp.getSkillLevel() );
+            CAPTURE( tmp.getDifficultyLevel() );
+            CAPTURE( wiz.getNumberOfSpells() );
+            CAPTURE( wiz.getMaxNumberOfSpells() );
+            CAPTURE( wiz.getNumberOfLossedSpells() );
+
+            REQUIRE( tmp.getSkillLevel() == 5 );
+            REQUIRE( tmp.getDifficultyLevel() == 10 );
+        }
+
+        // DID YOU TOUCH MY ARRAY?!
+        for (int i = 0; i < spellCount; i++)
+        {
+            REQUIRE( spells[i].getName() == "SPELL_" + to_string(i) );
+        }
+
+    }
+
+    SECTION( "when adding a spell it is added to first empty name slot") {
+        // Delete some spells in middle
+        // 2, 4, 5, 8
+
+        wiz.deleteSpell(spells[2].getName());
+        wiz.deleteSpell(spells[4].getName());
+        wiz.deleteSpell(spells[5].getName());
+        wiz.deleteSpell(spells[8].getName());
+
+        // add spell, should be in index 2
+
+        Spell tmp("A", 1, 2);
+        wiz.addSpell(tmp);
+
+        REQUIRE( wiz.getSpell(2).getName() == "A" );
+        REQUIRE( wiz.getSpell(2).getDifficultyLevel() == 1 );
+        REQUIRE( wiz.getSpell(2).getSkillLevel() == 2 );
+
+        tmp = Spell("B", 3, 4);
+        wiz.addSpell(tmp);
+
+        REQUIRE( wiz.getSpell(4).getName() == "B" );
+        REQUIRE( wiz.getSpell(4).getDifficultyLevel() == 3 );
+        REQUIRE( wiz.getSpell(4).getSkillLevel() == 4 );
+    }
+
+    SECTION( "delete first spell" ) {
+        wiz.deleteSpell(spells[0].getName());
+
+        REQUIRE( wiz.getSpell(0).getName() == "" );
+        REQUIRE( wiz.getSpell(0).getSkillLevel() == 5 );
+        REQUIRE( wiz.getSpell(0).getDifficultyLevel() == 10 );
+
+        REQUIRE( wiz.getNumberOfSpells() == spellCount - 1);
+        REQUIRE( wiz.getNumberOfLossedSpells() == 1);
+
+    }
+
+    SECTION ("delete first spell twice") {
+        wiz.deleteSpell(spells[0].getName());
+        wiz.deleteSpell(spells[0].getName());
+
+        REQUIRE( wiz.getSpell(0).getName() == "" );
+        REQUIRE( wiz.getSpell(0).getSkillLevel() == 5 );
+        REQUIRE( wiz.getSpell(0).getDifficultyLevel() == 10 );
+
+        REQUIRE( wiz.getSpell(1).getName() == spells[1].getName() );
+        REQUIRE( wiz.getSpell(1).getSkillLevel() == spells[1].getSkillLevel() );
+        REQUIRE( wiz.getSpell(1).getDifficultyLevel() == spells[1].getDifficultyLevel() );
+
+        REQUIRE( wiz.getNumberOfSpells() == spellCount - 1);
+        REQUIRE( wiz.getNumberOfLossedSpells() == 1);
+
+    }
+
+    SECTION ("delete last spell") {
+        wiz.deleteSpell(spells[spellCount - 1].getName());
+
+        REQUIRE( wiz.getSpell(spellCount - 1).getName() == "" );
+        REQUIRE( wiz.getSpell(spellCount - 1).getSkillLevel() == 5 );
+        REQUIRE( wiz.getSpell(spellCount - 1).getDifficultyLevel() == 10 );
+
+        REQUIRE( wiz.getNumberOfSpells() == spellCount - 1);
+        REQUIRE( wiz.getNumberOfLossedSpells() == 1);
+    }
+}
+
+TEST_CASE( "wizard setMaxNumberOfSpells()")
+{
+    // Wizard
+    Wizard wiz;
+    int spellCount = 25;
+
+    // Spells
+    Spell spells[spellCount];
+
+    for (int i = 0; i < spellCount; i++)
+    {
+        spells[i].setName("SPELL_" + to_string(i));
+        spells[i].setSkillLevel((i + 1) * 2 ); // even
+        spells[i].setDifficultyLevel(i + 1); // odd
+
+        wiz.addSpell(spells[i]);
+    }
+
+    SECTION( "when new > old, preserve old spells and increase size") {
+        wiz.setMaxNumberOfSpells(50);
+
+        REQUIRE( wiz.getMaxNumberOfSpells() == 50 );
+
+        for (int i = 0; i < spellCount; i++) {
+            CAPTURE( i );
+            CAPTURE( wiz.getSpell(i).getName());
+
+            REQUIRE( wiz.getSpell(i).getName() == spells[i].getName() );
+            REQUIRE( wiz.getSpell(i).getSkillLevel() == spells[i].getSkillLevel() );
+            REQUIRE( wiz.getSpell(i).getDifficultyLevel() == spells[i].getDifficultyLevel() );
+        }
+
+        for (int i = spellCount; i < 50; i++) {
+            CAPTURE( i );
+            CAPTURE( wiz.getSpell(i).getName());
+
+            //REQUIRE( wiz.getSpell(i).getName() == "" );
+            REQUIRE( wiz.getSpell(i).getSkillLevel() == 10 );
+            REQUIRE( wiz.getSpell(i).getDifficultyLevel() == 5 );
+        }
+
+    }
+}
