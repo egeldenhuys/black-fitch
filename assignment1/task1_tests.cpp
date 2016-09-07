@@ -1,9 +1,49 @@
 #define CATCH_CONFIG_MAIN
 
+#include <sstream>
+
 #include "../catch.hpp"
+
 #include "Wizard.h"
 #include "Spell.h"
-#include "sstream"
+
+using namespace std;
+
+TEST_CASE( "spell map", "[!hide]")
+{
+
+    // REQUIRES
+    int spellCount = 25;
+    Wizard wiz;
+    Spell spells[spellCount];
+
+    for (int i = 0; i < spellCount; i++)
+    {
+        spells[i] = Spell("SPELL_" + to_string(i), i, i);
+
+        wiz.addSpell(spells[i]);
+    }
+
+    std::cout << "SPELL MAP START" << std::endl;
+
+    std::cout << "Local spells: " << std::endl;
+
+    for (int i = 0; i < wiz.getMaxNumberOfSpells(); i++) {
+        std::cout << i << ": " << spells[i].getName() << ", diff: " \
+        << spells[i].getDifficultyLevel() << ", skill: " \
+        << spells[i].getSkillLevel() << " [" << &spells[i] << "]" << std::endl;
+    }
+
+    std::cout << "Wizard spells: " << std::endl;
+
+    for (int i = 0; i < wiz.getMaxNumberOfSpells(); i++) {
+        std::cout << i << ": " << wiz.getSpell(i).getName() << ", diff: " \
+        << wiz.getSpell(i).getDifficultyLevel() << ", skill: " \
+        << wiz.getSpell(i).getSkillLevel() << " [" << &wiz.getSpell(i) << "]" << std::endl;
+    }
+
+    std::cout << "SPELL MAP END" << std::endl;
+}
 
 TEST_CASE( "wizard default constructor", "[wizard]")
 {
@@ -31,7 +71,7 @@ int getMaxNumberOfSpells() const;
 void setAge(int a);
 int getAge() const;
 */
-TEST_CASE( "wizard set and get functions")
+TEST_CASE( "wizard set and get functions", "[wizard]")
 {
     Wizard wiz;
 
@@ -148,7 +188,7 @@ deleteSpell(string name): function to remove a Spell from the array of spells. R
 value of numberOfSpells and to set the values of the deleted value in the array to the values specified for the
 default constructor. In addition, remember to update numberOfLossedSpells.
 */
-TEST_CASE( "deleting spells from a wizard" )
+TEST_CASE( "deleting spells from a wizard" , "[assume_delete_consolidates_array]")
 {
     // Wizard
     Wizard wiz;
@@ -166,8 +206,9 @@ TEST_CASE( "deleting spells from a wizard" )
         wiz.addSpell(spells[i]);
     }
 
-    SECTION( "when spell is deleted, the spell at index is reset to default" ) {
+    SECTION( "when spell is deleted, the spell is no longer in wizard array" ) {
 
+        // Delete all spells, one by one and verify
         for (int i = 0; i < spellCount; i++) {
             wiz.deleteSpell(spells[i].getName());
 
@@ -175,30 +216,22 @@ TEST_CASE( "deleting spells from a wizard" )
             REQUIRE( wiz.getMaxNumberOfSpells() == 10);
             REQUIRE( wiz.getNumberOfLossedSpells() == i + 1);
 
-            Spell tmp = wiz.getSpell(i);
+            // Check if spell is in wizard
+            for (int j = 0; j < spellCount; j++) {
+                Spell tmp = wiz.getSpell(j);
 
-            REQUIRE( tmp.getName() == "" );
+                REQUIRE( tmp.getName() != spells[i].getName() );
 
-            CAPTURE( i );
-            CAPTURE( tmp.getName() );
-            CAPTURE( tmp.getSkillLevel() );
-            CAPTURE( tmp.getDifficultyLevel() );
-            CAPTURE( wiz.getNumberOfSpells() );
-            CAPTURE( wiz.getMaxNumberOfSpells() );
-            CAPTURE( wiz.getNumberOfLossedSpells() );
+                if (tmp.getName() == "") {
+                    REQUIRE( tmp.getSkillLevel() == 5 );
+                    REQUIRE( tmp.getDifficultyLevel() == 10 );
+                }
+            }
 
-            REQUIRE( tmp.getSkillLevel() == 5 );
-            REQUIRE( tmp.getDifficultyLevel() == 10 );
         }
-
-        // DID YOU TOUCH MY ARRAY?!
-        for (int i = 0; i < spellCount; i++)
-        {
-            REQUIRE( spells[i].getName() == "SPELL_" + to_string(i) );
-        }
-
     }
 
+/*
     SECTION( "when adding a spell it is added to first empty name slot") {
         // Delete some spells in middle
         // 2, 4, 5, 8
@@ -264,22 +297,22 @@ TEST_CASE( "deleting spells from a wizard" )
         REQUIRE( wiz.getNumberOfSpells() == spellCount - 1);
         REQUIRE( wiz.getNumberOfLossedSpells() == 1);
     }
+    */
 }
 
-TEST_CASE( "wizard setMaxNumberOfSpells()")
+TEST_CASE( "wizard setMaxNumberOfSpells()", "[assume_resize_only_called_at_init][!mayfail]")
 {
     // Wizard
     Wizard wiz;
-    int spellCount = 25;
+    int spellCount = 50;
 
     // Spells
     Spell spells[spellCount];
 
-    for (int i = 0; i < spellCount; i++)
+    // Only add 25
+    for (int i = 0; i < 25; i++)
     {
-        spells[i].setName("SPELL_" + to_string(i));
-        spells[i].setSkillLevel((i + 1) * 2 ); // even
-        spells[i].setDifficultyLevel(i + 1); // odd
+        spells[i] = Spell("SPELL_" + to_string(i), (i + 1) * 2, i + 1);
 
         wiz.addSpell(spells[i]);
     }
@@ -289,23 +322,30 @@ TEST_CASE( "wizard setMaxNumberOfSpells()")
 
         REQUIRE( wiz.getMaxNumberOfSpells() == 50 );
 
-        for (int i = 0; i < spellCount; i++) {
+        // Check old spells preserved
+        for (int i = 0; i < 25; i++) {
             CAPTURE( i );
             CAPTURE( wiz.getSpell(i).getName());
 
             REQUIRE( wiz.getSpell(i).getName() == spells[i].getName() );
-            REQUIRE( wiz.getSpell(i).getSkillLevel() == spells[i].getSkillLevel() );
             REQUIRE( wiz.getSpell(i).getDifficultyLevel() == spells[i].getDifficultyLevel() );
+            REQUIRE( wiz.getSpell(i).getSkillLevel() == spells[i].getSkillLevel() );
         }
 
-        for (int i = spellCount; i < 50; i++) {
+        // Check new spells init
+        for (int i = 25; i < 50; i++) {
             CAPTURE( i );
             CAPTURE( wiz.getSpell(i).getName());
 
             //REQUIRE( wiz.getSpell(i).getName() == "" );
-            REQUIRE( wiz.getSpell(i).getSkillLevel() == 10 );
-            REQUIRE( wiz.getSpell(i).getDifficultyLevel() == 5 );
+            REQUIRE( wiz.getSpell(i).getDifficultyLevel() == 10 );
+            REQUIRE( wiz.getSpell(i).getSkillLevel() == 5 );
         }
+    }
+
+    SECTION( "when new < old, spell array is resized") {
+        wiz.setMaxNumberOfSpells(5);
+        REQUIRE( wiz.getMaxNumberOfSpells() == 5);
 
     }
 }
