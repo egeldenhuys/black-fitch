@@ -10,7 +10,7 @@
 
 using namespace std;
 
-SCENARIO( "wizard minus operator (-)")
+SCENARIO( "wizard minus operator (-)", "[wizard][task2]")
 {
     GIVEN( "a wizard with spells")
     {
@@ -66,7 +66,7 @@ SCENARIO( "wizard minus operator (-)")
     }
 }
 
-SCENARIO( "wizard plus operator (+)")
+SCENARIO( "wizard plus operator (+)", "[wizard][task2]")
 {
     GIVEN( "a wizard")
     {
@@ -100,7 +100,7 @@ SCENARIO( "wizard plus operator (+)")
     }
 }
 
-SCENARIO("wizard comparison operators (< >)")
+SCENARIO("wizard comparison operators (< >)", "[wizard][task2]")
 {
     GIVEN("two wizards with same max size")
     {
@@ -313,7 +313,7 @@ SCENARIO("wizard comparison operators (< >)")
     }
 }
 
-TEST_CASE( "hobbit set and get functions" )
+TEST_CASE( "hobbit set and get functions" , "[hobbit][task1]")
 {
     Hobbit hob;
 
@@ -358,7 +358,7 @@ TEST_CASE( "spell map", "[!hide]")
     std::cout << "SPELL MAP END" << std::endl;
 }
 
-TEST_CASE( "wizard default constructor", "[wizard]")
+TEST_CASE( "wizard default constructor", "[wizard][task1]")
 {
     Wizard wiz;
 
@@ -379,7 +379,7 @@ TEST_CASE( "wizard default constructor", "[wizard]")
 
 }
 
-TEST_CASE( "wizard copy constructor")
+TEST_CASE( "wizard copy constructor", "[wizard][task1]")
 {
     Wizard wiz1;
     wiz1.setAge(69);
@@ -416,7 +416,7 @@ int getMaxNumberOfSpells() const;
 void setAge(int a);
 int getAge() const;
 */
-TEST_CASE( "wizard set and get functions", "[wizard]")
+TEST_CASE( "wizard set and get functions", "[wizard][task1]")
 {
     Wizard wiz;
 
@@ -431,7 +431,7 @@ TEST_CASE( "wizard set and get functions", "[wizard]")
 /*
 Spell(string name="Unknown", int difficultyLevel=10, int skillLevel = 5);
 */
-TEST_CASE( "spell default constructor and get/set functions", "[spell]" )
+TEST_CASE( "spell default constructor and get/set functions", "[spell][task1]" )
 {
     Spell spell;
 
@@ -472,7 +472,7 @@ maxNumberOfSpells yet, the Spell should be added to the first slot in spells whe
 empty string. If the maxNumberOfSpells has been reached, the array should be resized and the new Spell
 should be added to the end of the newly created array. Remember to u
 */
-TEST_CASE( "adding spells to wizard using addSpell()", "[wizard]")
+TEST_CASE( "adding spells to wizard using addSpell()", "[wizard][task1]")
 {
     // Wizard
     Wizard wiz;
@@ -533,7 +533,7 @@ deleteSpell(string name): function to remove a Spell from the array of spells. R
 value of numberOfSpells and to set the values of the deleted value in the array to the values specified for the
 default constructor. In addition, remember to update numberOfLossedSpells.
 */
-TEST_CASE( "deleting spells from a wizard" , "[assume_delete_does_not_consolidate]")
+TEST_CASE( "deleting spells from a wizard" , "[assume_delete_does_not_consolidate][wizard][task1]")
 {
     // Wizard
     Wizard wiz;
@@ -649,7 +649,7 @@ TEST_CASE( "deleting spells from a wizard" , "[assume_delete_does_not_consolidat
     }
 }
 
-TEST_CASE( "wizard setMaxNumberOfSpells()", "[assume_resize_only_called_at_init][!mayfail]")
+TEST_CASE( "wizard setMaxNumberOfSpells()", "[assume_resize_only_called_at_init][wizard][task1]")
 {
     // Wizard
     Wizard wiz;
