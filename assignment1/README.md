@@ -1,7 +1,8 @@
-WIP
-===
+Assignment 1 Tests
+==================
 
-- Place makefile in your assignment source folder
-- Adjust the BLACK_FITCH_PATH
-- Test using `make test`
-- Fix if needed
+1. Copy `makefile` into your assignmnet source directory
+2. set the `BLACK_FITCH` path in the `makefile` to point to the `black-fitch` repo folder
+3. Test using `$ make test`
+4. Debug using `$ gdb ./black-fitch.out`
+5. Add or fix tests and send pull request :)
