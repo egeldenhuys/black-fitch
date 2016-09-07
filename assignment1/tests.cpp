@@ -10,6 +10,20 @@
 
 using namespace std;
 
+TEST_CASE( "delete last remaining spell in wizard" , "[wizard]")
+{
+    Wizard wiz;
+    Spell spell("LAST");
+
+    wiz.addSpell(spell);
+
+    wiz.deleteSpell(spell.getName());
+
+    REQUIRE(wiz.getNumberOfSpells() == 0);
+    REQUIRE(wiz.getSpell(0).getName() == "");
+
+}
+
 SCENARIO( "wizard minus operator (-)", "[wizard][task2]")
 {
     GIVEN( "a wizard with spells")
@@ -33,13 +47,30 @@ SCENARIO( "wizard minus operator (-)", "[wizard][task2]")
             wiz.addSpell(spells[i]);
         }
 
+        WHEN( "a spell is removed with - that does not exist")
+        {
+            wiz - "does not exist";
+
+            THEN( "nothing happens")
+            {
+                REQUIRE(wiz.getNumberOfSpells() == 6);
+                REQUIRE(wiz.getSpell(0).getName() == "CLONE");
+
+                for (int i = 0; i < 5; i++)
+                {
+                    REQUIRE(wiz.getSpell(i).getName() != spells[i].getName());
+                }
+
+            }
+        }
+
         WHEN( "a spell is removed with -")
         {
             wiz - spells[0].getName();
 
             THEN( "all spells with same name is removed")
             {
-                REQUIRE(wiz.getNumberOfSpells() == 14);
+                REQUIRE(wiz.getNumberOfSpells() == 5);
 
                 for (int i = 0; i < MAX_SPELLS; i++)
                 {
@@ -483,7 +514,7 @@ TEST_CASE( "adding spells to wizard using addSpell()", "[wizard][task1]")
 
     for (int i = 0; i < spellCount; i++)
     {
-        spells[i].setName("SPELL_" + to_string(i));
+        spells[i] = Spell("SPELL_" + to_string(i));
     }
 
     SECTION( "adding single spell to new wizard" ) {
@@ -507,6 +538,28 @@ TEST_CASE( "adding spells to wizard using addSpell()", "[wizard][task1]")
             REQUIRE( wiz.getNumberOfSpells() == i + 1 );
             REQUIRE( wiz.getMaxNumberOfSpells() == 10 );
 
+        }
+    }
+
+    SECTION( "duplicate spells are not added") {
+        REQUIRE(wiz.getNumberOfSpells() == 0);
+
+        Spell clones[25];
+
+        for (int i = 0; i < 25; i++) {
+            clones[i] = Spell("CLONE");
+        }
+
+        for (int i = 0; i < 25; i++) {
+            wiz.addSpell(clones[i]);
+        }
+
+        REQUIRE(wiz.getNumberOfSpells() == 1);
+        REQUIRE(wiz.getMaxNumberOfSpells() == 10);
+        REQUIRE(wiz.getSpell(0).getName() == "CLONE");
+
+        for (int i = 1; i < wiz.getMaxNumberOfSpells(); i++) {
+            REQUIRE(wiz.getSpell(i).getName() == "");
         }
     }
 
