@@ -1,10 +1,14 @@
 Black Fitch
 ===========
 
-Integration tests for fitchfork practicals
+Unit tests for fitchfork practicals
+
+## Branches
+- Please see the [branches](https://github.com/egeldenhuys/black-fitch/branches) for active development
+  - [Assignment 1](https://github.com/egeldenhuys/black-fitch/tree/assignment1)
 
 ### DO NOT UPLOAD ANY `BLACK FITCH` CODE TO FITCHFORK
-If two people upload 700 lines of identical code, plagiarism software will detect it and you will be questioned.
+If two people upload large amounts of identical code, plagiarism software will detect it!
 
 ## Usage
 1. Clone black-fitch
