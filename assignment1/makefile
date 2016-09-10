@@ -17,6 +17,9 @@ task3:
 	g++ -std=c++11 -Wall -g -I ${PWD} ${task3_tests} Wizard.cpp Spell.cpp Hobbit.cpp -o black-fitch-task3.out
 	./black-fitch-task3.out
 
+clean:
+	rm -f *.o *.out
+	
 update:
 	cd $(black_fitch_path) && ./configure.sh
 	mv $(black_fitch_path)/makefile-black-fitch .
