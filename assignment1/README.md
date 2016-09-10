@@ -1,17 +1,23 @@
-Assignment 1 Tests
-==================
+Results
+=======
 
-## Usage
-1. `./configure.sh` to set the path in the makefile
-2. Copy `makefile-black-fitch` into your assignment source directory
-3. Test using `make -f makefile-black-fitch <target>`
+Task 2 (8/20):
+```
+Your addItem and getItem function is working correctly.
+Your less than operator is incorrect.
+Your less than operator is working correctly.
+Your greater than operator is incorrect.
+Your + operator is incorrect.
+Your - operator is working correctly.
+```
 
-- makefile-black-fitch targets:
-- Usage: `makefile -f makefile-black-fitch <target>`
-- `task<x>` - run tests for all tasks leading up to and including this task
-- `update` - Configure and copy the makefile from the black-fitch folder it originated from
-- `pull` - Pull the black-fitch repo, configure and update the black-fitch makefile in your source repo
-
-### Updates and the makefile
-When black-fitch has been updated, from your source directory run `make -f makefile-black-fitch pull`
- to update your copy of black-fitch and your makefile in your source directory
+Task 3 (35/35):
+```
+Your ostream operator is working correctly.
+Your pre-increment operator is working correctly.
+Your post-increment operator is working correctly.
+Your pre-decrement operator is working correctly.
+Your post-decrement operator is working correctly.
+Your -= operator is working correctly.
+Your assignment operator is working correctly.
+```

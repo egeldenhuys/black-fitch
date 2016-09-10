@@ -3,6 +3,29 @@
 #include "Wizard.h"
 #include "Hobbit.h"
 
+void spellMap(Wizard &wiz, Spell spells[], int spellCount)
+{
+    std::cout << "SPELL MAP START" << std::endl;
+
+    std::cout << "Local spells: " << std::endl;
+
+    for (int i = 0; i < spellCount; i++) {
+        std::cout << i << ": " << spells[i].getName() << ", diff: " \
+        << spells[i].getDifficultyLevel() << ", skill: " \
+        << spells[i].getSkillLevel() << " [" << &spells[i] << "]" << std::endl;
+    }
+
+    std::cout << "Wizard spells: " << std::endl;
+
+    for (int i = 0; i < wiz.getMaxNumberOfSpells(); i++) {
+        std::cout << i << ": " << wiz.getSpell(i).getName() << ", diff: " \
+        << wiz.getSpell(i).getDifficultyLevel() << ", skill: " \
+        << wiz.getSpell(i).getSkillLevel() << " [" << &wiz.getSpell(i) << "]" << std::endl;
+    }
+
+    std::cout << "SPELL MAP END" << std::endl;
+
+}
 /*
 This task implements the additional functions for the Hobbit class.
 Implement the following functions:
@@ -141,7 +164,7 @@ SCENARIO("Hobbit::dropWizardSpells(Wizard& w)")
                 {
                     REQUIRE(wiz.getHasBeenSummoned() == true);
                 }
-                
+
                 REQUIRE(wiz.getNumberOfLossedSpells() == 5);
                 REQUIRE(wiz.getNumberOfSpells() == 5);
 
