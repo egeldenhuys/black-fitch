@@ -21,3 +21,10 @@ Your post-decrement operator is working correctly.
 Your -= operator is working correctly.
 Your assignment operator is working correctly.
 ```
+
+Task 4 (3/4):
+```
+Your hasBeenSummoned function is working correctly.
+Your hasCompletedTraining function is working correctly.
+Your dropWizardSpell function is incorrect. Are you dealing with spells in the correct way?
+```
