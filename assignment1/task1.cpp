@@ -222,28 +222,6 @@ TEST_CASE( "adding spells to wizard using addSpell()", "[wizard][task1]")
         }
     }
 
-    SECTION( "duplicate spells are not added") {
-        REQUIRE(wiz.getNumberOfSpells() == 0);
-
-        Spell clones[25];
-
-        for (int i = 0; i < 25; i++) {
-            clones[i] = Spell("CLONE");
-        }
-
-        for (int i = 0; i < 25; i++) {
-            wiz.addSpell(clones[i]);
-        }
-
-        REQUIRE(wiz.getNumberOfSpells() == 1);
-        REQUIRE(wiz.getMaxNumberOfSpells() == 10);
-        REQUIRE(wiz.getSpell(0).getName() == "CLONE");
-
-        for (int i = 1; i < wiz.getMaxNumberOfSpells(); i++) {
-            REQUIRE(wiz.getSpell(i).getName() == "");
-        }
-    }
-
     SECTION( "spells array resized when max reached" ) {
 
         int spellsToAdd = 25;

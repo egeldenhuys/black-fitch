@@ -37,7 +37,7 @@ SCENARIO( "wizard minus operator (-)", "[wizard][task2]")
 
             THEN( "nothing happens")
             {
-                REQUIRE(wiz.getNumberOfSpells() == 6);
+                REQUIRE(wiz.getNumberOfSpells() == 15);
                 REQUIRE(wiz.getSpell(0).getName() == "CLONE");
 
                 for (int i = 0; i < 5; i++)
@@ -50,22 +50,6 @@ SCENARIO( "wizard minus operator (-)", "[wizard][task2]")
 
         WHEN( "a spell is removed with -")
         {
-            wiz - spells[0].getName();
-
-            THEN( "all spells with same name is removed")
-            {
-                REQUIRE(wiz.getNumberOfSpells() == 5);
-
-                for (int i = 0; i < MAX_SPELLS; i++)
-                {
-                    REQUIRE(wiz.getSpell(i).getName() != spells[0].getName());
-                }
-
-            }
-        }
-
-        WHEN( "a duplicate spell is removed with -")
-        {
             wiz - cloneSpells[0].getName();
 
             THEN( "all spells with same name is removed")
@@ -76,6 +60,7 @@ SCENARIO( "wizard minus operator (-)", "[wizard][task2]")
                 {
                     REQUIRE(wiz.getSpell(i).getName() != cloneSpells[0].getName());
                 }
+
             }
         }
     }
@@ -97,18 +82,6 @@ SCENARIO( "wizard plus operator (+)", "[wizard][task2]")
             {
                 REQUIRE(wiz.getSpell(0).getName() == "SPELL");
                 REQUIRE(wiz.getNumberOfSpells() == 1);
-            }
-
-            AND_WHEN("the spell name alread exists")
-            {
-                tmp.setSkillLevel(69);
-                wiz + tmp;
-
-                THEN( "The spell is set to the higher level")
-                {
-                    REQUIRE(wiz.getNumberOfSpells() == 1);
-                    REQUIRE(wiz.getSpell(0).getSkillLevel() == 69);
-                }
             }
         }
 
@@ -323,7 +296,41 @@ SCENARIO("wizard comparison operators (< >)", "[wizard][task2]")
                 }
             }
         }
-
-
     }
+}
+
+TEST_CASE("Compare with only 1 matching spell")
+{
+    Wizard wizA;
+
+    Spell spellsA[69];
+
+    for (int i = 0; i < 69; i++)
+    {
+        spellsA[i] = Spell("SPELL_A_" + to_string(i), 10, i);
+        wizA.addSpell(spellsA[i]);
+    }
+
+    Wizard wizB;
+
+    Spell spellsB[69];
+
+    for (int i = 0; i < 69; i++)
+    {
+        spellsB[i] = Spell("SPELL_B_" + to_string(i), 10, i * 2);
+        wizB.addSpell(spellsB[i]);
+    }
+
+    Spell matchA = Spell("MATCH", 10, 15);
+    Spell matchB = Spell("MATCH", 10, 10);
+
+    wizA.addSpell(matchA);
+    wizB.addSpell(matchB);
+
+    REQUIRE((wizA > wizB) == 1);
+    REQUIRE((wizA < wizB) == 0);
+
+    REQUIRE((wizB > wizA) == 0);
+    REQUIRE((wizB < wizA) == 1);
+
 }
