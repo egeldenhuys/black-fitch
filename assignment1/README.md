@@ -1,8 +1,17 @@
 Assignment 1 Tests
 ==================
 
-1. Copy `makefile` into your assignmnet source directory
-2. set the `BLACK_FITCH` path in the `makefile` to point to the `black-fitch` repo folder
-3. Test using `$ make test`
-4. Debug using `$ gdb ./black-fitch.out`
-5. Add or fix tests and send pull request :)
+## Usage
+1. `./configure.sh` to set the path in the makefile
+2. Copy `makefile-black-fitch` into your assignment source directory
+3. Test using `make -f makefile-black-fitch <target>`
+
+- makefile-black-fitch targets:
+- Usage: `makefile -f makefile-black-fitch <target>`
+- `task<x>` - run tests for all tasks leading up to and including this task
+- `update` - Configure and copy the makefile from the black-fitch folder it originated from
+- `pull` - Pull the black-fitch repo, configure and update the black-fitch makefile in your source repo
+
+### Updates and the makefile
+When black-fitch has been updated, from your source directory run `make -f makefile-black-fitch pull`
+ to update your copy of black-fitch and your makefile in your source directory
