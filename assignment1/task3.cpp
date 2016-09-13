@@ -28,6 +28,24 @@ For the ostream operator, the output should be as follows:
 #include "Spell.h"
 using namespace std;
 
+/*
+Seems to be the code for task 3... however it has been posted under Task2
+*/
+TEST_CASE( "Example code")
+{
+	streambuf *tmpBuf = cout.rdbuf();
+	ostringstream ss;
+	cout.rdbuf(ss.rdbuf());
+
+	Spell s1("dazzle", 5, 2);
+	Spell s2("super dazzle", 6, 3);
+	cout << (s1++);
+	s2=(++s1);
+	cout << s2;
+
+	cout.rdbuf(tmpBuf);
+}
+
 SCENARIO("spell overloaded operators")
 {
     GIVEN("some spells with different values")
@@ -211,7 +229,7 @@ TEST_CASE("example functions, test for crash")
     streambuf *tmp = cout.rdbuf();
     ostringstream tmp2;
     cout.rdbuf(tmp2.rdbuf());
-    
+
     Spell spell1 , spell2 ;
 
     spell2 = spell1 ;
