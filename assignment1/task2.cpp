@@ -8,6 +8,78 @@
 
 using namespace std;
 
+TEST_CASE("Wizard operator chaining")
+{
+	Wizard wiz;
+	Wizard wiz2;
+	
+	int numSpells = 10;
+	Spell spells[numSpells];
+	
+	for (int i = 0; i < numSpells; i++)
+	{
+		spells[i] = Spell("SPELL_" + to_string(i), 10, 20);
+	}
+	
+	// TEST: + returns wizard ref
+	wiz2 = wiz + spells[0];
+	
+	// wiz2 & 1 should now contain spells[0]
+	
+	REQUIRE(wiz2.getSpell(0).getName() == spells[0].getName());
+	REQUIRE(wiz.getSpell(0).getName() == spells[0].getName());
+	
+	// Add 10 more spells to wiz 1
+	// Note (spell 0 dupe)
+	
+	for (int i = 0; i < numSpells; i++)
+	{
+		wiz + spells[i];
+	}
+	
+	// TEST: - returns wizard ref
+	
+	// Remove spell[0] from wiz1 and assign directly to wiz2
+	wiz2 = wiz - spells[0].getName();
+	
+	// wiz2 should now contain no spell[0] name
+	// Update our spell list and compare
+	spells[0] = Spell("");
+	
+	REQUIRE(wiz.getMaxNumberOfSpells() == 11);
+	
+	for (int i = 0; i < 11; i++)
+	{
+		WARN(i);
+		WARN(wiz.getSpell(i));
+		
+		REQUIRE( wiz.getSpell(i).getName() == spells[i].getName() );
+		REQUIRE( wiz.getSpell(i).getDifficultyLevel() == spells[i].getDifficultyLevel() );
+		REQUIRE( wiz.getSpell(i).getSkillLevel() == spells[i].getSkillLevel() );
+		
+		REQUIRE( wiz2.getSpell(i).getName() == spells[i].getName() );
+		REQUIRE( wiz2.getSpell(i).getDifficultyLevel() == spells[i].getDifficultyLevel() );
+		REQUIRE( wiz2.getSpell(i).getSkillLevel() == spells[i].getSkillLevel() );
+	}
+
+	// Some more chains
+	
+	Wizard wiz3;
+	
+	spells[0] = Spell("SPELL_0", 10, 20);
+	
+	((wiz3 + spells[0]) + spells[7] )+ spells[9];
+	
+	REQUIRE(wiz3.getNumberOfSpells() == 3);
+
+	REQUIRE(wiz3.getSpell(0).getName() == "SPELL_0");
+	REQUIRE(wiz3.getSpell(1).getName() == "SPELL_7");
+	REQUIRE(wiz3.getSpell(2).getName() == "SPELL_9");
+	
+}
+// OLD TESTS
+// ========
+
 SCENARIO( "wizard minus operator (-)", "[wizard][task2]")
 {
     GIVEN( "a wizard with spells")

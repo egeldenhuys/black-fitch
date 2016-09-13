@@ -10,20 +10,6 @@
 
 using namespace std;
 
-TEST_CASE( "delete last remaining spell in wizard" , "[wizard]")
-{
-    Wizard wiz;
-    Spell spell("LAST");
-
-    wiz.addSpell(spell);
-
-    wiz.deleteSpell(spell.getName());
-
-    REQUIRE(wiz.getNumberOfSpells() == 0);
-    REQUIRE(wiz.getSpell(0).getName() == "");
-
-}
-
 
 TEST_CASE( "hobbit set and get functions" , "[hobbit][task1]")
 {
@@ -198,16 +184,7 @@ TEST_CASE( "adding spells to wizard using addSpell()", "[wizard][task1]")
         spells[i] = Spell("SPELL_" + to_string(i));
     }
 
-    SECTION( "adding single spell to new wizard" ) {
-        wiz.addSpell(spells[0]);
-        Spell tmp;
-        tmp = wiz.getSpell(0);
-
-        REQUIRE( tmp.getName() == "SPELL_0" );
-        REQUIRE( wiz.getNumberOfSpells() == 1);
-    }
-
-    SECTION( "adding multiple (9) spells to new wizard" ) {
+    SECTION( "adding multiple (10) spells to new wizard" ) {
         int spellsToAdd = 10;
 
         for (int i = 0; i < spellsToAdd; i++) {
@@ -320,18 +297,6 @@ TEST_CASE( "deleting spells from a wizard" , "[assume_delete_does_not_consolidat
         REQUIRE( wiz.getSpell(4).getSkillLevel() == 4 );
     }
 
-    SECTION( "delete first spell" ) {
-        wiz.deleteSpell(spells[0].getName());
-
-        REQUIRE( wiz.getSpell(0).getName() == "" );
-        REQUIRE( wiz.getSpell(0).getSkillLevel() == 5 );
-        REQUIRE( wiz.getSpell(0).getDifficultyLevel() == 10 );
-
-        REQUIRE( wiz.getNumberOfSpells() == spellCount - 1);
-        REQUIRE( wiz.getNumberOfLossedSpells() == 1);
-
-    }
-
     SECTION ("delete first spell twice") {
         wiz.deleteSpell(spells[0].getName());
         wiz.deleteSpell(spells[0].getName());
@@ -349,16 +314,6 @@ TEST_CASE( "deleting spells from a wizard" , "[assume_delete_does_not_consolidat
 
     }
 
-    SECTION ("delete last spell") {
-        wiz.deleteSpell(spells[spellCount - 1].getName());
-
-        REQUIRE( wiz.getSpell(spellCount - 1).getName() == "" );
-        REQUIRE( wiz.getSpell(spellCount - 1).getSkillLevel() == 5 );
-        REQUIRE( wiz.getSpell(spellCount - 1).getDifficultyLevel() == 10 );
-
-        REQUIRE( wiz.getNumberOfSpells() == spellCount - 1);
-        REQUIRE( wiz.getNumberOfLossedSpells() == 1);
-    }
 }
 
 TEST_CASE( "wizard setMaxNumberOfSpells()", "[assume_resize_only_called_at_init][wizard][task1]")
