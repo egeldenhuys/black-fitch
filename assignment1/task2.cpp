@@ -8,6 +8,40 @@
 
 using namespace std;
 
+TEST_CASE("simple less than or greater")
+{
+	Wizard wiz1;
+	Wizard wiz2;
+
+	SECTION("single spell")
+	{
+		Spell a = Spell("1", 10, 5);
+		Spell b = Spell("1", 10, 6);
+
+		wiz1.addSpell(a);
+		wiz2.addSpell(b);
+
+		Spell spellsA[10];
+		Spell spellsB[10];
+
+		for (int i = 0; i < 10; i++)
+		{
+			spellsA[i] = Spell("A_" + to_string(i));
+			spellsB[i] = Spell("B_" + to_string(i));
+
+			wiz1.addSpell(spellsA[i]);
+			wiz2.addSpell(spellsB[i]);
+		}
+
+		REQUIRE((wiz1 > wiz2) == false);
+		REQUIRE((wiz1 < wiz2) == true);
+
+		REQUIRE((wiz2 > wiz1) == true);
+		REQUIRE((wiz2 < wiz1) == false);
+	}
+
+
+}
 TEST_CASE("Wizard operator chaining")
 {
 	Wizard wiz;
