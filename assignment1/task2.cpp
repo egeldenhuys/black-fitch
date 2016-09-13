@@ -26,8 +26,8 @@ TEST_CASE("simple less than or greater")
 
 		for (int i = 0; i < 10; i++)
 		{
-			spellsA[i] = Spell("A_" + to_string(i));
-			spellsB[i] = Spell("B_" + to_string(i));
+			spellsA[i] = Spell("A_" + to_string(i), 10, 10000);
+			spellsB[i] = Spell("B_" + to_string(i), 5, 2);
 
 			wiz1.addSpell(spellsA[i]);
 			wiz2.addSpell(spellsB[i]);
