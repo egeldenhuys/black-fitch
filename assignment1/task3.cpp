@@ -1,3 +1,25 @@
+/*
+This task implements the overloaded operators for the Spell class. You should overload the following operators:
+• Assignment operator (’=’)
+• Pre-increment operator (’++’) that pre-increments the skillLevel of the specific Spell.
+• Post-increment operator (’++’) that post-increments the skillLevel of the specific Spell.
+• Pre-decrement operator (’--’) that pre-decrements the skillLevel of the specific Spell.
+• Post-decrement operator (’--’) that post-decrements the skillLevel of the specific Spell.
+• Minus equals (’− =’) operator that deducts a specified value from the skillLevel of the specific Spell.
+• ostream operator (’<<’).
+You should be able to call these functions as follows:
+Spell spell1 , spell2 ;
+spell2 = spell1 ;
+c o u t << ( s p e l l 2 −−) << e n d l ;
+c o u t << (++ s p e l l 2 ) << e n d l ;
+s p e l l 1 −= 3 ;
+c o u t << s p e l l 2 << e n d l ;
+For the ostream operator, the output should be as follows:
+• The Spell’s name in a field width of 30, right justified, with no spaces, tabs or newlines afterwards
+• The Spell’s difficultyLevel in a field width of 5, right justified, with no spaces, tabs or newlines afterwards
+• The Spell’s skillLevel in a field width of 5, right justified, with no spaces, tabs or newlines afterwards
+*/
+
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -5,23 +27,6 @@
 #include "../catch.hpp"
 #include "Spell.h"
 using namespace std;
-
-/*
-Seems to be the code for task 3... however it has been posted under Task2
-*/
-TEST_CASE( "Example code")
-{
-	Spell s1("dazzle", 5, 2);
-	Spell s2("super dazzle", 6, 3);
-	cout << (s1++);
-	s2=(++s1);
-	cout << s2;
-}
-	
-TEST_CASE("Spell operator chaining")
-{
-	
-}
 
 SCENARIO("spell overloaded operators")
 {
