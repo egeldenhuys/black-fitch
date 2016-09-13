@@ -1,13 +1,14 @@
 Results
 =======
 
-Task 2 (8/20):
+Task 2 (13/20):
 ```
-Your addItem and getItem function is working correctly.
+Your addSpell and getSpell function is
+working correctly.
 Your less than operator is incorrect.
 Your less than operator is working correctly.
 Your greater than operator is incorrect.
-Your + operator is incorrect.
+Your + operator is working correctly.
 Your - operator is working correctly.
 ```
 
@@ -22,9 +23,9 @@ Your -= operator is working correctly.
 Your assignment operator is working correctly.
 ```
 
-Task 4 (3/4):
+Task 4 (5/5):
 ```
 Your hasBeenSummoned function is working correctly.
 Your hasCompletedTraining function is working correctly.
-Your dropWizardSpell function is incorrect. Are you dealing with spells in the correct way?
+Your dropWizardSpell function is working correctly.
 ```
