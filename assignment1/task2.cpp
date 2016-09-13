@@ -8,7 +8,26 @@
 
 using namespace std;
 
-TEST_CASE("<, > with identical spells,", "[!mayfail]")
+TEST_CASE("comparing wizards with single identical spell")
+{
+	Wizard wiz1;
+	Wizard wiz2;
+
+	Spell a = Spell("1", 10, 5);
+	Spell b = Spell("1", 10, 5);
+
+	wiz1.addSpell(a);
+	wiz2.addSpell(b);
+
+	REQUIRE((wiz1 < wiz2) == false);
+	REQUIRE((wiz2 < wiz1) == false);
+
+	REQUIRE((wiz1 > wiz2) == false);
+	REQUIRE((wiz2 > wiz1) == false);
+
+}
+
+TEST_CASE("Comparing wizards with many identical spells and non-matching spells")
 {
 	Wizard wiz1;
 	Wizard wiz2;
@@ -27,9 +46,9 @@ TEST_CASE("<, > with identical spells,", "[!mayfail]")
 	}
 
 	REQUIRE((wiz1 > wiz2) == false);
-	REQUIRE((wiz2 > wiz1) == true);
+	REQUIRE((wiz2 > wiz1) == false);
 
-	REQUIRE((wiz1 < wiz2) == true);
+	REQUIRE((wiz1 < wiz2) == false);
 	REQUIRE((wiz2 < wiz1) == false);
 
 }
