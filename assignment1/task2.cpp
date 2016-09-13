@@ -8,6 +8,62 @@
 
 using namespace std;
 
+TEST_CASE("<, > with identical spells,", "[!mayfail]")
+{
+	Wizard wiz1;
+	Wizard wiz2;
+
+	Spell spellsA[10];
+	Spell spellsB[10];
+
+	for (int i = 0; i < 10; i++)
+	{
+		spellsA[i] = Spell("A_" + to_string(i), 10, 100);
+		spellsB[i] = Spell("B_" + to_string(i), 5, 200);
+
+		wiz1.addSpell(spellsA[i]);
+		wiz2.addSpell(spellsA[i]);
+		wiz2.addSpell(spellsB[i]);
+	}
+
+	REQUIRE((wiz1 > wiz2) == false);
+	REQUIRE((wiz2 > wiz1) == true);
+
+	REQUIRE((wiz1 < wiz2) == true);
+	REQUIRE((wiz2 < wiz1) == false);
+
+}
+TEST_CASE("<, > with many spells of same level")
+{
+	Wizard wiz1;
+	Wizard wiz2;
+
+	Spell a = Spell("1", 10, 5);
+	Spell b = Spell("1", 10, 6);
+
+	wiz1.addSpell(a);
+	wiz2.addSpell(b);
+
+	Spell spellsA[10];
+	Spell spellsB[10];
+
+	for (int i = 0; i < 10; i++)
+	{
+		spellsA[i] = Spell("A_" + to_string(i), 10, 100);
+		spellsB[i] = Spell("B_" + to_string(i), 5, 200);
+
+		wiz1.addSpell(spellsA[i]);
+		wiz2.addSpell(spellsA[i]);
+		wiz2.addSpell(spellsB[i]);
+	}
+
+	REQUIRE((wiz1 > wiz2) == false);
+	REQUIRE((wiz2 > wiz1) == true);
+
+	REQUIRE((wiz1 < wiz2) == true);
+	REQUIRE((wiz2 < wiz1) == false);
+
+}
 TEST_CASE("simple less than or greater")
 {
 	Wizard wiz1;
