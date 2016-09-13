@@ -1,13 +1,13 @@
 Results
 =======
 
-Task 2 (13/20):
+Task 2 (18/20):
 ```
 Your addSpell and getSpell function is
 working correctly.
 Your less than operator is incorrect.
 Your less than operator is working correctly.
-Your greater than operator is incorrect.
+Your greater than operator is working correctly.
 Your + operator is working correctly.
 Your - operator is working correctly.
 ```
