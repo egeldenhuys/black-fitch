@@ -14,12 +14,48 @@ string getString(const CharString &cs)
 {
     string output = "";
 
+    cout << "Extracting string: ";
+
     for (int i = 0; i < cs.length(); i++)
     {
-        output.append(to_string(cs[i]));
+        cout << cs[i];
+        output += cs[i];
     }
 
+    cout << endl;
+    cout << "also: " << output << endl;
+
     return output;
+}
+
+TEST_CASE("CharString constructor")
+{
+    char strB[7] = "World!";
+
+    CharString cStringB(strB, 7);
+
+    for (int i = 0; i < 6; i++)
+    {
+        REQUIRE(cStringB[i] == strB[i]);
+    }
+}
+
+TEST_CASE("CharString operators: =, [ ]")
+{
+    char strB[7] = "World!";
+
+    CharString cStringB(strB, 7);
+    CharString cStringEmpty;
+
+    cStringEmpty = cStringB;
+
+    for (int i = 0; i < cStringEmpty.length(); i++)
+    {
+        REQUIRE(cStringEmpty[i] == cStringB[i]);
+        REQUIRE(cStringEmpty[i] == strB[i]);
+    }
+
+
 }
 
 TEST_CASE("CharString operators: -, -=")
