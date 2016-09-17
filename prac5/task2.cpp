@@ -14,16 +14,16 @@ string getString(const CharString &cs)
 {
     string output = "";
 
-    cout << "Extracting string: ";
+    //cout << "Extracting string: ";
 
     for (int i = 0; i < cs.length(); i++)
     {
-        cout << cs[i];
+        //cout << cs[i];
         output += cs[i];
     }
 
-    cout << endl;
-    cout << "also: " << output << endl;
+    //cout << endl;
+    //cout << "also: " << output << endl;
 
     return output;
 }
@@ -75,7 +75,7 @@ TEST_CASE("CharString operators: -, -=")
     SECTION("normal usage: -")
     {
         //cStringEmpty = (cStringA - 'l');
-        cStringEmpty = cStringA;
+        cStringEmpty = cStringA - 'l';
 
         string result = getString(cStringEmpty);
         REQUIRE(result == "Heo ");
@@ -283,7 +283,7 @@ TEST_CASE("CharString operators: *, *=")
     {
         cStringEmpty = cStringA * cStringB;
         string output = getString(cStringEmpty);
-        REQUIRE(output == "HWeolrlled !");
+        REQUIRE(output == "HWeolrllod !");
 
     }
 
@@ -291,7 +291,7 @@ TEST_CASE("CharString operators: *, *=")
     {
         cStringA *= cStringB;
         string output = getString(cStringA);
-        REQUIRE(output == "HWeolrlled !");
+        REQUIRE(output == "HWeolrllod !");
     }
 
     SECTION("strings are not the same length: *=")
@@ -455,7 +455,7 @@ TEST_CASE("CharString operators: /, /=")
 
         try
         {
-            cStringEmpty = cStringA / cStringAll;
+            cStringEmpty = cStringB / cStringAll;
         }
         catch (Exception e)
         {
