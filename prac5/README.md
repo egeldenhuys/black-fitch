@@ -1,12 +1,12 @@
 fitchfork Results
 =================
 
-## Task 1 - Exception
+## Task 1 - Exception Class [5]
 ```
 5/5
 ```
 
-## Task 2 - CharString
+## Task 2 - CharString Class [30]
 ```
 30/30
 
@@ -39,4 +39,31 @@ PASS Test 26
 PASS Test 27
 PASS Test 28
 PASS Test 29
+```
+
+## Task 3 - Exception Inheritance [10]
+```
+0/10
+
+Compile WARNING => Possible compile warnings and/or errors follow, try to get rid of them.
+make: *** No rule to make target 'Exception.h', needed by 'main'.  Stop.
+
+Compile FAILURE
+Execute FAILED
+Test case '1' => Produced 101 bytes of output, exit code 2
+
+make: ./main: Command not found
+makefile:8: recipe for target 'run' failed
+make: *** [run] Error 127
+
+FAIL Test 1: Error in empty string exception.
+FAIL Test 2: Error in char not found exception.
+FAIL Test 3: Error in empty result exception.
+FAIL Test 4: Error in unequal size exception.
+FAIL Test 5: Error in char not found exception.
+FAIL Test 6: Error in empty string exception.
+FAIL Test 7: Error in empty string exception.
+FAIL Test 8: Error in empty result exception.
+FAIL Test 9: Error in out of bounds exception.
+FAIL Test 10: Error in out of bounds exception.
 ```
