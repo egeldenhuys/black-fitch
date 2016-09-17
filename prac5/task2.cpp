@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <sstream>
 
 #include "Exception.h"
 #include "CharString.h"
@@ -106,7 +107,10 @@ TEST_CASE("CharString operators: -, -=")
         }
 
         REQUIRE(thrown == true);
-        REQUIRE(msg == "No character ’z’ found!");
+
+        // _’_ OR _'_ OR _`_ ?
+        // Take keyboard '' (used for characters)
+        REQUIRE(msg == "No character 'z' found!");
 
     }
 
@@ -126,7 +130,7 @@ TEST_CASE("CharString operators: -, -=")
         }
 
         REQUIRE(thrown == true);
-        REQUIRE(msg == "No character ’z’ found!");
+        REQUIRE(msg == "No character 'z' found!");
 
     }
 
@@ -497,7 +501,7 @@ TEST_CASE("CharString operator: [ ]")
     REQUIRE_THROWS(cStringB[69]);
 
 
-    SECTION("invalid index")
+    SECTION("invalid index. large")
     {
         bool thrown = false;
         string msg;
@@ -515,6 +519,26 @@ TEST_CASE("CharString operator: [ ]")
         REQUIRE(thrown == true);
         REQUIRE(msg == "Index out of bounds!");
     }
+
+    SECTION("invalid index. small")
+    {
+        bool thrown = false;
+        string msg;
+
+        try
+        {
+            char result = cStringB[-69];
+        }
+        catch (Exception e)
+        {
+            msg = e.what();
+            thrown = true;
+        }
+
+        REQUIRE(thrown == true);
+        REQUIRE(msg == "Index out of bounds!");
+    }
+
 }
 
 TEST_CASE("CharString operator: <<")
@@ -526,4 +550,125 @@ TEST_CASE("CharString operator: <<")
     output << cStringB;
 
     REQUIRE(output.str() == "World!");
+}
+
+TEST_CASE("CharString operator chaining")
+{
+    char strA[7] = "Hello ";
+    char strB[8] = "World!H";
+    char strC[8] = " Lolwat";
+    char strD[8] = "1234567";
+    char strSplice[15] = "ABCDEFQWERTYUI";
+
+    CharString cStringA(strA, 7);
+    CharString cStringB(strB, 8);
+    CharString cStringC(strC, 8);
+    CharString cStringD(strD, 8);
+    CharString cStringSplice(strSplice, 15);
+
+    CharString cStringEmpty;
+
+    SECTION("+ operator")
+    {
+        cStringEmpty = cStringA + cStringB + cStringC;
+        REQUIRE(getString(cStringEmpty) == "Hello World!H Lolwat");
+    }
+
+    SECTION("/ operator")
+    {
+        // B = World!H / _Lolwat
+        // = Wrd!H
+
+        // A = Hello_ / Wrd!H
+        // = ello_
+
+        // OH NO!
+        // "/" has order from left to right!
+
+        cStringEmpty = cStringA / (cStringB / cStringC);
+        REQUIRE(getString(cStringEmpty) == "ello ");
+    }
+
+    SECTION("* operator")
+    {
+        /*
+
+        char strA[7] = "Hello ";
+        char strB[8] = "World!H";
+        char strC[8] = " Lolwat";
+        char strD[8] = "1234567";
+        char strSplice[15] = "ABCDEFQWERTYUI";
+        */
+
+
+        // C -> " Lolwat" * "1234567"
+        //    = " 1L2o3l4w5a6t7"
+        // splice -> "ABCDEFQWERTYUI" /
+        //           " 1L2o3l4w5a6t7"
+        //         = "A B1CLD2EoF3QlW4EwR5TaY6UtI7"
+
+        cStringEmpty = cStringSplice * (cStringC * cStringD);
+        REQUIRE(getString(cStringEmpty) == "A B1CLD2EoF3QlW4EwR5TaY6UtI7");
+    }
+
+}
+
+/*
+Try to break everything
+*/
+TEST_CASE("CharString integration tests")
+{
+    // Includes null terminator
+    char myChars[51] = "This is a simple string. With a brown fox. Lolwat.";
+
+    // Dont give a hoot how CharString handles the null. It asks for
+    // Length of given array. Length is 51.
+
+    CharString cString(myChars, 51);
+    CHECK(cString.length() == 50); // We gave it 50 chars for all we care
+
+    // Lets pop all e from our string
+    cString -= 'e';
+
+    // Extract the string
+    ostringstream result;
+    result << cString;
+
+    REQUIRE(result.str() == "This is a simpl string. With a brown fox. Lolwat.");
+
+    // Lets pop all "fox" chars
+
+    char popper[4] = "fox";
+    CharString cPopper(popper, 4);
+
+    cString /= cPopper;
+
+    result.str("");
+    result << cString;
+
+    REQUIRE(result.str() == "This is a simpl string. With a brwn . Llwat.");
+
+    // append
+    cString += cPopper;
+
+    result.str("");
+    result << cString;
+
+    REQUIRE(result.str() == "This is a simpl string. With a brwn . Llwat.fox");
+
+    bool thrown = false;
+    try
+    {
+        cString -= 'y';
+    }
+    catch (Exception e)
+    {
+        REQUIRE(e.what() == "No character 'y' found!");
+        thrown = true;
+    }
+
+    REQUIRE(thrown == true);
+
+
+
 }
