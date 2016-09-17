@@ -1,3 +1,8 @@
+#include "../catch.hpp"
+
+#include "Exception.h"
+
+
 /*
 Task 1: Exception Class [5]
 
@@ -11,10 +16,6 @@ Class: Exception
 initialises the member variable.
 
 */
-
-#define CATCH_CONFIG_MAIN
-#include "../catch.hpp"
-#include "Exception.h"
 
 TEST_CASE("exception constructor and what() function")
 {
