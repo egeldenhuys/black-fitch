@@ -3,7 +3,9 @@
 
 task1_tests="$(black_fitch_path)/task1.cpp" "$(black_fitch_path)/catchConfig.cpp" Exception.cpp
 task2_tests=$(task1_tests) "$(black_fitch_path)/task2.cpp" CharString.cpp
-task3_tests=$(task2_tests) "$(black_fitch_path)/task3.cpp" EmptyException.h \
+
+# Task 3 and 2 are not compatible!
+task3_tests=$(task1_tests) "$(black_fitch_path)/task3.cpp" CharString.cpp EmptyException.h \
 EmptyResultException.h OutOfBoundsException.h UnequalSizeException.h CharacterNotFoundException.h
 
 task1:
