@@ -26,6 +26,9 @@ TEST_CASE("CharacterNotFoundException constructors")
     the correct type already.
     */
 
+    /*
+    Made no difference at all to fitchfork...
+    */
     try
     {
         throw CharacterNotFoundException();
