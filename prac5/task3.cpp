@@ -8,11 +8,42 @@
 #include "UnequalSizeException.h"
 #include "CharacterNotFoundException.h"
 
-TEST_CASE("CharacterNotFoundException special")
+TEST_CASE("CharacterNotFoundException constructors")
 {
     CharacterNotFoundException e;
 
     REQUIRE(e.what() == "No character '<character>' found!");
+
+    CharacterNotFoundException e2('f');
+
+    REQUIRE(e2.what() == "No character 'f' found!");
+
+    /*
+    In my case, overwriting the what() function in CharacterNotFoundException
+    worked for the test above, however below it will call the what() from Exception
+
+    This was not caught by the other tests as in task2 since here we are expecting
+    the correct type already.
+    */
+
+    try
+    {
+        throw CharacterNotFoundException();
+    }
+    catch (Exception e)
+    {
+        REQUIRE(e.what() == "No character '<character>' found!");
+    }
+
+    try
+    {
+        throw CharacterNotFoundException('p');
+    }
+    catch (Exception e)
+    {
+        REQUIRE(e.what() == "No character 'p' found!");
+    }
+
 }
 
 TEST_CASE("[task3] CharString operators: -, -=")
