@@ -46,7 +46,11 @@ PASS Test 29
 0/10
 
 Compile WARNING => Possible compile warnings and/or errors follow, try to get rid of them.
-make: *** No rule to make target 'Exception.h', needed by 'main'.  Stop.
+In file included from CharString.cpp:4:0:
+CharString.h:5:34: fatal error: EmptyResultException.h: No such file or directory
+compilation terminated.
+makefile:5: recipe for target 'CharString' failed
+make: *** [CharString] Error 1
 
 Compile FAILURE
 Execute FAILED
