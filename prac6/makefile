@@ -2,7 +2,7 @@
 # black_fitch_path = /path/to/black-fitch/prac6
 
 task1_tests="$(black_fitch_path)/task1.cpp" "$(black_fitch_path)/catchConfig.cpp" cuboid.h
-task2_tests=$(task1_tests) "$(black_fitch_path)/task2.cpp" xAxis.cpp
+task2_tests="$(black_fitch_path)/task2.cpp" "$(black_fitch_path)/catchConfig.cpp" xAxis.cpp xAxis.h
 
 task1:
 	g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)" $(task1_tests) -o task1.out
