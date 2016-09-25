@@ -2,7 +2,7 @@
 # black_fitch_path = /path/to/black-fitch/prac5
 
 task1_tests="$(black_fitch_path)/task1.cpp" "$(black_fitch_path)/../catch/catchConfig.cpp" \
-Caesar.cpp Cipher.h SubstitutionCipher.cpp
+Caesar.cpp Cipher.h SubstitutionCipher.cpp OneTimePad.cpp
 
 task1:
 	g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)" $(task1_tests) -o task1.out
