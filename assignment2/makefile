@@ -4,9 +4,16 @@
 task1_tests="$(black_fitch_path)/task1.cpp" "$(black_fitch_path)/../catch/catchConfig.cpp" \
 Caesar.cpp Cipher.h SubstitutionCipher.cpp OneTimePad.cpp
 
+task2_tests=$(task1_tests) "$(black_fitch_path)/task2.cpp" \
+RowsColumns.cpp TranspositionCipher.cpp
+
 task1:
 	g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)" $(task1_tests) -o task1.out
 	./task1.out
+
+task2:
+	g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)" $(task2_tests) -o task2.out
+	./task2.out
 
 clean:
 	rm -f *.o *.out
