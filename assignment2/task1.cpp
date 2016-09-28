@@ -240,16 +240,22 @@ TEST_CASE("OneTimePad inheritance test")
     sub = &pad;
     cipher = &pad;
 
+    sub->encode("");
+    cipher->encode("");
 }
 
 TEST_CASE("Caesar inheritance test")
 {
     Caesar caes;
-
+    caes.setShift(69);
+    
     SubstitutionCipher *sub;
     Cipher *cipher;
 
     sub = &caes;
     cipher = &caes;
+
+    sub->encode("");
+    cipher->encode("");
 
 }
