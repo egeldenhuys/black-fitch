@@ -227,3 +227,29 @@ TEST_CASE("oneTimePad encode/decode", "[task1][otp]")
     REQUIRE(pad.decode(encoded) == newLongText);
 
 }
+
+// Pointed out by @Paulo-W (https://github.com/Paulo-W)
+
+TEST_CASE("OneTimePad inheritance test")
+{
+    OneTimePad pad(5);
+
+    SubstitutionCipher *sub;
+    Cipher *cipher;
+
+    sub = &pad;
+    cipher = &pad;
+
+}
+
+TEST_CASE("Caesar inheritance test")
+{
+    Caesar caes;
+
+    SubstitutionCipher *sub;
+    Cipher *cipher;
+
+    sub = &caes;
+    cipher = &caes;
+
+}
