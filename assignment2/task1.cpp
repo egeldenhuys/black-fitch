@@ -248,7 +248,7 @@ TEST_CASE("Caesar inheritance test")
 {
     Caesar caes;
     caes.setShift(69);
-    
+
     SubstitutionCipher *sub;
     Cipher *cipher;
 
