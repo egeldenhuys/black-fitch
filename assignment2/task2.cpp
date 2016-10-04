@@ -4,13 +4,14 @@
 #include <math.h>
 
 #include "RowsColumns.h"
+#include "ZigZag.h"
 
 using namespace std;
 
 string applyPadding(string s)
 {
     int matrixSize = pow(ceil(sqrt(double(s.size()))), 2);
-    
+
     int diff = matrixSize - s.size();
     string result = s;
 
@@ -69,4 +70,49 @@ TEST_CASE("RowColumns encode/decode")
     REQUIRE(thrown == true);
     REQUIRE(msg == "Incompatible text length");
 
+}
+
+TEST_CASE("ZigZag encode/decode")
+{
+    string text="Hello, World!..";
+
+    string longText="Emily Elizabeth Dickinson was an American poet. Dickinson was born in Amherst, Massachusetts. Although part of a prominent family with strong ties to its community, Dickinson lived much of her life highly introverted.";
+    string encoded;
+
+
+    ZigZag zz;
+    encoded = zz.encode(text);
+    REQUIRE(encoded == "Hoo!.r,el l. dWl");
+    REQUIRE(zz.decode(encoded) == applyPadding(text));
+
+    bool thrown = false;
+    string msg = "";
+
+
+    try {
+      zz.decode(text);
+    } catch (const char * e) {
+      thrown = true;
+      msg = e;
+    }
+
+    REQUIRE(thrown == true);
+    REQUIRE(msg == "Incompatible text length");
+
+    encoded = zz.encode(longText);
+    REQUIRE(encoded == "E atsstrnsiD fveemittttst .nDmii  b,.  rscu rthck ofo  oDAclykmirMAfancihiedg nogm lancei Enrk stai msoh. lfomtl hsiiisliocnnaopyiun y   h ne ruc sanza noAhgowsilei  nrit imhumn wbeap hs ittyv t  rle,ohnpeewosth eartae   dio ");
+    REQUIRE(zz.decode(encoded) == applyPadding(longText));
+
+    thrown = false;
+    msg = "";
+
+    try {
+      zz.decode(longText);
+    } catch (const char * e) {
+        thrown = true;
+        msg = e;
+    }
+
+    REQUIRE(thrown == true);
+    REQUIRE(msg == "Incompatible text length");
 }

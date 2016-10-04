@@ -5,7 +5,7 @@ task1_tests="$(black_fitch_path)/task1.cpp" "$(black_fitch_path)/../catch/catchC
 Caesar.cpp Cipher.h SubstitutionCipher.cpp OneTimePad.cpp
 
 task2_tests=$(task1_tests) "$(black_fitch_path)/task2.cpp" \
-RowsColumns.cpp TranspositionCipher.cpp
+RowsColumns.cpp TranspositionCipher.cpp ZigZag.cpp
 
 task1:
 	g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)" $(task1_tests) -o task1.out
