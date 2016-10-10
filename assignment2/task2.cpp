@@ -11,6 +11,10 @@ using namespace std;
 
 TEST_CASE("RowColumns encode/decode")
 {
+    /*
+    Input and expected output has been provided by the University of Pretoria
+
+    */
     string text="Hello, World!..";
 
     string longText="Emily Elizabeth Dickinson was an American poet. Dickinson was born in Amherst, Massachusetts. Although part of a prominent family with strong ties to its community, Dickinson lived much of her life highly introverted.";

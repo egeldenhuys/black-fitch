@@ -1,3 +1,7 @@
+/*
+Input and expected output has been provided by the University of Pretoria.
+*/
+
 #include "../catch/catch.hpp"
 
 #include <iostream>
