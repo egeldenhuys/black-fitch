@@ -88,7 +88,7 @@ SCENARIO("Caesar Encryption Class", "[task1][caesar]")
 
                 THEN("message is printed")
                 {
-                    CHECK(output.str() == "Please provide a positive shift value\n");
+                    REQUIRE(output.str() == "Please provide a positive shift value\n");
                 }
             }
 
@@ -98,7 +98,7 @@ SCENARIO("Caesar Encryption Class", "[task1][caesar]")
 
                 THEN("message is printed")
                 {
-                    CHECK(output.str() == "Please provide a positive shift value\n");
+                    REQUIRE(output.str() == "Please provide a positive shift value\n");
                 }
             }
 
@@ -108,7 +108,7 @@ SCENARIO("Caesar Encryption Class", "[task1][caesar]")
 
                 THEN("message is printed")
                 {
-                    CHECK(output.str() == "Maximum shift is 94 for ASCII, please try again\n");
+                    REQUIRE(output.str() == "Maximum shift is 94 for ASCII, please try again\n");
                 }
             }
 
