@@ -1,21 +1,25 @@
-black-fitch
+Black Fitch
 ===========
 
-Unit tests for fitchfork practicals. These tests are to be used a guideline only and are not guaranteed
-to reflect the test cases used by fitchfork.
+Unit tests for fitchfork practicals and assignments.
 
-If you passed all the black-fitch tests, but did not received errors from fitchfork, please
-open an issue with your results so that we can fix the tests. Even better: fork the repo, fix the tests and send a pull request.
+These tests are to be used as a guideline only and are not guaranteed to reflect the test cases used by fitchfork.
 
 ## Usage
-1. Run `./configure.sh` to generate and set the path in the makefile
-2. Copy the generated `black-fitch-makefile` into your project source directory
-3. Test using `make -f black-fitch-makefile <target>`
+### Clone and configure Black Fitch
+1. `git clone https://github.com/egeldenhuys/black-fitch.git`
+2. `cd black-fitch/assignment3`
+3. `./configure.sh` to generate a makefile that points to the black-fitch tests directory
+4. Copy the generated `black-fitch-makefile` into your project source directory
+5. Run the tests from your source directory using `make -f black-fitch-makefile <target>`
 
-`black-fitch-makefile` targets:
-- `task<x>` - run tests for given task
-- `update` - Configure and copy the makefile from the black-fitch folder
-- `pull` - Pull the black-fitch repo, configure and update the black-fitch makefile in your source repo
+### black-fitch-makefile Targets
+- `task<X>` - run tests for given task
+- `pull` - Update black-fitch from GitHub and then updates the black-fitch-makefile
+- `update` - Update the Black Fitch makefile (usefull when developing tests)
 
-## Development Branches
-- Please see the [branches](https://github.com/egeldenhuys/black-fitch/branches) for development braches
+## Feedback
+A pull request will be opened for each practical before being merged into master.
+The PR will be used for reporting results as the tests are being developed.
+
+If you find any problems with the test cases, please open a new issue.
