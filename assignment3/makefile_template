@@ -30,7 +30,6 @@ clean:
 
 # Configure and copy the latest makefile
 update:
-	@echo "Requesting a new black-fitch-makefile from the black-fitch repo..."
 	@cd "$(black_fitch_path)" && ./configure.sh -q
 	@mv "$(black_fitch_path)/black-fitch-makefile" .
 	@echo "black-fitch-makefile has been updated to the latest version!"
@@ -38,7 +37,9 @@ update:
 # Pull black-fitch, configure and copy the latest makefile
 pull:
 	@echo "Pull black-fitch from  GitHub..."
-	cd "$(black_fitch_path)" && git pull
-	@echo "Requesting a new black-fitch-makefile from the black-fitch repo..."
+	# TODO: set to master before merge!
+	cd "$(black_fitch_path)" && git pull origin assignment3
+
 	@cd "$(black_fitch_path)" && ./configure.sh -q
 	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
