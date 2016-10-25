@@ -57,6 +57,62 @@ TEST_CASE("testing linkedList<int> remove index 0", "[task1]") {
   REQUIRE(output.str() == result.str());
 }
 
+TEST_CASE("testing linkedList<int> remove inbetween", "[task1]") {
+  LinkedList<int> *ll = new LinkedList<int>();
+  ll->insert(0, 1);
+  ll->insert(1, 2);
+  ll->insert(2, 3);
+
+  int data = ll->remove(1);
+
+  REQUIRE(data == 2);
+
+  ostringstream result;
+  result << "[1,3]";
+
+  ostringstream output;
+  captureDisplay(ll, output);
+
+  REQUIRE(output.str() == result.str());
+}
+
+TEST_CASE("testing linkedList<int> remove multiple inbetween", "[task1]") {
+  LinkedList<int> *ll = new LinkedList<int>();
+  ll->insert(0, 1);
+  ll->insert(1, 2);
+  ll->insert(2, 3);
+  ll->insert(3, 4);
+  ll->insert(4, 5);
+  ll->insert(5, 6);
+
+  int data = ll->remove(1);
+
+  REQUIRE(data == 2);
+
+  ostringstream result;
+  result << "[1,3,4,5,6]";
+
+  ostringstream output;
+  captureDisplay(ll, output);
+
+  REQUIRE(output.str() == result.str());
+
+  data = ll->remove(3);
+  REQUIRE(data == 5);
+  // "[1,3,4,6]"
+
+  data = ll->remove(1);
+  REQUIRE(data == 3);
+
+  result.str("");
+  result << "[1,4,6]";
+
+  output.str("");
+  captureDisplay(ll, output);
+
+  REQUIRE(output.str() == result.str());
+}
+
 TEST_CASE("testing linkedList<int> remove all", "[task1]") {
   LinkedList<int> *ll = new LinkedList<int>();
   ll->insert(0, 1);
@@ -83,38 +139,30 @@ TEST_CASE("testing linkedList<int> remove invalid index from non empty list",
   ll->insert(0, 2);
   ll->insert(0, 3);
 
-  string result = "invalid";
+  string result = "invalid index";
   string thrownResult = "";
   bool thrown = false;
   bool found = false;
 
   try {
-    ll->remove(5);
+    ll->remove(3);
 
   } catch (const char *s) {
-    thrownResult = string(s);
-    std::transform(thrownResult.begin(), thrownResult.end(),
-                   thrownResult.begin(), ::tolower);
     thrown = true;
+    thrownResult = string(s);
   }
 
   REQUIRE(thrown == true);
-
-  if (thrownResult.find(result) != std::string::npos) {
-    found = true;
-  }
-
-  REQUIRE(found == true);
+  REQUIRE(thrownResult == result);
 }
 
 TEST_CASE("testing linkedList<int> remove invalid index from empty list",
           "[task1]") {
   LinkedList<int> *ll = new LinkedList<int>();
 
-  string result = "empty";
+  string result = "empty structure";
   string thrownResult = "";
   bool thrown = false;
-  bool found = false;
 
   try {
     ll->remove(5);
@@ -122,17 +170,10 @@ TEST_CASE("testing linkedList<int> remove invalid index from empty list",
   } catch (const char *s) {
     thrown = true;
     thrownResult = string(s);
-    std::transform(thrownResult.begin(), thrownResult.end(),
-                   thrownResult.begin(), ::tolower);
   }
 
   REQUIRE(thrown == true);
-
-  if (thrownResult.find(result) != std::string::npos) {
-    found = true;
-  }
-
-  REQUIRE(found == true);
+  REQUIRE(thrownResult == result);
 }
 
 TEST_CASE("testing linkedList<int> append two lists", "[task1]") {
@@ -217,9 +258,115 @@ TEST_CASE("testing linkedList<int> [] operator", "[task1]") {
   ll1->insert(1, 2);
   ll1->insert(2, 3);
 
-  int data = (*ll1)[1];
+  int data0 = (*ll1)[0];
+  int data1 = (*ll1)[1];
+  int data2 = (*ll1)[2];
 
-  REQUIRE(data == 2);
+  REQUIRE(data0 == 1);
+  REQUIRE(data1 == 2);
+  REQUIRE(data2 == 3);
+}
+
+TEST_CASE("testing linkedList<int> invalid [] operator", "[task1]") {
+  LinkedList<int> *ll1 = new LinkedList<int>();
+
+  ll1->insert(0, 1);
+  ll1->insert(1, 2);
+  ll1->insert(2, 3);
+
+  string result = "invalid index";
+  string thrownResult = "";
+  bool thrown = false;
+  bool found = false;
+
+  try {
+    int data = (*ll1)[4];
+
+  } catch (const char *s) {
+    thrown = true;
+    thrownResult = string(s);
+    std::transform(thrownResult.begin(), thrownResult.end(),
+                   thrownResult.begin(), ::tolower);
+  }
+
+  REQUIRE(thrown == true);
+
+  if (thrownResult.find(result) != std::string::npos) {
+    found = true;
+  }
+
+  REQUIRE(found == true);
+}
+
+TEST_CASE("testing linkedList<int> get function", "[task1]") {
+  LinkedList<int> *ll1 = new LinkedList<int>();
+
+  ll1->insert(0, 1);
+  ll1->insert(1, 2);
+  ll1->insert(2, 3);
+
+  int data = ll1->get(2);
+
+  REQUIRE(data == 3);
+
+  ostringstream result;
+  result << "[1,2,3]";
+
+  ostringstream output;
+  captureDisplay(ll1, output);
+
+  REQUIRE(output.str() == result.str());
+}
+
+TEST_CASE("testing linkedList<int> invalid get index", "[task1]") {
+  LinkedList<int> *ll1 = new LinkedList<int>();
+
+  ll1->insert(0, 1);
+  ll1->insert(1, 2);
+  ll1->insert(2, 3);
+
+  string result = "invalid index";
+  string thrownResult = "";
+  bool thrown = false;
+  bool found = false;
+
+  try {
+    int data = ll1->get(4);
+
+  } catch (const char *s) {
+    thrown = true;
+    thrownResult = string(s);
+    std::transform(thrownResult.begin(), thrownResult.end(),
+                   thrownResult.begin(), ::tolower);
+  }
+
+  REQUIRE(thrown == true);
+
+  if (thrownResult.find(result) != std::string::npos) {
+    found = true;
+  }
+
+  REQUIRE(found == true);
+}
+
+TEST_CASE("testing linkedList<int> get from an empty list", "[task1]") {
+  LinkedList<int> *ll1 = new LinkedList<int>();
+
+  string result = "empty structure";
+  string thrownResult = "";
+  bool thrown = false;
+  bool found = false;
+
+  try {
+    int data = ll1->get(-3);
+
+  } catch (const char *s) {
+    thrown = true;
+    thrownResult = string(s);
+  }
+
+  REQUIRE(thrown == true);
+  REQUIRE(thrownResult == result);
 }
 
 TEST_CASE("testing linkedList<int> inbetween insert", "[task1]") {
