@@ -1,7 +1,5 @@
 #include "../catch.hpp"
 #include "linkedList.h"
-#include <algorithm>
-#include <string>
 
 template <class T>
 
