@@ -154,6 +154,17 @@ TEST_CASE("testing linkedList<int> remove invalid index from non empty list",
 
   REQUIRE(thrown == true);
   REQUIRE(thrownResult == result);
+
+  try {
+    ll->remove(-1);
+
+  } catch (const char *s) {
+    thrown = true;
+    thrownResult = string(s);
+  }
+
+  REQUIRE(thrown == true);
+  REQUIRE(thrownResult == result);
 }
 
 TEST_CASE("testing linkedList<int> remove invalid index from empty list",
@@ -331,7 +342,7 @@ TEST_CASE("testing linkedList<int> invalid get index", "[task1]") {
   bool found = false;
 
   try {
-    int data = ll1->get(4);
+    int data = ll1->get(3);
 
   } catch (const char *s) {
     thrown = true;
