@@ -7,11 +7,9 @@ compile=g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)"
 #	"$(black_fitch_path)/../catch/catchConfig.cpp"
 # ONLY ONCE in the test path
 
-task1_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task1.cpp" \
-
-task2_tests=""
-
-task3_tests=""
+task1_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task1.cpp"
+# task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp"
+# task3_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task3.cpp"
 
 task1:
 	 $(compile) $(task1_tests) -o task1.out
@@ -37,7 +35,7 @@ update:
 # Pull black-fitch, configure and copy the latest makefile
 pull:
 	@echo "Pull black-fitch from  GitHub..."
-	cd "$(black_fitch_path)" && git pull
+	cd "$(black_fitch_path)" && git pull origin master
 
 	@cd "$(black_fitch_path)" && ./configure.sh -q
 	@mv "$(black_fitch_path)/black-fitch-makefile" .
