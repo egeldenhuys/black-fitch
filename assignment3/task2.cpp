@@ -1,10 +1,33 @@
 #include "../catch/catch.hpp"
-#include "linkedList.h"
+#include "circularList.h"
+
+template <class T> bool testTailPointsToHead(CircularList<T> *l) {
+  Node<T> *head = l->getLeader();
+
+  // If the list is empty tail won't point to head.
+  if (!head) {
+    return true;
+  }
+
+  Node<T> *currentNode = head;
+  bool tailPointsBackToHead = false;
+
+  while (currentNode && currentNode->next) {
+    if (currentNode->next != head) {
+      currentNode = currentNode->next;
+    } else {
+      tailPointsBackToHead = true;
+      break;
+    }
+  }
+
+  return tailPointsBackToHead;
+}
 
 template <class T>
 
 /** This does not capture printf **/
-void captureDisplay(LinkedList<T> *ll, ostringstream &output) {
+void captureDisplay(CircularList<T> *ll, ostringstream &output) {
   // http://stackoverflow.com/questions/4810516/c-redirecting-stdout
 
   // Redirect cout to our output stream
@@ -21,42 +44,98 @@ void captureDisplay(LinkedList<T> *ll, ostringstream &output) {
   cout.rdbuf(oldCoutBuffer);
 }
 
-TEST_CASE("testing linkedList<int> insert", "[task1]") {
-  LinkedList<int> *ll = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> insert", "[task2]") {
+  CircularList<int> *ll = new CircularList<int>();
   ll->insert(0, 1);
-  ll->insert(0, 2);
-  ll->insert(0, 3);
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  ll->insert(1, 2);
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  ll->insert(2, 3);
+  REQUIRE(testTailPointsToHead(ll) == true);
 
   ostringstream result;
-  result << "[3,2,1]";
+  result << "[1,2,3]";
 
   ostringstream output;
   captureDisplay(ll, output);
 
   REQUIRE(output.str() == result.str());
+
+  REQUIRE(testTailPointsToHead(ll) == true);
+  delete ll;
 }
 
-TEST_CASE("testing linkedList<int> remove index 0", "[task1]") {
-  LinkedList<int> *ll = new LinkedList<int>();
+TEST_CASE("testing CircularList<string> insert", "[task2]") {
+  CircularList<std::string> *ll = new CircularList<std::string>();
+  ll->insert(0, "AAA");
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  ll->insert(1, "BBB");
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  ll->insert(2, "CCC");
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  ostringstream result;
+  result << "[AAA,BBB,CCC]";
+
+  ostringstream output;
+  captureDisplay(ll, output);
+
+  REQUIRE(output.str() == result.str());
+
+  REQUIRE(testTailPointsToHead(ll) == true);
+  delete ll;
+}
+
+TEST_CASE("testing CircularList<int> remove index 0", "[task2]") {
+  CircularList<int> *ll = new CircularList<int>();
   ll->insert(0, 1);
-  ll->insert(0, 2);
-  ll->insert(0, 3);
+  ll->insert(1, 2);
+  ll->insert(2, 3);
 
   int data = ll->remove(0);
+
+  REQUIRE(data == 1);
+
+  ostringstream result;
+  result << "[2,3]";
+
+  ostringstream output;
+  captureDisplay(ll, output);
+
+  REQUIRE(output.str() == result.str());
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  delete ll;
+}
+
+TEST_CASE("testing CircularList<int> remove tail", "[task2]") {
+  CircularList<int> *ll = new CircularList<int>();
+  ll->insert(0, 1);
+  ll->insert(1, 2);
+  ll->insert(2, 3);
+
+  int data = ll->remove(2);
 
   REQUIRE(data == 3);
 
   ostringstream result;
-  result << "[2,1]";
+  result << "[1,2]";
 
   ostringstream output;
   captureDisplay(ll, output);
 
   REQUIRE(output.str() == result.str());
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  delete ll;
 }
 
-TEST_CASE("testing linkedList<int> remove inbetween", "[task1]") {
-  LinkedList<int> *ll = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> remove inbetween", "[task2]") {
+  CircularList<int> *ll = new CircularList<int>();
   ll->insert(0, 1);
   ll->insert(1, 2);
   ll->insert(2, 3);
@@ -72,10 +151,13 @@ TEST_CASE("testing linkedList<int> remove inbetween", "[task1]") {
   captureDisplay(ll, output);
 
   REQUIRE(output.str() == result.str());
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  delete ll;
 }
 
-TEST_CASE("testing linkedList<int> remove multiple inbetween", "[task1]") {
-  LinkedList<int> *ll = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> remove multiple inbetween", "[task2]") {
+  CircularList<int> *ll = new CircularList<int>();
   ll->insert(0, 1);
   ll->insert(1, 2);
   ll->insert(2, 3);
@@ -109,10 +191,53 @@ TEST_CASE("testing linkedList<int> remove multiple inbetween", "[task1]") {
   captureDisplay(ll, output);
 
   REQUIRE(output.str() == result.str());
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  delete ll;
 }
 
-TEST_CASE("testing linkedList<int> remove all", "[task1]") {
-  LinkedList<int> *ll = new LinkedList<int>();
+TEST_CASE("testing CircularList<string> remove multiple inbetween", "[task2]") {
+  CircularList<std::string> *ll = new CircularList<std::string>();
+  ll->insert(0, "1");
+  ll->insert(1, "2");
+  ll->insert(2, "3");
+  ll->insert(3, "4");
+  ll->insert(4, "5");
+  ll->insert(5, "6");
+
+  std::string data = ll->remove(1);
+
+  REQUIRE(data == "2");
+
+  ostringstream result;
+  result << "[1,3,4,5,6]";
+
+  ostringstream output;
+  captureDisplay(ll, output);
+
+  REQUIRE(output.str() == result.str());
+
+  data = ll->remove(3);
+  REQUIRE(data == "5");
+  // "[1,3,4,6]"
+
+  data = ll->remove(1);
+  REQUIRE(data == "3");
+
+  result.str("");
+  result << "[1,4,6]";
+
+  output.str("");
+  captureDisplay(ll, output);
+
+  REQUIRE(output.str() == result.str());
+  REQUIRE(testTailPointsToHead(ll) == true);
+
+  delete ll;
+}
+
+TEST_CASE("testing CircularList<int> remove all", "[task2]") {
+  CircularList<int> *ll = new CircularList<int>();
   ll->insert(0, 1);
   ll->insert(0, 2);
   ll->insert(0, 3);
@@ -128,11 +253,12 @@ TEST_CASE("testing linkedList<int> remove all", "[task1]") {
   captureDisplay(ll, output);
 
   REQUIRE(output.str() == result.str());
+  REQUIRE(testTailPointsToHead(ll) == true);
 }
 
-TEST_CASE("testing linkedList<int> remove invalid index from non empty list",
-          "[task1]") {
-  LinkedList<int> *ll = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> remove invalid index from non empty list",
+          "[task2]") {
+  CircularList<int> *ll = new CircularList<int>();
   ll->insert(0, 1);
   ll->insert(0, 2);
   ll->insert(0, 3);
@@ -163,11 +289,12 @@ TEST_CASE("testing linkedList<int> remove invalid index from non empty list",
 
   REQUIRE(thrown == true);
   REQUIRE(thrownResult == result);
+  REQUIRE(testTailPointsToHead(ll) == true);
 }
 
-TEST_CASE("testing linkedList<int> remove invalid index from empty list",
-          "[task1]") {
-  LinkedList<int> *ll = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> remove invalid index from empty list",
+          "[task2]") {
+  CircularList<int> *ll = new CircularList<int>();
 
   string result = "empty structure";
   string thrownResult = "";
@@ -185,20 +312,20 @@ TEST_CASE("testing linkedList<int> remove invalid index from empty list",
   REQUIRE(thrownResult == result);
 }
 
-TEST_CASE("testing linkedList<int> append two lists", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> append two lists", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
   ll1->insert(2, 3);
 
-  LinkedList<int> *ll2 = new LinkedList<int>();
+  CircularList<int> *ll2 = new CircularList<int>();
 
   ll2->insert(0, 4);
   ll2->insert(1, 5);
   ll2->insert(2, 6);
 
-  LinkedList<int> ll3 = (*ll1 + *ll2);
+  CircularList<int> ll3 = (*ll1 + *ll2);
 
   ostringstream result;
   result << "[1,2,3,4,5,6]";
@@ -207,16 +334,18 @@ TEST_CASE("testing linkedList<int> append two lists", "[task1]") {
   captureDisplay(&ll3, output);
 
   REQUIRE(output.str() == result.str());
+
+  REQUIRE(testTailPointsToHead(&ll3) == true);
 }
 
-TEST_CASE("testing linkedList<int> assignment operator", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> assignment operator", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
   ll1->insert(2, 3);
 
-  LinkedList<int> *ll2 = new LinkedList<int>();
+  CircularList<int> *ll2 = new CircularList<int>();
   ll2->insert(0, 9);
 
   ll2 = ll1;
@@ -228,10 +357,11 @@ TEST_CASE("testing linkedList<int> assignment operator", "[task1]") {
   captureDisplay(ll2, output);
 
   REQUIRE(output.str() == result.str());
+  REQUIRE(testTailPointsToHead(ll2) == true);
 }
 
-TEST_CASE("testing linkedList<int> get leader", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> get leader", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
@@ -240,10 +370,11 @@ TEST_CASE("testing linkedList<int> get leader", "[task1]") {
   int data = ll1->getLeader()->data;
 
   REQUIRE(data == 1);
+  REQUIRE(testTailPointsToHead(ll1) == true);
 }
 
-TEST_CASE("testing linkedList<int> clear function", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> clear function", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
@@ -260,8 +391,8 @@ TEST_CASE("testing linkedList<int> clear function", "[task1]") {
   REQUIRE(output.str() == result.str());
 }
 
-TEST_CASE("testing linkedList<int> [] operator", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> [] operator", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
@@ -274,10 +405,11 @@ TEST_CASE("testing linkedList<int> [] operator", "[task1]") {
   REQUIRE(data0 == 1);
   REQUIRE(data1 == 2);
   REQUIRE(data2 == 3);
+  REQUIRE(testTailPointsToHead(ll1) == true);
 }
 
-TEST_CASE("testing linkedList<int> invalid [] operator", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> invalid [] operator", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
@@ -307,8 +439,8 @@ TEST_CASE("testing linkedList<int> invalid [] operator", "[task1]") {
   REQUIRE(found == true);
 }
 
-TEST_CASE("testing linkedList<int> get function", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> get function", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
@@ -325,10 +457,12 @@ TEST_CASE("testing linkedList<int> get function", "[task1]") {
   captureDisplay(ll1, output);
 
   REQUIRE(output.str() == result.str());
+
+  REQUIRE(testTailPointsToHead(ll1) == true);
 }
 
-TEST_CASE("testing linkedList<int> invalid get index", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> invalid get index", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
@@ -358,8 +492,8 @@ TEST_CASE("testing linkedList<int> invalid get index", "[task1]") {
   REQUIRE(found == true);
 }
 
-TEST_CASE("testing linkedList<int> get from an empty list", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> get from an empty list", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   string result = "empty structure";
   string thrownResult = "";
@@ -378,8 +512,8 @@ TEST_CASE("testing linkedList<int> get from an empty list", "[task1]") {
   REQUIRE(thrownResult == result);
 }
 
-TEST_CASE("testing linkedList<int> inbetween insert", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> inbetween insert", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
@@ -414,14 +548,14 @@ TEST_CASE("testing linkedList<int> inbetween insert", "[task1]") {
   REQUIRE(output.str() == result.str());
 }
 
-TEST_CASE("testing linkedList<int> copy constructor", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> copy constructor", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
   ll1->insert(2, 3);
 
-  LinkedList<int> *ll2 = new LinkedList<int>(*ll1);
+  CircularList<int> *ll2 = new CircularList<int>(*ll1);
 
   ostringstream result;
   result << "[1,2,3]";
@@ -432,14 +566,14 @@ TEST_CASE("testing linkedList<int> copy constructor", "[task1]") {
   REQUIRE(output.str() == result.str());
 }
 
-TEST_CASE("testing linkedList<int> clone function", "[task1]") {
-  LinkedList<int> *ll1 = new LinkedList<int>();
+TEST_CASE("testing CircularList<int> clone function", "[task2]") {
+  CircularList<int> *ll1 = new CircularList<int>();
 
   ll1->insert(0, 1);
   ll1->insert(1, 2);
   ll1->insert(2, 3);
 
-  LinkedList<int> *ll2 = ll1->clone();
+  CircularList<int> *ll2 = ll1->clone();
 
   ostringstream result;
   result << "[1,2,3]";
@@ -449,8 +583,9 @@ TEST_CASE("testing linkedList<int> clone function", "[task1]") {
 
   REQUIRE(output.str() == result.str());
 }
-template <class T> string getOutput(LinkedList<T> list) {
+template <class T> string getOutput(CircularList<T> list) {
   stringstream out("");
+  out.flush();
   out << list;
   return out.str();
 }
@@ -458,7 +593,7 @@ template <class T> string getOutput(LinkedList<T> list) {
 SCENARIO("SLL Tests") {
 
   GIVEN("an empty char SLL list") {
-    LinkedList<char> list;
+    CircularList<char> list;
     stringstream output("");
 
     THEN("the output should display correctly") {
@@ -467,7 +602,7 @@ SCENARIO("SLL Tests") {
     }
 
     THEN("cloning should work properly") {
-      LinkedList<char> *cloneList = list.clone();
+      CircularList<char> *cloneList = list.clone();
       list.clear();
       output << *cloneList;
       REQUIRE(output.str() == "[]");
@@ -482,7 +617,7 @@ SCENARIO("SLL Tests") {
       }
 
       THEN("cloning should work properly") {
-        LinkedList<char> *cloneList = list.clone();
+        CircularList<char> *cloneList = list.clone();
         list.clear();
         output << *cloneList;
         REQUIRE(output.str() == "[a]");
@@ -525,7 +660,7 @@ SCENARIO("SLL Tests") {
 
 SCENARIO("Testing SLL duplication") {
   GIVEN("a SLL") {
-    LinkedList<char> list;
+    CircularList<char> list;
 
     list.insert(0, 'c');
     list.insert(0, 'b');
@@ -538,13 +673,13 @@ SCENARIO("Testing SLL duplication") {
       REQUIRE(output.str() == "[a,b,c]");
       output.str("");
 
-      LinkedList<char> *cloneList = list.clone();
+      CircularList<char> *cloneList = list.clone();
       output << *cloneList;
       REQUIRE(output.str() == "[a,b,c]");
       output.str("");
 
       THEN("when clearing the original, the cloned should not change") {
-        LinkedList<char> *cloneList = list.clone();
+        CircularList<char> *cloneList = list.clone();
 
         list.clear();
         output << list;
@@ -561,8 +696,8 @@ SCENARIO("Testing SLL duplication") {
 
 SCENARIO("Testing the '+' operator") {
   GIVEN("two singly linked lists") {
-    LinkedList<char> list1;
-    LinkedList<char> list2;
+    CircularList<char> list1;
+    CircularList<char> list2;
 
     list1.insert(0, 'a');
     list1.insert(1, 'b');
@@ -580,7 +715,7 @@ SCENARIO("Testing the '+' operator") {
     }
 
     WHEN("the two lists are added together") {
-      LinkedList<char> newList = (list1 + list2);
+      CircularList<char> newList = (list1 + list2);
 
       THEN("the new list's output should be correct") {
         output << newList;
@@ -599,7 +734,7 @@ SCENARIO("Testing the '+' operator") {
 
 SCENARIO("testing [] operator and remove") {
   GIVEN("a linked list") {
-    LinkedList<char> list1;
+    CircularList<char> list1;
 
     list1.insert(0, 'a');
     list1.insert(1, 'b');
