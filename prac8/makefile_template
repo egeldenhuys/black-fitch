@@ -7,7 +7,8 @@ compile=g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)"
 #	"$(black_fitch_path)/../catch/catchConfig.cpp"
 # ONLY ONCE in the test path
 
-task1_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task1.cpp"
+task1_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task1.cpp" \
+			"LinkedList.cpp"
 # task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp"
 # task3_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task3.cpp"
 
