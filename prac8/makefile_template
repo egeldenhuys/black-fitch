@@ -9,17 +9,18 @@ compile=g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)"
 
 task1_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task1.cpp" \
 			"LinkedList.cpp"
-# task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp"
+task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp" \
+			"animals.cpp"
 # task3_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task3.cpp"
 
 task1:
 	 $(compile) $(task1_tests) -o task1.out
 	./task1.out
 
-#task2:
-#	$(compile) $(task2_tests) -o task2.out
-#	./task2.out
-#
+task2:
+	$(compile) $(task2_tests) -o task2.out
+	./task2.out
+
 #task3:
 #	$(compile) $(task3_tests) -o task3.out
 #	./task3.out
