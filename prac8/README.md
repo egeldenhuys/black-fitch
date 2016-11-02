@@ -4,10 +4,10 @@
 
 | Module 	|      Assignment      	| Date Uploaded 	|        File       	| Mark 	|
 |:------:	|:--------------------:	|:-------------:	|:-----------------:	|:----:	|
-| COS110 	| Prac 8 - Linked List 	|   2016/11/01  	| Prac8Task1.tar.gz 	| 10/10 |
-| COS110 	| Prac 8 - Polymorphism	|   2016/11/02  	| Prac8Task2.tar.gz 	|  5/5 	|
-| COS110 	| Prac 8 - Least CM     |   2016/11/02  	| Prac8Task3.tar.gz 	|  1/5 	|
-| COS110 	| Prac 8 - Least CM     |   2016/11/02  	| Prac8Task3.tar.gz 	|  5/5 	|
+| COS110 	| Prac 8 - Linked List 	|   2016/11/01  	| Prac8Task1.tar.gz 	| ![mark](https://img.shields.io/badge/Mark-100%25-brightgreen.svg) |
+| COS110 	| Prac 8 - Polymorphism	|   2016/11/02  	| Prac8Task2.tar.gz 	| ![mark](https://img.shields.io/badge/Mark-100%25-brightgreen.svg) 	|
+| COS110 	| Prac 8 - Least CM     |   2016/11/02  	| Prac8Task3.tar.gz 	|  ![mark](https://img.shields.io/badge/Mark-20%25-red.svg) 	|
+| COS110 	| Prac 8 - Least CM     |   2016/11/02  	| Prac8Task3.tar.gz 	| ![mark](https://img.shields.io/badge/Mark-100%25-brightgreen.svg) 	|
 
 ### User log:
 
