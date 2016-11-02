@@ -30,3 +30,7 @@ black-fitch-makefile
 *.exe
 *.out
 *.app
+
+# Vim temporary files
+*.swp
+*.pyc
