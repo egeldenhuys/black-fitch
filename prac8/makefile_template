@@ -11,7 +11,7 @@ task1_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/
 			"LinkedList.cpp"
 task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp" \
 			"animals.cpp"
-# task3_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task3.cpp"
+task3_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task3.cpp"
 
 task1:
 	 $(compile) $(task1_tests) -o task1.out
@@ -21,9 +21,9 @@ task2:
 	$(compile) $(task2_tests) -o task2.out
 	./task2.out
 
-#task3:
-#	$(compile) $(task3_tests) -o task3.out
-#	./task3.out
+task3:
+	$(compile) $(task3_tests) -o task3.out
+	./task3.out
 
 clean:
 	rm -f *.o *.out
