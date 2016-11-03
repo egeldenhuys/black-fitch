@@ -36,6 +36,72 @@ TEST_CASE("testing linkedList<int> insert", "[task1]") {
   REQUIRE(output.str() == result.str());
 }
 
+SCENARIO("testing LinkedList<char> insert() and get()", "[task1]")
+{
+    GIVEN("an empty LinkedList")
+    {
+        LinkedList<char> ll;
+
+        WHEN("adding element to index 0")
+        {
+            ll.insert(0, 'A');
+
+            THEN("get(0) should return added element")
+            {
+                REQUIRE(ll.get(0) == 'A');
+            }
+        }
+    }
+
+    GIVEN("a LinkedList with one element")
+    {
+        LinkedList<char> ll;
+        ll.insert(0, 'A');
+
+        WHEN("adding another element at index 0")
+        {
+            ll.insert(0, 'B');
+            THEN("original element is shifted back")
+            {
+                REQUIRE(ll.get(0) == 'B');
+                REQUIRE(ll.get(1) == 'A');
+            }
+        }
+
+        WHEN("adding another element to index 1")
+        {
+            ll.insert(1, 'C');
+
+            THEN("element is appended")
+            {
+                REQUIRE(ll.get(0) == 'A');
+                REQUIRE(ll.get(1) == 'C');
+            }
+        }
+    }
+
+    GIVEN("a linkedList with three elements")
+    {
+        LinkedList<char> ll;
+        ll.insert(0, 'A');
+        ll.insert(1, 'B');
+        ll.insert(2, 'C');
+
+        WHEN("adding an element to the middle")
+        {
+            ll.insert(1, 'Q');
+
+            THEN("elements are shifted backwards")
+            {
+                REQUIRE(ll.get(0) == 'A');
+                REQUIRE(ll.get(1) == 'Q');
+                REQUIRE(ll.get(2) == 'B');
+                REQUIRE(ll.get(3) == 'C');
+            }
+        }
+    }
+}
+
 TEST_CASE("testing linkedList<int> remove index 0", "[task1]") {
   LinkedList<int> *ll = new LinkedList<int>();
   ll->insert(0, 1);
@@ -492,7 +558,8 @@ SCENARIO("SLL Tests") {
         try {
           list.insert(5, 'a');
         } catch (const char *e) {
-          REQUIRE(e == "invalid index");
+            string msg(e);
+          REQUIRE(msg == "invalid index");
         }
       }
 
