@@ -353,7 +353,7 @@ TEST_CASE("testing DoubleList<int> assignment operator", "[task3]") {
   DoubleList<int> *ll2 = new DoubleList<int>();
   ll2->insert(0, 9);
 
-  ll2 = ll1;
+  *ll2 = *ll1;
 
   ostringstream result;
   result << "[1,2,3]";
@@ -638,7 +638,9 @@ SCENARIO("SLL Tests") {
         try {
           list.insert(5, 'a');
         } catch (const char *e) {
-          REQUIRE(e == "invalid index");
+            string msg(e);
+
+          REQUIRE(msg == "invalid index");
         }
       }
 
