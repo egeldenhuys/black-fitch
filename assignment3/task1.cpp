@@ -285,7 +285,7 @@ TEST_CASE("testing linkedList<int> assignment operator", "[task1]") {
   LinkedList<int> *ll2 = new LinkedList<int>();
   ll2->insert(0, 9);
 
-  ll2 = ll1;
+  *ll2 = *ll1;
 
   ostringstream result;
   result << "[1,2,3]";
