@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 Please see the **Tag Convention** section in the README.md for information on how to decode the tag meaning.
 
+## a3.3 - 2016-11-06
+### Changed
+- Remove `-std=c++11` flag when compiling task 3 to match Fitchfork
+
 ## a3.2 - 2016-11-04
 ### Fixed
 - Fix assignment operator not being tested in all tasks (#40)
