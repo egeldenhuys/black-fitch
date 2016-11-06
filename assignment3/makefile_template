@@ -2,6 +2,7 @@
 # 	black_fitch_path=/path/to/black-fitch/prac5
 
 compile=g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)"
+compile_task3=g++ -Wall -pedantic -g -I "$(PWD)"
 
 # Always need:
 #	"$(black_fitch_path)/../catch/catchConfig.cpp"
@@ -20,7 +21,7 @@ task2:
 	./task2.out
 
 task3:
-	$(compile) $(task3_tests) -o task3.out
+	$(compile_task3) $(task3_tests) -o task3.out
 	./task3.out
 
 clean:
