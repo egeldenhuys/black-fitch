@@ -7,6 +7,9 @@ Please see the **Tag Convention** section in the README.md for information on ho
 ### Added
 - Add unit tests for COS 212 Prac 1
 
+### Changed
+- Moved COS 110 pracs to the archive. Catch was also moved to preserve the relative links
+
 ## a3.3 - 2016-11-06
 ### Changed
 - Remove `-std=c++11` flag when compiling task 3 to match Fitchfork

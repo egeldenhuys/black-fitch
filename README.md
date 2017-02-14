@@ -1,8 +1,5 @@
 Black Fitch  
 ===========
-![Latest Assignment Version](https://img.shields.io/badge/Assignment-3.3-green.svg)
-![Latest Practical Version](https://img.shields.io/badge/Practical-8.0-blue.svg)
-
 Unit tests for fitchfork practicals and assignments.
 
 These tests are to be used as a guideline only and are not guaranteed to reflect the test cases used by fitchfork.
