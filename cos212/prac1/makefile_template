@@ -6,18 +6,18 @@ unit_test_name=UnitTests
 
 default:
 	@echo "Copying Black Fitch source files..."
-	cp $(black_fitch_path)/$(unit_test_name).java .
-	cp $(black_fitch_path)/expected.txt .
+	cp -f $(black_fitch_path)/$(unit_test_name).java .
+	cp -f $(black_fitch_path)/expected.txt .
 
 	javac $(source_files) $(unit_test_name).java
 	java $(unit_test_name)
 
-	java Main > receieved.txt
+	java Main > received.txt
 	diff received.txt expected.txt -q -Z -s
 
 	@echo " "
 	@echo "Cleaning up..."
-	rm $(unit_test_name).java $(unit_test_name).class expected.txt
+	rm $(unit_test_name).java $(unit_test_name).class
 
 # Configure and copy the latest makefile
 update:
