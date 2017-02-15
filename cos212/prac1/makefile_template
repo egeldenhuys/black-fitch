@@ -1,0 +1,35 @@
+# To be configured by configure.sh:
+# 	black_fitch_path=/path/to/black-fitch/prac5
+
+source_files=DLList.java Main.java SOList.java
+unit_test_name=UnitTests
+
+default:
+	@echo "Copying Black Fitch source files..."
+	cp -f $(black_fitch_path)/$(unit_test_name).java .
+	cp -f $(black_fitch_path)/expected.txt .
+
+	javac $(source_files) $(unit_test_name).java
+	java $(unit_test_name)
+
+	java Main > received.txt
+	diff received.txt expected.txt -q -Z -s
+
+	@echo " "
+	@echo "Cleaning up..."
+	rm $(unit_test_name).java $(unit_test_name).class
+
+# Configure and copy the latest makefile
+update:
+	@cd "$(black_fitch_path)" && ./configure.sh -q
+	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
+
+# Pull black-fitch, configure and copy the latest makefile
+pull:
+	@echo "Pull black-fitch from  GitHub..."
+	cd "$(black_fitch_path)" && git pull origin master
+
+	@cd "$(black_fitch_path)" && ./configure.sh -q
+	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
