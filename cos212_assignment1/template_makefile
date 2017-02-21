@@ -1,7 +1,7 @@
 # To be configured by configure.sh:
 # 	black_fitch_path=/path/to/black-fitch/prac5
 
-compile=g++ -std=c++11 -Wall -pedantic -g -I "$(PWD)"
+compile=g++ -std=c++11 -static -Wall -pedantic -g -I "$(PWD)"
 
 # Always need:
 #	"$(black_fitch_path)/../catch/catchConfig.cpp"
