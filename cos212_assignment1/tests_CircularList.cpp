@@ -4,26 +4,6 @@
 #include "../catch/catch.hpp"
 #include "CircularList.h"
 
-/*
-Functions:
-friend ostream& operator<<(ostream& os,CircularList& c);
-	- Returns [5,4,3,2]
-
-CircularList& operator=(const CircularList& other);
-
-CircularList();
-
-~CircularList();
-
-void addToFront(int elem);
-	- Only takes positive integers
-
-int deleteFromBack();
-	- remove and return the element at the back of the list
-	- If invalid return -1
-
-*/
-
 string getOutput(CircularList& list) {
 	ostringstream output;
 	output << list;
@@ -241,5 +221,4 @@ SCENARIO("testing CircularList assignment operator") {
 			}
 		}
 	}
-
 }
