@@ -8,7 +8,7 @@ compile=g++ -std=c++11 -static -Wall -pedantic -g -I "$(PWD)"
 # ONLY ONCE in the test path
 
 task1_source_files="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task1.cpp" \
-CircularList.h Deque.h Queue.h Stack.h
+CircularList.C CircularList.h Deque.h Queue.h Stack.h
 
 # task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp"
 
