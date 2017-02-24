@@ -106,6 +106,22 @@ public class tests_task1 {
 
 		result = result && assertCustom(received, expected);
 
+		// GIVEN Main
+		Node n1 = new Node(14.2);
+		Node n2 = new Node(23.1,n1);
+		Node n3 = new Node(21.6,n2);
+		Node n4 = new Node(11.8,n3);
+		Node n5 = new Node(15.3,n4);
+
+		Recursive.addScalar(n5,3);
+
+		result = result && assertCustom(n5.getValue(),18.3);
+		result = result && assertCustom(n4.getValue(), 15.8);
+		result = result && assertCustom(n3.getValue(), 26.6);
+		result = result && assertCustom(n2.getValue(), 29.1);
+		result = result && assertCustom(n1.getValue(), 21.2);
+		result = result && (n1.getNextNode() == null);
+
 		printFooter(name, result);
 		return result;
 	}
