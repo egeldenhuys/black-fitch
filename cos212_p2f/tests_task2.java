@@ -112,8 +112,6 @@ public class tests_task2 {
 		received = Recursive.sum(n5);
 		expected = 86.0;
 
-		System.out.println(received);
-
 		result = result && assertCustom(received, expected);
 
 		printFooter(name, result);

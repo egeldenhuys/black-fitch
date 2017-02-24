@@ -8,7 +8,7 @@ run=java
 #	"$(black_fitch_path)/../catch/catchConfig.cpp"
 # ONLY ONCE in the test path
 
-task1_tests=Main.java Node.java Recursive.java
+source_files=Main.java Node.java Recursive.java
 task1_test_name=tests_task1
 task2_test_name=tests_task2
 
@@ -19,7 +19,7 @@ task1:
 	@echo "Copying Java Fitch source files..."
 	cp -f $(black_fitch_path)/$(task1_test_name).java .
 
-	$(compile) $(task1_tests) $(task1_test_name).java
+	$(compile) $(source_files) $(task1_test_name).java
 	$(run) $(task1_test_name)
 
 	@echo " "
@@ -28,16 +28,13 @@ task1:
 
 task2:
 	@echo "Copying Java Fitch source files..."
-	cp -f $(black_fitch_path)/$(task1_test_name).java .
 	cp -f $(black_fitch_path)/$(task2_test_name).java .
 
-	$(compile) $(task1_tests) $(task1_test_name).java $(task2_test_name).java
-	$(run) $(task1_test_name)
+	$(compile) $(source_files) $(task2_test_name).java
 	$(run) $(task2_test_name)
 
 	@echo " "
 	@echo "Cleaning up..."
-	rm $(task1_test_name).java $(task1_test_name).class
 	rm $(task2_test_name).java $(task2_test_name).class
 
 clean:
