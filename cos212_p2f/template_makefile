@@ -1,3 +1,5 @@
+black_fitch_path=/home/evert/github/black-fitch/cos212_p2f
+
 # To be configured by configure.sh:
 # 	black_fitch_path=/path/to/black-fitch/prac5
 
@@ -12,6 +14,7 @@ source_files=Main.java Node.java Recursive.java
 task1_test_name=tests_task1
 task2_test_name=tests_task2
 task3_test_name=tests_task3
+task4_test_name=tests_task4
 
 # task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp"
 # task3_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task3.cpp"
@@ -48,6 +51,17 @@ task3:
 	@echo " "
 	@echo "Cleaning up..."
 	rm $(task3_test_name).java $(task3_test_name).class
+
+task4:
+	@echo "Copying Java Fitch source files..."
+	cp -f $(black_fitch_path)/$(task4_test_name).java .
+
+	$(compile) $(source_files) $(task4_test_name).java
+	$(run) $(task4_test_name)
+
+	@echo " "
+	@echo "Cleaning up..."
+	rm $(task4_test_name).java $(task4_test_name).class
 
 clean:
 	rm -f *.class
