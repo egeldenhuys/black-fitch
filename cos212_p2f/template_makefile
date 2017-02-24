@@ -11,6 +11,7 @@ run=java
 source_files=Main.java Node.java Recursive.java
 task1_test_name=tests_task1
 task2_test_name=tests_task2
+task3_test_name=tests_task3
 
 # task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp"
 # task3_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task3.cpp"
@@ -36,6 +37,17 @@ task2:
 	@echo " "
 	@echo "Cleaning up..."
 	rm $(task2_test_name).java $(task2_test_name).class
+
+task3:
+	@echo "Copying Java Fitch source files..."
+	cp -f $(black_fitch_path)/$(task3_test_name).java .
+
+	$(compile) $(source_files) $(task3_test_name).java
+	$(run) $(task3_test_name)
+
+	@echo " "
+	@echo "Cleaning up..."
+	rm $(task3_test_name).java $(task3_test_name).class
 
 clean:
 	rm -f *.class
