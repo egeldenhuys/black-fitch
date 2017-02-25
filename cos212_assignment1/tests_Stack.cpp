@@ -3,13 +3,7 @@
 
 #include "../catch/catch.hpp"
 #include "Stack.h"
-
-string getOutput(Stack& list) {
-	ostringstream output;
-	output << list;
-	return output.str();
-}
-
+#include "utils.h"
 
 SCENARIO("testing Stack::push() and Stack::operator<<") {
 	GIVEN("an empty Stack object") {
@@ -58,7 +52,6 @@ SCENARIO("testing Stack::pop()") {
 		list.push(2);
 		list.push(3);
 		list.push(4); // 4 3 2 1
-
 
 		WHEN("pop() is called") {
 			int result = list.pop(); // 4 3 2
@@ -264,5 +257,49 @@ SCENARIO("testing Stack::isEmpty()") {
 			}
 		}
 	}
+}
 
+SCENARIO("testing Stack::~Stack") {
+	GIVEN("a Stack with no elements") {
+		Stack *list = new Stack();
+
+		WHEN("deleting list") {
+			delete list;
+
+			THEN("no crash") {
+				REQUIRE(1 == 1);
+			}
+		}
+	}
+
+	GIVEN("a Stack with some elements") {
+		Stack *list = new Stack();
+
+		list->push(1);
+		list->push(2);
+		list->push(3);
+		list->push(4);
+
+		WHEN("deleting list") {
+			delete list;
+
+			THEN("no crash") {
+				REQUIRE(1 == 1);
+			}
+		}
+	}
+
+	GIVEN("a Stack with one element") {
+		Stack *list = new Stack();
+
+		list->push(1);
+
+		WHEN("deleting list") {
+			delete list;
+
+			THEN("no crash") {
+				REQUIRE(1 == 1);
+			}
+		}
+	}
 }

@@ -3,12 +3,7 @@
 
 #include "../catch/catch.hpp"
 #include "CircularList.h"
-
-string getOutput(CircularList& list) {
-	ostringstream output;
-	output << list;
-	return output.str();
-}
+#include "utils.h"
 
 SCENARIO("testing CircularList::addToFront() and ostream Operator") {
 
@@ -218,6 +213,51 @@ SCENARIO("testing CircularList assignment operator") {
 			THEN("the lists contain the same data and are not linked") {
 				REQUIRE(getOutput(listA) == "[69,50,40,30,20]");
 				REQUIRE(getOutput(listB) == "[50,40,30,20,10]");
+			}
+		}
+	}
+}
+
+SCENARIO("testing CircularList::~CircularList") {
+	GIVEN("a CircularList with no elements") {
+		CircularList *list = new CircularList();
+
+		WHEN("deleting list") {
+			delete list;
+
+			THEN("no crash") {
+				REQUIRE(1 == 1);
+			}
+		}
+	}
+
+	GIVEN("a CircularList with some elements") {
+		CircularList *list = new CircularList();
+
+		list->addToFront(1);
+		list->addToFront(2);
+		list->addToFront(3);
+		list->addToFront(4);
+
+		WHEN("deleting list") {
+			delete list;
+
+			THEN("no crash") {
+				REQUIRE(1 == 1);
+			}
+		}
+	}
+
+	GIVEN("a CircularList with one element") {
+		CircularList *list = new CircularList();
+
+		list->addToFront(1);
+
+		WHEN("deleting list") {
+			delete list;
+
+			THEN("no crash") {
+				REQUIRE(1 == 1);
 			}
 		}
 	}
