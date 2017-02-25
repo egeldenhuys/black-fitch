@@ -60,7 +60,7 @@ SCENARIO("testing Queue::dequeue()") {
 		list.enqueue(1);
 		list.enqueue(2);
 		list.enqueue(3);
-		list.enqueue(4);
+		list.enqueue(4); // 1 2 3 4
 
 		WHEN("calling dequeue") {
 			int result = list.dequeue();
@@ -70,6 +70,17 @@ SCENARIO("testing Queue::dequeue()") {
 				REQUIRE("[2,3,4]");
 			}
 		}
+
+		WHEN("calling dequeue() until empty") {
+			THEN("elements are returned from the front in order") {
+				REQUIRE(list.dequeue() == 1);
+				REQUIRE(list.dequeue() == 2);
+				REQUIRE(list.dequeue() == 3);
+				REQUIRE(list.dequeue() == 4);
+
+			}
+		}
+
 	}
 
 	GIVEN("a Queue object with one element") {
@@ -313,4 +324,49 @@ SCENARIO("testing Queue::~Queue") {
 			}
 		}
 	}
+}
+
+TEST_CASE("testing complex operations on Queue object") {
+	Queue list;
+
+	list.enqueue(-5);
+	REQUIRE(getOutput(list) == "[]");
+	REQUIRE(list.isEmpty() == true);
+	REQUIRE(list.front() == -1);
+
+	list.enqueue(1);
+	REQUIRE(getOutput(list) == "[1]");
+	REQUIRE(list.isEmpty() == false);
+	REQUIRE(list.front() == 1);
+
+	list.enqueue(-69);
+	REQUIRE(getOutput(list) == "[1]");
+
+	list.enqueue(2);
+	REQUIRE(getOutput(list) == "[1,2]");
+
+	list.enqueue(3);
+	REQUIRE(getOutput(list) == "[1,2,3]");
+
+	list.enqueue(4);
+	REQUIRE(getOutput(list) == "[1,2,3,4]");
+
+	Queue copyList;
+	copyList = list;
+
+	REQUIRE(list.dequeue() == 1);
+	REQUIRE(getOutput(list) == "[2,3,4]");
+
+	REQUIRE(list.dequeue() == 2);
+	REQUIRE(getOutput(list) == "[3,4]");
+	REQUIRE(list.front() == 3);
+	REQUIRE(list.dequeue() == 3);
+	REQUIRE(getOutput(list) == "[4]");
+
+	REQUIRE(list.dequeue() == 4);
+	REQUIRE(getOutput(list) == "[]");
+	REQUIRE(list.isEmpty() == true);
+	REQUIRE(list.front() == -1);
+
+	REQUIRE(getOutput(copyList) == "[1,2,3,4]");
 }

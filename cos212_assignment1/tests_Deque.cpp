@@ -88,6 +88,17 @@ SCENARIO("testing Deque::dequeueFront()") {
 				REQUIRE("[2,3,4]");
 			}
 		}
+
+		WHEN("calling dequeueFront() until empty") {
+			THEN("elements are returned from the back in order") {
+				REQUIRE(list.dequeueFront() == 1);
+				REQUIRE(list.dequeueFront() == 2);
+				REQUIRE(list.dequeueFront() == 3);
+				REQUIRE(list.dequeueFront() == 4);
+
+			}
+		}
+
 	}
 
 	GIVEN("a Deque object with one element") {
@@ -133,7 +144,27 @@ SCENARIO("testing Deque::dequeueBack()") {
 				REQUIRE(result == 1);
 				REQUIRE("[4,3,2]");
 			}
+
+			// AND_WHEN("calling dequeueBack again") {
+			// 	int result = list.dequeueBack();
+			//
+			// 	THEN("the last element is removed and returned") {
+			// 		REQUIRE(result == 2);
+			// 		REQUIRE("[4,3]");
+			// 	}
+			// }
 		}
+
+		WHEN("calling dequeueBack() until empty") {
+			THEN("elements are returned from the back in order") {
+				REQUIRE(list.dequeueBack() == 1);
+				REQUIRE(list.dequeueBack() == 2);
+				REQUIRE(list.dequeueBack() == 3);
+				REQUIRE(list.dequeueBack() == 4);
+
+			}
+		}
+
 	}
 
 	GIVEN("a Deque object with one element") {
@@ -344,4 +375,46 @@ SCENARIO("testing Deque::~Deque") {
 			}
 		}
 	}
+}
+
+TEST_CASE("Testing complex operations on Deque object") {
+	Deque list;
+
+	list.enqueueFront(-5);
+	REQUIRE(getOutput(list) == "[]");
+	REQUIRE(list.isEmpty() == true);
+
+	list.enqueueFront(1);
+	REQUIRE(getOutput(list) == "[1]");
+	REQUIRE(list.isEmpty() == false);
+
+	list.enqueueBack(-69);
+	REQUIRE(getOutput(list) == "[1]");
+
+	list.enqueueBack(2);
+	REQUIRE(getOutput(list) == "[1,2]");
+
+	list.enqueueFront(3);
+	REQUIRE(getOutput(list) == "[3,1,2]");
+
+	list.enqueueBack(4);
+	REQUIRE(getOutput(list) == "[3,1,2,4]");
+
+	Deque copyList;
+	copyList = list;
+
+	REQUIRE(list.dequeueFront() == 3);
+	REQUIRE(getOutput(list) == "[1,2,4]");
+
+	REQUIRE(list.dequeueBack() == 4);
+	REQUIRE(getOutput(list) == "[1,2]");
+
+	REQUIRE(list.dequeueBack() == 2);
+	REQUIRE(getOutput(list) == "[1]");
+
+	REQUIRE(list.dequeueFront() == 1);
+	REQUIRE(getOutput(list) == "[]");
+	REQUIRE(list.isEmpty() == true);
+
+	REQUIRE(getOutput(copyList) == "[3,1,2,4]");
 }

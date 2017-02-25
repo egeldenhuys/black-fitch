@@ -61,6 +61,16 @@ SCENARIO("testing Stack::pop()") {
 				REQUIRE(getOutput(list) == "[3,2,1]");
 			}
 		}
+
+		WHEN("calling pop() until empty") {
+			THEN("elements are returned from the front in order") {
+				REQUIRE(list.pop() == 4);
+				REQUIRE(list.pop() == 3);
+				REQUIRE(list.pop() == 2);
+				REQUIRE(list.pop() == 1);
+
+			}
+		}
 	}
 
 	GIVEN("a Stack object with one element") {
@@ -349,4 +359,51 @@ SCENARIO("testing Stack::~Stack") {
 			}
 		}
 	}
+}
+
+TEST_CASE("testing complex operations on Stack object") {
+	Stack list;
+
+	list.push(-5);
+	REQUIRE(getOutput(list) == "[]");
+	REQUIRE(list.isEmpty() == true);
+	REQUIRE(list.peek() == -1);
+
+	list.push(1);
+	REQUIRE(getOutput(list) == "[1]");
+	REQUIRE(list.isEmpty() == false);
+	REQUIRE(list.peek() == 1);
+
+	list.push(-69);
+	REQUIRE(getOutput(list) == "[1]");
+
+	list.push(2);
+	REQUIRE(getOutput(list) == "[2,1]");
+
+	list.push(3);
+	REQUIRE(getOutput(list) == "[3,2,1]");
+
+	list.push(4);
+	REQUIRE(getOutput(list) == "[4,3,2,1]");
+
+	Stack copyList;
+	copyList = list;
+
+	REQUIRE(list.pop() == 4);
+	REQUIRE(getOutput(list) == "[3,2,1]");
+
+	REQUIRE(list.pop() == 3);
+	REQUIRE(getOutput(list) == "[2,1]");
+	REQUIRE(list.peek() == 2);
+
+	REQUIRE(list.pop() == 2);
+	REQUIRE(getOutput(list) == "[1]");
+
+	REQUIRE(list.pop() == 1);
+	REQUIRE(getOutput(list) == "[]");
+
+	REQUIRE(list.isEmpty() == true);
+	REQUIRE(list.peek() == -1);
+
+	REQUIRE(getOutput(copyList) == "[4,3,2,1]");
 }

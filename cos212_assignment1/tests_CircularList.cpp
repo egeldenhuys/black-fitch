@@ -53,13 +53,22 @@ SCENARIO("testing CircularList::deleteFromBack()") {
 		list.addToFront(3);
 		list.addToFront(4); // 4 3 2 1
 
-
 		WHEN("deleteFromBack() is called") {
 			int result = list.deleteFromBack(); // 4 3 2
 
 			THEN("the last element is removed and its data returned") {
 				REQUIRE(result == 1);
 				REQUIRE(getOutput(list) == "[4,3,2]");
+
+			}
+		}
+
+		WHEN("calling deleteFromBack() until empty") {
+			THEN("elements are returned from the back in order") {
+				REQUIRE(list.deleteFromBack() == 1);
+				REQUIRE(list.deleteFromBack() == 2);
+				REQUIRE(list.deleteFromBack() == 3);
+				REQUIRE(list.deleteFromBack() == 4);
 
 			}
 		}
@@ -261,4 +270,42 @@ SCENARIO("testing CircularList::~CircularList") {
 			}
 		}
 	}
+}
+
+TEST_CASE("testing complex operations on CircularList object") {
+	CircularList list;
+
+	list.addToFront(-5);
+	REQUIRE(getOutput(list) == "[]");
+
+	list.addToFront(1);
+	REQUIRE(getOutput(list) == "[1]");
+
+	list.addToFront(-69);
+	REQUIRE(getOutput(list) == "[1]");
+
+	list.addToFront(2);
+	REQUIRE(getOutput(list) == "[2,1]");
+
+	list.addToFront(3);
+	REQUIRE(getOutput(list) == "[3,2,1]");
+
+	list.addToFront(4);
+	REQUIRE(getOutput(list) == "[4,3,2,1]");
+
+	CircularList copyList;
+	copyList = list;
+
+	REQUIRE(list.deleteFromBack() == 1);
+	REQUIRE(getOutput(list) == "[4,3,2]");
+
+	REQUIRE(list.deleteFromBack() == 2);
+	REQUIRE(getOutput(list) == "[4,3]");
+	REQUIRE(list.deleteFromBack() == 3);
+	REQUIRE(getOutput(list) == "[4]");
+
+	REQUIRE(list.deleteFromBack() == 4);
+	REQUIRE(getOutput(list) == "[]");
+
+	REQUIRE(getOutput(copyList) == "[4,3,2,1]");
 }
