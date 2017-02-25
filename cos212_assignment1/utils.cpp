@@ -17,3 +17,9 @@ string getOutput(CircularList& list) {
 	output << list;
 	return output.str();
 }
+
+string getOutput(Deque& list) {
+	ostringstream output;
+	output << list;
+	return output.str();
+}

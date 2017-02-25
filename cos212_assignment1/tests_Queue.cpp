@@ -3,7 +3,8 @@
 
 #include "../catch/catch.hpp"
 #include "utils.h"
-#include "Queue.h"
+#include "Deque.h"
+
 
 SCENARIO("testing Queue::enqueue() and Queue::operator<<()") {
 	/*

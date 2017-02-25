@@ -9,7 +9,7 @@ compile=g++ -std=c++11 -static -Wall -pedantic -g -I "$(PWD)"
 
 task1_source_files="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/tests_CircularList.cpp" \
 CircularList.C Deque.C Queue.C Stack.C "$(black_fitch_path)/tests_Stack.cpp" "$(black_fitch_path)/tests_Queue.cpp" \
-"$(black_fitch_path)/utils.cpp"
+"$(black_fitch_path)/utils.cpp" "$(black_fitch_path)/tests_Deque.cpp"
 
 # task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp"
 
