@@ -259,7 +259,7 @@ SCENARIO("testing Queue::front()") {
 		list.enqueue(4); // 1 2 3 4
 
 		WHEN("calling front") {
-			int result = list.dequeue();
+			int result = list.front();
 
 			THEN("the first element is returned and list not modified") {
 				REQUIRE(result == 1);
