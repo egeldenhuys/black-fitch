@@ -216,6 +216,53 @@ SCENARIO("testing Stack assignment operator") {
 	}
 }
 
+SCENARIO("testing stack::peek()") {
+	GIVEN("an empty Stack object") {
+		Stack list;
+
+		WHEN("calling peek()") {
+			int result = list.peek();
+
+			THEN("returns -1 and no crash") {
+				REQUIRE(result == -1);
+			}
+		}
+	}
+
+	GIVEN("a Stack object with one element") {
+		Stack list;
+		list.push(1);
+
+		WHEN("calling peek()") {
+			bool result = list.peek();
+
+			THEN("the top element is returned") {
+				REQUIRE(result == 1);
+				REQUIRE(getOutput(list) == "[1]");
+			}
+		}
+	}
+
+	GIVEN("a Stack object with some elements") {
+		Stack list;
+		list.push(1);
+		list.push(2);
+		list.push(3);
+		list.push(4); // 4 3 2 1
+
+		WHEN("calling peek()") {
+			bool result = list.peek();
+
+			THEN("first element is returned") {
+				REQUIRE(result == 1);
+				REQUIRE(getOutput(list) == "[4,3,2,1]");
+			}
+		}
+	}
+
+
+}
+
 SCENARIO("testing Stack::isEmpty()") {
 
 	GIVEN("a Stack object with one element") {
@@ -236,7 +283,7 @@ SCENARIO("testing Stack::isEmpty()") {
 		list.push(1);
 		list.push(2);
 		list.push(3);
-		list.push(4); // 4 3 2 1
+		list.push(4);
 
 		WHEN("calling isEmpty()") {
 			bool result = list.isEmpty();
