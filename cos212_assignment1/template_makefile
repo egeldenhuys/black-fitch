@@ -32,7 +32,7 @@ update:
 # Pull black-fitch, configure and copy the latest makefile
 pull:
 	@echo "Pull black-fitch from  GitHub..."
-	cd "$(black_fitch_path)" && git pull origin master
+	cd "$(black_fitch_path)" && git pull origin cos212-a1
 
 	@cd "$(black_fitch_path)" && ./configure.sh -q
 	@mv "$(black_fitch_path)/black-fitch-makefile" .
