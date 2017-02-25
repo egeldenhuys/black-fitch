@@ -21,13 +21,13 @@ SCENARIO("testing Stack::push() and Stack::operator<<") {
 			}
 		}
 
-		WHEN("pushing positive elements (Including 0)") {
+		WHEN("pushing positive elements (Excluding 0)") {
 
-			stack.push(0);
+			stack.push(5);
 
 			AND_WHEN("printing list with one element") {
 				THEN("it works") {
-					REQUIRE(getOutput(stack) == "[0]");
+					REQUIRE(getOutput(stack) == "[5]");
 				}
 			}
 
@@ -36,14 +36,14 @@ SCENARIO("testing Stack::push() and Stack::operator<<") {
 			stack.push(3);
 
 			THEN("elements are added to front") {
-				REQUIRE(getOutput(stack) == "[0,1,2,3]");
+				REQUIRE(getOutput(stack) == "[3,2,1,5]");
 			}
 
 			AND_WHEN("adding negative elements") {
 				stack.push(-1);
 
 				THEN("nothing happens") {
-					REQUIRE(getOutput(stack) == "[0,1,2,3]");
+					REQUIRE(getOutput(stack) == "[3,2,1,5]");
 				}
 			}
 		}
@@ -57,7 +57,7 @@ SCENARIO("testing Stack::pop()") {
 		list.push(1);
 		list.push(2);
 		list.push(3);
-		list.push(4); // 1 2 3 4
+		list.push(4); // 4 3 2 1
 
 
 		WHEN("pop() is called") {
@@ -65,7 +65,7 @@ SCENARIO("testing Stack::pop()") {
 
 			THEN("the last element is removed and its data returned") {
 				REQUIRE(result == 4);
-				REQUIRE(getOutput(list) == "[1,2,3]");
+				REQUIRE(getOutput(list) == "[3,2,1]");
 			}
 		}
 	}
@@ -89,7 +89,7 @@ SCENARIO("testing Stack::pop()") {
 		Stack list;
 
 		WHEN("pop() is called") {
-			int result = list.pop(); // 4 3 2
+			int result = list.pop();
 
 			THEN("-1 is returned") {
 				REQUIRE(result == -1);
@@ -136,16 +136,16 @@ SCENARIO("testing Stack assignment operator") {
 			listB = listA;
 
 			THEN("both lists contain the same elements and are not empty") {
-				REQUIRE(getOutput(listA) == "[1,2,3,4]");
-				REQUIRE(getOutput(listB) == "[1,2,3,4]");
+				REQUIRE(getOutput(listA) == "[4,3,2,1]");
+				REQUIRE(getOutput(listB) == "[4,3,2,1]");
 			}
 
 			AND_WHEN("one list is modified") {
 				listA.pop();
 
 				THEN("the other is not") {
-					REQUIRE(getOutput(listA) == "[1,2,3]");
-					REQUIRE(getOutput(listB) == "[1,2,3,4]");
+					REQUIRE(getOutput(listA) == "[3,2,1]");
+					REQUIRE(getOutput(listB) == "[4,3,2,1]");
 				}
 			}
 		}
@@ -156,9 +156,9 @@ SCENARIO("testing Stack assignment operator") {
 			listC = listB = listA;
 
 			THEN("all lists have the same data") {
-				REQUIRE(getOutput(listA) == "[1,2,3,4]");
-				REQUIRE(getOutput(listB) == "[1,2,3,4]");
-				REQUIRE(getOutput(listC) == "[1,2,3,4]");
+				REQUIRE(getOutput(listA) == "[4,3,2,1]");
+				REQUIRE(getOutput(listB) == "[4,3,2,1]");
+				REQUIRE(getOutput(listC) == "[4,3,2,1]");
 			}
 		}
 
@@ -188,7 +188,7 @@ SCENARIO("testing Stack assignment operator") {
 			listA = listA;
 
 			THEN("nothing happens and no crash") {
-				REQUIRE(getOutput(listA) == "[1,2,3,4]");
+				REQUIRE(getOutput(listA) == "[4,3,2,1]");
 			}
 		}
 	}
@@ -216,9 +216,53 @@ SCENARIO("testing Stack assignment operator") {
 				listA.pop();
 				listA.push(69);
 
-				REQUIRE(getOutput(listA) == "[10,20,30,40,69]");
-				REQUIRE(getOutput(listB) == "[10,20,30,40,50]");
+				REQUIRE(getOutput(listA) == "[69,40,30,20,10]");
+				REQUIRE(getOutput(listB) == "[50,40,30,20,10]");
 			}
 		}
 	}
+}
+
+SCENARIO("testing Stack::isEmpty()") {
+
+	GIVEN("a Stack object with one element") {
+		Stack list;
+		list.push(1);
+
+		WHEN("calling isEmpty()") {
+			bool result = list.isEmpty();
+
+			THEN("return false") {
+				REQUIRE(result == false);
+			}
+		}
+	}
+
+	GIVEN("a Stack object with some elements") {
+		Stack list;
+		list.push(1);
+		list.push(2);
+		list.push(3);
+		list.push(4); // 4 3 2 1
+
+		WHEN("calling isEmpty()") {
+			bool result = list.isEmpty();
+
+			THEN("return false") {
+				REQUIRE(result == false);
+			}
+		}
+	}
+
+	GIVEN("an empty stack object") {
+		Stack list;
+		WHEN("calling isEmpty()") {
+			bool result = list.isEmpty();
+
+			THEN("return true") {
+				REQUIRE(result == true);
+			}
+		}
+	}
+
 }
