@@ -29,7 +29,7 @@ SOFTWARE.
 #include "CircularList.h"
 #include "utils.h"
 
-SCENARIO("testing CircularList::addToFront() and ostream Operator") {
+SCENARIO("testing CircularList::addToFront() and << Operator") {
 
 	GIVEN("a CircularList object") {
 		CircularList list;

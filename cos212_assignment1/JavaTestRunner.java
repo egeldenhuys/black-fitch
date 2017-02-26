@@ -16,6 +16,8 @@ public class JavaTestRunner {
 		UnitTest suite_circularList = new tests_CircularList();
 
 		result = result & suite_circularList.run();
+
+		// TODO: Feels bad
 		testsCount += suite_circularList.testsCount;
 		testsPassed += suite_circularList.testsPassed;
 		assertsCount += suite_circularList.assertsCount;
