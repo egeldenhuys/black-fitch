@@ -42,9 +42,19 @@ public class JavaTestRunner {
 		assertsCount += suite_queue.assertsCount;
 		assertsPassed += suite_queue.assertsPassed;
 
+		UnitTest suite_deque = new tests_Deque();
+		printHeader("Deque");
+		result = result & suite_deque.run();
+
+		testsCount += suite_deque.testsCount;
+		testsPassed += suite_deque.testsPassed;
+		assertsCount += suite_deque.assertsCount;
+		assertsPassed += suite_deque.assertsPassed;
+
 		printFooter("CircularList", suite_circularList.testResult, suite_circularList.testsCount, suite_circularList.testsPassed, suite_circularList.assertsCount, suite_circularList.assertsPassed);
 		printFooter("Stack", suite_stack.testResult, suite_stack.testsCount, suite_stack.testsPassed, suite_stack.assertsCount, suite_stack.assertsPassed);
 		printFooter("Queue", suite_queue.testResult, suite_queue.testsCount, suite_queue.testsPassed, suite_queue.assertsCount, suite_queue.assertsPassed);
+		printFooter("Deque", suite_deque.testResult, suite_deque.testsCount, suite_deque.testsPassed, suite_deque.assertsCount, suite_deque.assertsPassed);
 
 		printFooter("OVERALL", result, testsCount, testsPassed, assertsCount, assertsPassed);
 	}
