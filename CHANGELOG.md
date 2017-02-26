@@ -1,7 +1,13 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-Please see the **Tag Convention** section in the README.md for information on how to decode the tag meaning.
+
+## v1 - 2017-02-26
+### Added
+- Added unit tests for COS 212 Assignment 1
+
+### Changed
+- Moved expired practicals to archive folder
 
 ## 2017-02-14_21-30
 ### Added
