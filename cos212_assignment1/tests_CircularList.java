@@ -78,6 +78,8 @@ public class tests_CircularList extends UnitTest{
 
 		// TEST AND ASSERT
 		CircularList list = new CircularList();
+		subResult = assertCustom(list.toString(), "[]");
+
 		list.addToFront(1);
 		list.addToFront(2);
 		list.addToFront(3);

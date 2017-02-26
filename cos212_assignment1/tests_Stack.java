@@ -30,7 +30,10 @@ public class tests_Stack extends UnitTest{
 		result = result & test_push_toString("testing push and toString");
 		result = result & test_pop("testing pop()");
 		result = result & test_clone("testing clone");
-		// result = result & test_complex("test_complex");
+		result = result & test_complex("test_complex");
+		result = result & test_peek("test_peek");
+		result = result & test_isEmpty("test_isEmpty");
+
 
 		return result;
 	}
@@ -364,6 +367,7 @@ public class tests_Stack extends UnitTest{
 		Stack list = new Stack();
 
 		subResult = subResult & assertCustom(list.isEmpty(), true);
+		subResult = subResult & assertCustom(list.toString(), "[]");
 
 		// TEST CASE FOOTER
 		result = result & subResult;

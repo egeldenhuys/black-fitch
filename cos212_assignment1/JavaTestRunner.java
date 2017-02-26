@@ -8,11 +8,12 @@ public class JavaTestRunner {
 	static int testsPassed = 0;
 	static int assertsCount = 0;
 	static int assertsPassed = 0;
-	static boolean result = true;
 
 	public static void main(String[] args) {
 
 		System.out.println("Starting Java Fitch...");
+
+		boolean result = true;
 
 		UnitTest suite_circularList = new tests_CircularList();
 		printHeader("CircularList");
@@ -32,13 +33,24 @@ public class JavaTestRunner {
 		assertsCount += suite_stack.assertsCount;
 		assertsPassed += suite_stack.assertsPassed;
 
-		printFooter("CircularList", result, suite_circularList.testsCount, suite_circularList.testsPassed, suite_circularList.assertsCount, suite_circularList.assertsPassed);
-		printFooter("Stack", result, suite_stack.testsCount, suite_stack.testsPassed, suite_stack.assertsCount, suite_stack.assertsPassed);
+		UnitTest suite_queue = new tests_Queue();
+		printHeader("Queue");
+		result = result & suite_queue.run();
+
+		testsCount += suite_queue.testsCount;
+		testsPassed += suite_queue.testsPassed;
+		assertsCount += suite_queue.assertsCount;
+		assertsPassed += suite_queue.assertsPassed;
+
+		printFooter("CircularList", suite_circularList.testResult, suite_circularList.testsCount, suite_circularList.testsPassed, suite_circularList.assertsCount, suite_circularList.assertsPassed);
+		printFooter("Stack", suite_stack.testResult, suite_stack.testsCount, suite_stack.testsPassed, suite_stack.assertsCount, suite_stack.assertsPassed);
+		printFooter("Queue", suite_queue.testResult, suite_queue.testsCount, suite_queue.testsPassed, suite_queue.assertsCount, suite_queue.assertsPassed);
+
 		printFooter("OVERALL", result, testsCount, testsPassed, assertsCount, assertsPassed);
 	}
 
 	public static void printHeader(String title) {
-		System.out.println("_________ SUITE: " + title + " _________");
+		System.out.println("XXXXXXXXX SUITE: " + title + " XXXXXXXXXX");
 	}
 
 	public static void printFooter(String title, boolean result, int testsCount, int testsPassed, int assertsCount, int assertsPassed) {
