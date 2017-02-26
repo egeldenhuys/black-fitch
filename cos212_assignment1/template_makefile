@@ -7,19 +7,36 @@ compile=g++ -std=c++11 -static -Wall -pedantic -g -I "$(PWD)"
 #	"$(black_fitch_path)/../catch/catchConfig.cpp"
 # ONLY ONCE in the test path
 
-task1_source_files="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/tests_CircularList.cpp" \
-CircularList.C Deque.C Queue.C Stack.C "$(black_fitch_path)/tests_Stack.cpp" "$(black_fitch_path)/tests_Queue.cpp" \
-"$(black_fitch_path)/utils.cpp" "$(black_fitch_path)/tests_Deque.cpp"
+task1_source_files=CircularList.C Deque.C Queue.C Stack.C
+task1_test_files="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/utils.cpp" \
+"$(black_fitch_path)/tests_CircularList.cpp" "$(black_fitch_path)/tests_Stack.cpp" \
+"$(black_fitch_path)/tests_Queue.cpp" "$(black_fitch_path)/tests_Deque.cpp"
 
-# task2_tests="$(black_fitch_path)/../catch/catchConfig.cpp" "$(black_fitch_path)/task2.cpp"
+task2_source_files=*.java
+
+task2_test_files_local=JavaTestRunner.java tests_CircularList.java UnitTest.java \
+tests_Deque.java tests_Stack.java tests_Queue.java
+
+task2_test_files_black_fitch=$(black_fitch_path)/JavaTestRunner.java $(black_fitch_path)/UnitTest.java \
+$(black_fitch_path)/tests_CircularList.java $(black_fitch_path)/tests_Stack.java \
+$(black_fitch_path)/tests_Queue.java $(black_fitch_path)/tests_Deque.java
+
+task2_main=JavaTestRunner
 
 task1:
-	 $(compile) $(task1_source_files) -o task1.out
+	 $(compile) $(task1_test_files) $(task1_source_files) -o task1.out
 	./task1.out
 
 task2:
-	$(compile) $(task2_source_files) -o task2.out
-	./task2.out
+	@echo "\nCopying Java Fitch..."
+	cp -f $(task2_test_files_black_fitch) .
+	@echo ""
+
+	javac *.java
+	java $(task2_main)
+
+	@echo "\nCleaning up..."
+	rm -f $(task2_test_files_local)
 
 clean:
 	rm -f *.o *.out
