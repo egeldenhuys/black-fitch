@@ -34,3 +34,6 @@ black-fitch-makefile
 # Vim temporary files
 *.swp
 *.pyc
+
+# Java
+*.class

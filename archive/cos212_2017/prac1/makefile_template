@@ -1,16 +1,19 @@
 # To be configured by configure.sh:
 # 	black_fitch_path=/path/to/black-fitch/prac5
 
-# Configure source files here
 source_files=DLList.java Main.java SOList.java
 unit_test_name=UnitTests
 
 default:
 	@echo "Copying Black Fitch source files..."
-	cp $(black_fitch_path)/$(unit_test_name).java .
+	cp -f $(black_fitch_path)/$(unit_test_name).java .
+	cp -f $(black_fitch_path)/expected.txt .
 
 	javac $(source_files) $(unit_test_name).java
 	java $(unit_test_name)
+
+	java Main > received.txt
+	diff received.txt expected.txt -q -Z -s
 
 	@echo " "
 	@echo "Cleaning up..."

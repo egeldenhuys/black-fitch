@@ -7,7 +7,7 @@
 printf "black_fitch_path=$PWD\n\n" > black-fitch-makefile
 
 # Append template makefile to black-fitch-makefile
-cat makefile_template >> black-fitch-makefile
+cat template_makefile >> black-fitch-makefile
 
 ##############################
 # PARSE COMMAND LINE ARGUMENTS
