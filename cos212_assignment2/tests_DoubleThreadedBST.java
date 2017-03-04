@@ -3,7 +3,7 @@
 * @Date:   2017-03-04T13:31:50+02:00
 * @Email:  thomas@quantum-sicarius.za.net
 * @Last modified by:   thomas
-* @Last modified time: 2017-03-04T18:10:45+02:00
+* @Last modified time: 2017-03-04T18:19:59+02:00
 * @License: Attribution-NonCommercial-ShareAlike 4.0 International
 */
 
@@ -14,6 +14,8 @@ public class tests_DoubleThreadedBST extends UnitTest{
 		boolean result = true;
 		result = result & test_insert_double_threaded_bst("testing insert to double threaded BST");
     result = result & test_threads_double_threaded_bst("testing threads");
+    result = result & test_inorderAscending("testing inorderAscending");
+    result = result & test_inorderDecending("testing inorderAscending");
 
 		return result;
 	}
@@ -242,5 +244,137 @@ public boolean test_insert_double_threaded_bst(String title) {
   		return result;
   		// FOOTER END
     }
+
+    public boolean test_inorderAscending(String title) {
+    		// HEADER
+    		printHeader(title);
+    		boolean result = true;
+    		boolean subResult = true;
+    		// HEADER END
+
+    		// TEST CASE HEADER
+    		printSubTest("inorderAscending");
+    		subResult = true;
+
+    		// TEST AND ASSERT
+    		DoubleThreadedBST<Integer> tree = new DoubleThreadedBST<Integer>();
+        tree.insert(1);
+        tree.insert(2);
+        tree.insert(3);
+        tree.insert(4);
+
+        /*
+        1
+          \
+            2
+              \
+                3
+                  \
+                    4
+        */
+        subResult = assertCustom(tree.inorderAscending().toString(), "1,2,3,4");
+
+    		// TEST CASE FOOTER
+    		result = result & subResult;
+    		printSubTestFooter(subResult);
+
+        // TEST CASE HEADER
+        printSubTest("adding strange configuration of elements to binary tree [inorderAscending]");
+        subResult = true;
+
+        // TEST AND ASSERT
+        tree = new DoubleThreadedBST<Integer>();
+        tree.insert(5);
+        tree.insert(8);
+        tree.insert(6);
+        tree.insert(2);
+        tree.insert(4);
+        tree.insert(1);
+
+        /*
+                5
+              /   \
+            2       8
+          /   \    /
+        1       4 6
+
+        */
+        subResult = assertCustom(tree.inorderAscending().toString(), "1,2,4,5,6,8");
+
+        // TEST CASE FOOTER
+        result = result & subResult;
+        printSubTestFooter(subResult);
+
+    		// FOOTER
+    		printFooter(title, result);
+    		return result;
+    		// FOOTER END
+      }
+
+      public boolean test_inorderDecending(String title) {
+      		// HEADER
+      		printHeader(title);
+      		boolean result = true;
+      		boolean subResult = true;
+      		// HEADER END
+
+      		// TEST CASE HEADER
+      		printSubTest("inorderDescending");
+      		subResult = true;
+
+      		// TEST AND ASSERT
+      		DoubleThreadedBST<Integer> tree = new DoubleThreadedBST<Integer>();
+          tree.insert(1);
+          tree.insert(2);
+          tree.insert(3);
+          tree.insert(4);
+
+          /*
+          1
+            \
+              2
+                \
+                  3
+                    \
+                      4
+          */
+          subResult = assertCustom(tree.inorderDescending().toString(), "4,3,2,1");
+
+      		// TEST CASE FOOTER
+      		result = result & subResult;
+      		printSubTestFooter(subResult);
+
+          // TEST CASE HEADER
+          printSubTest("adding strange configuration of elements to binary tree [inorderDescending]");
+          subResult = true;
+
+          // TEST AND ASSERT
+          tree = new DoubleThreadedBST<Integer>();
+          tree.insert(5);
+          tree.insert(8);
+          tree.insert(6);
+          tree.insert(2);
+          tree.insert(4);
+          tree.insert(1);
+
+          /*
+                  5
+                /   \
+              2       8
+            /   \    /
+          1       4 6
+
+          */
+          subResult = assertCustom(tree.inorderDescending().toString(), "8,6,5,4,2,1");
+
+          // TEST CASE FOOTER
+          result = result & subResult;
+          printSubTestFooter(subResult);
+
+      		// FOOTER
+      		printFooter(title, result);
+      		return result;
+      		// FOOTER END
+        }
 
 }
