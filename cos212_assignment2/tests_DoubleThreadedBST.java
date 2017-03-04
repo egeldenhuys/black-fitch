@@ -3,7 +3,7 @@
 * @Date:   2017-03-04T13:31:50+02:00
 * @Email:  thomas@quantum-sicarius.za.net
 * @Last modified by:   thomas
-* @Last modified time: 2017-03-04T18:31:42+02:00
+* @Last modified time: 2017-03-04T18:47:52+02:00
 * @License: Attribution-NonCommercial-ShareAlike 4.0 International
 */
 
@@ -19,7 +19,7 @@ public class tests_DoubleThreadedBST extends UnitTest{
     result = result & test_count_left_threads("testing count left threads");
     result = result & test_count_right_threads("testing count right threads");
     result = result & test_count_nodes("testing count of nodes");
-
+    result = result & test_tree_height("testing height of tree");
 
 		return result;
 	}
@@ -578,5 +578,71 @@ public boolean test_insert_double_threaded_bst(String title) {
                 return result;
                 // FOOTER END
               }
+
+              public boolean test_tree_height(String title) {
+                  // HEADER
+                  printHeader(title);
+                  boolean result = true;
+                  boolean subResult = true;
+                  // HEADER END
+
+                  // TEST CASE HEADER
+                  printSubTest("get the height of the tree");
+                  subResult = true;
+
+                  // TEST AND ASSERT
+                  DoubleThreadedBST<Integer> tree = new DoubleThreadedBST<Integer>();
+                  tree.insert(1);
+                  tree.insert(2);
+                  tree.insert(3);
+                  tree.insert(4);
+
+                  /*
+                  1
+                    \
+                      2
+                        \
+                          3
+                            \
+                              4
+                  */
+                  subResult = assertCustom(tree.getHeight(), 4);
+
+                  // TEST CASE FOOTER
+                  result = result & subResult;
+                  printSubTestFooter(subResult);
+
+                  // TEST CASE HEADER
+                  printSubTest("adding strange configuration of elements to binary tree [count right threads]");
+                  subResult = true;
+
+                  // TEST AND ASSERT
+                  tree = new DoubleThreadedBST<Integer>();
+                  tree.insert(5);
+                  tree.insert(8);
+                  tree.insert(6);
+                  tree.insert(2);
+                  tree.insert(4);
+                  tree.insert(1);
+
+                  /*
+                          5
+                        /   \
+                      2       8
+                    /   \    /
+                  1       4 6
+
+                  */
+                  subResult = assertCustom(tree.getHeight(), 3);
+
+                  // TEST CASE FOOTER
+                  result = result & subResult;
+                  printSubTestFooter(subResult);
+
+                  // FOOTER
+                  printFooter(title, result);
+                  return result;
+                  // FOOTER END
+                }
 
 }
