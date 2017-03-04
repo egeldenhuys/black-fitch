@@ -1,4 +1,7 @@
-# COS 212 Assignment 1
+# COS 212 Assignment 2
+
+# Tree used:
+![treeUsed](/cos212_assignment2/TreeUsed.jpg?raw=true)
 
 ## Usage (Task 1)
 1. `./configure.sh`
