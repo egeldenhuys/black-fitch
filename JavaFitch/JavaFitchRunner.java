@@ -2,7 +2,7 @@
 This class constructs all test suites and runs them
 */
 
-public class JavaTestRunner {
+public class JavaFitchRunner {
 
 	static int testsCount = 0;
 	static int testsPassed = 0;
@@ -24,7 +24,7 @@ public class JavaTestRunner {
 		assertsCount += suite_Task1.assertsCount;
 		assertsPassed += suite_Task1.assertsPassed;
 
-		printFooter("Testing DoubleThreadedBST", suite_Task1.testResult, suite_Task1.testsPassed, suite_Task1.testsCount, suite_Task1.assertsPassed, suite_Task1.assertsCount);
+		printFooter("Testing Template", suite_Task1.testResult, suite_Task1.testsPassed, suite_Task1.testsCount, suite_Task1.assertsPassed, suite_Task1.assertsCount);
 		printFooter("OVERALL", result, testsPassed, testsCount, assertsPassed, assertsPassed);
 	}
 
