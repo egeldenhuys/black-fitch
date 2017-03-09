@@ -469,7 +469,7 @@ public class tests_Task1 extends UnitTest{
 		subResult = subResult & assertCustom(tree.getRoot().data, 2);
 		subResult = subResult & assertCustom(tree.inorderAscending(), "2,4");
 
-		// 1 2
+		// 2,4
 		System.out.println(tree.inorderAscending());
 		System.out.println("C");
 		subResult = subResult & assertCustom(tree.delete(2), true);
