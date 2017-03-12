@@ -1,6 +1,10 @@
 # COS 212 Assignment 2
 
 # Tree used:
+### Inserted:
+```
+5,8,6,2,4,1
+```
 ![treeUsed](/cos212_assignment2/TreeUsed.jpg?raw=true)
 
 ## Usage (Task 1)
