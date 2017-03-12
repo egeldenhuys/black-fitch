@@ -3,7 +3,7 @@
 * @Date:   2017-03-04T13:31:50+02:00
 * @Email:  thomas@quantum-sicarius.za.net
 * @Last modified by:   thomas
-* @Last modified time: 2017-03-04T18:47:52+02:00
+* @Last modified time: 2017-03-12T13:47:16+02:00
 * @License: Attribution-NonCommercial-ShareAlike 4.0 International
 */
 
@@ -20,7 +20,9 @@ public class tests_DoubleThreadedBST extends UnitTest{
     result = result & test_count_right_threads("testing count right threads");
     result = result & test_count_nodes("testing count of nodes");
     result = result & test_tree_height("testing height of tree");
-
+		result = result & test_tree_delete("testing delete element");
+		result = result & test_tree_clone("testing clone tree");
+		result = result & test_tree_copy("testing copy tree");
 		return result;
 	}
 
@@ -645,4 +647,365 @@ public boolean test_insert_double_threaded_bst(String title) {
                   // FOOTER END
                 }
 
+								public boolean test_tree_delete(String title) {
+	                  // HEADER
+	                  printHeader(title);
+	                  boolean result = true;
+	                  boolean subResult = true;
+	                  // HEADER END
+
+	                  // TEST CASE HEADER
+	                  printSubTest("delete an element of the tree");
+	                  subResult = true;
+
+	                  // TEST AND ASSERT
+	                  DoubleThreadedBST<Integer> tree = new DoubleThreadedBST<Integer>();
+	                  tree.insert(1);
+	                  tree.insert(2);
+	                  tree.insert(3);
+	                  tree.insert(4);
+
+	                  /*
+	                  1
+	                    \
+	                      2
+	                        \
+	                          3
+	                            \
+	                              4
+	                  */
+	                  subResult = assertCustom(tree.delete(1), true);
+										DTNode<Integer> root = tree.getRoot();
+										subResult = assertCustom(root.data, 2);
+										subResult = assertCustom(root.right.data, 3);
+										// Should be a left thead.
+										subResult = assertCustom(root.right.hasLeftThread, true);
+										// Should be 2.
+										subResult = assertCustom(root.right.left.data, 2);
+
+										subResult = assertCustom(root.right.right.data, 4);
+										// Should be a left thead.
+										subResult = assertCustom(root.right.right.hasLeftThread, true);
+										// Should be 3.
+										subResult = assertCustom(root.right.right.left.data, 3);
+
+	                  // TEST CASE FOOTER
+	                  result = result & subResult;
+	                  printSubTestFooter(subResult);
+
+	                  // TEST CASE HEADER
+	                  printSubTest("adding strange configuration of elements to binary tree [delete random element]");
+	                  subResult = true;
+
+	                  // TEST AND ASSERT
+	                  tree = new DoubleThreadedBST<Integer>();
+	                  tree.insert(5);
+	                  tree.insert(8);
+	                  tree.insert(6);
+	                  tree.insert(2);
+	                  tree.insert(4);
+	                  tree.insert(1);
+
+	                  /*
+	                          5
+	                        /   \
+	                      2       8
+	                    /   \    /
+	                  1       4 6
+
+	                  */
+										subResult = assertCustom(tree.delete(2), true);
+										/*
+														5
+													/   \
+												4       8
+											/        /
+										1         6
+
+										*/
+										root = tree.getRoot();
+
+										// Node 5 should not have any threads.
+							      subResult = assertCustom(root.hasRightThread, false);
+							      subResult = assertCustom(root.hasLeftThread, false);
+
+							      // Node 8 should not have any threads.
+							      subResult = assertCustom(root.right.hasRightThread, false);
+							      subResult = assertCustom(root.right.hasLeftThread, false);
+
+							      // Node 6 should thread back to 8 [right].
+							      subResult = assertCustom(root.right.left.hasRightThread, true);
+							      subResult = assertCustom(root.right.left.right.data, 8);
+							      // Node 6 should thread back to 5 [left].
+							      subResult = assertCustom(root.right.left.hasLeftThread, true);
+							      subResult = assertCustom(root.right.left.left.data, 5);
+
+							      // Node 4 should thread back to 5 [right].
+										subResult = assertCustom(root.left.data, 4);
+										printSubTest("Node 4 should thread back to 5 [right]");
+							      subResult = assertCustom(root.left.hasRightThread, true);
+										subResult = assertCustom(root.left.right.data, 5);
+							      subResult = assertCustom(root.left.hasLeftThread, false);
+
+							      // Node 1 should have thread back to 4 [right].
+							      subResult = assertCustom(root.left.left.hasRightThread, true);
+							      subResult = assertCustom(root.left.left.right.data, 4);
+							      // Node 1 should not have a left thread.
+							      subResult = assertCustom(root.left.left.hasLeftThread, false);
+
+	                  // TEST CASE FOOTER
+	                  result = result & subResult;
+	                  printSubTestFooter(subResult);
+
+	                  // FOOTER
+	                  printFooter(title, result);
+	                  return result;
+	                  // FOOTER END
+	                }
+
+									public boolean test_tree_clone(String title) {
+		                  // HEADER
+		                  printHeader(title);
+		                  boolean result = true;
+		                  boolean subResult = true;
+		                  // HEADER END
+
+		                  // TEST CASE HEADER
+		                  printSubTest("clone a tree");
+		                  subResult = true;
+
+		                  // TEST AND ASSERT
+		                  DoubleThreadedBST<Integer> tree = new DoubleThreadedBST<Integer>();
+		                  tree.insert(1);
+		                  tree.insert(2);
+		                  tree.insert(3);
+		                  tree.insert(4);
+
+		                  /*
+		                  1
+		                    \
+		                      2
+		                        \
+		                          3
+		                            \
+		                              4
+		                  */
+
+											DoubleThreadedBST<Integer> clone = tree.clone();
+
+											DTNode<Integer> root = clone.getRoot();
+											subResult = assertCustom(root.data, 1);
+								      subResult = assertCustom(root.hasLeftThread, false);
+
+											// Node 2 should thread back to 1 [left].
+											subResult = assertCustom(root.right.data, 2);
+								  		subResult = assertCustom(root.right.hasLeftThread, true);
+											subResult = assertCustom(root.right.left.data, 1);
+
+											// Node 3 should thread back to 2 [left].
+											subResult = assertCustom(root.right.right.data, 3);
+											subResult = assertCustom(root.right.right.hasLeftThread, true);
+											subResult = assertCustom(root.right.right.left.data, 2);
+
+											// Node 4 should thread back to 3 [left].
+											subResult = assertCustom(root.right.right.right.data, 4);
+											subResult = assertCustom(root.right.right.right.hasLeftThread, true);
+											subResult = assertCustom(root.right.right.right.left.data, 3);
+
+											printSubTest("make sure that the data is not soft copied [clone tree]");
+											DTNode<Integer> originalRoot = tree.getRoot();
+											originalRoot.right = null;
+											subResult = assertCustom(root.right.data, 2);
+
+		                  // TEST CASE FOOTER
+		                  result = result & subResult;
+		                  printSubTestFooter(subResult);
+
+		                  // TEST CASE HEADER
+		                  printSubTest("adding strange configuration of elements to binary tree [clone tree]");
+		                  subResult = true;
+
+		                  // TEST AND ASSERT
+		                  tree = new DoubleThreadedBST<Integer>();
+		                  tree.insert(5);
+		                  tree.insert(8);
+		                  tree.insert(6);
+		                  tree.insert(2);
+		                  tree.insert(4);
+		                  tree.insert(1);
+
+		                  /*
+		                          5
+		                        /   \
+		                      2       8
+		                    /   \    /
+		                  1       4 6
+
+		                  */
+											clone = tree.clone();
+											root = clone.getRoot();
+											// Node 5 should not have any threads.
+											subResult = assertCustom(root.hasRightThread, false);
+											subResult = assertCustom(root.hasLeftThread, false);
+
+											// Node 8 should not have any threads.
+											subResult = assertCustom(root.right.hasRightThread, false);
+											subResult = assertCustom(root.right.hasLeftThread, false);
+
+											// Node 6 should thread back to 8 [right].
+											subResult = assertCustom(root.right.left.hasRightThread, true);
+											subResult = assertCustom(root.right.left.right.data, 8);
+											// Node 6 should thread back to 5 [left].
+											subResult = assertCustom(root.right.left.hasLeftThread, true);
+											subResult = assertCustom(root.right.left.left.data, 5);
+
+											// Node 2 should not have any threads.
+											subResult = assertCustom(root.left.hasRightThread, false);
+											subResult = assertCustom(root.left.hasLeftThread, false);
+
+											// Node 1 should have thread back to 2 [right].
+											subResult = assertCustom(root.left.left.hasRightThread, true);
+											subResult = assertCustom(root.left.left.right.data, 2);
+											// Node 1 should not have a left thread.
+											subResult = assertCustom(root.left.left.hasLeftThread, false);
+
+											// Node 4 should have thread back to 5 [right].
+											subResult = assertCustom(root.left.right.hasRightThread, true);
+											subResult = assertCustom(root.left.right.right.data, 5);
+											// Node 4 should have thread back to 2 [left].
+											subResult = assertCustom(root.left.right.hasLeftThread, true);
+											subResult = assertCustom(root.left.right.left.data, 2);
+
+		                  // TEST CASE FOOTER
+		                  result = result & subResult;
+		                  printSubTestFooter(subResult);
+
+		                  // FOOTER
+		                  printFooter(title, result);
+		                  return result;
+		                  // FOOTER END
+		                }
+
+										public boolean test_tree_copy(String title) {
+												// HEADER
+												printHeader(title);
+												boolean result = true;
+												boolean subResult = true;
+												// HEADER END
+
+												// TEST CASE HEADER
+												printSubTest("copy a tree");
+												subResult = true;
+
+												// TEST AND ASSERT
+												DoubleThreadedBST<Integer> tree = new DoubleThreadedBST<Integer>();
+												tree.insert(1);
+												tree.insert(2);
+												tree.insert(3);
+												tree.insert(4);
+
+												/*
+												1
+													\
+														2
+															\
+																3
+																	\
+																		4
+												*/
+
+												DoubleThreadedBST<Integer> clone = new DoubleThreadedBST<Integer>(tree);
+
+												DTNode<Integer> root = clone.getRoot();
+												subResult = assertCustom(root.data, 1);
+												subResult = assertCustom(root.hasLeftThread, false);
+
+												// Node 2 should thread back to 1 [left].
+												subResult = assertCustom(root.right.data, 2);
+												subResult = assertCustom(root.right.hasLeftThread, true);
+												subResult = assertCustom(root.right.left.data, 1);
+
+												// Node 3 should thread back to 2 [left].
+												subResult = assertCustom(root.right.right.data, 3);
+												subResult = assertCustom(root.right.right.hasLeftThread, true);
+												subResult = assertCustom(root.right.right.left.data, 2);
+
+												// Node 4 should thread back to 3 [left].
+												subResult = assertCustom(root.right.right.right.data, 4);
+												subResult = assertCustom(root.right.right.right.hasLeftThread, true);
+												subResult = assertCustom(root.right.right.right.left.data, 3);
+
+												printSubTest("make sure that the data is not soft copied [clone tree]");
+												DTNode<Integer> originalRoot = tree.getRoot();
+												originalRoot.right = null;
+												subResult = assertCustom(root.right.data, 2);
+
+												// TEST CASE FOOTER
+												result = result & subResult;
+												printSubTestFooter(subResult);
+
+												// TEST CASE HEADER
+												printSubTest("adding strange configuration of elements to binary tree [clone tree]");
+												subResult = true;
+
+												// TEST AND ASSERT
+												tree = new DoubleThreadedBST<Integer>();
+												tree.insert(5);
+												tree.insert(8);
+												tree.insert(6);
+												tree.insert(2);
+												tree.insert(4);
+												tree.insert(1);
+
+												/*
+																5
+															/   \
+														2       8
+													/   \    /
+												1       4 6
+
+												*/
+												clone = new DoubleThreadedBST<Integer>(tree);
+												root = clone.getRoot();
+												// Node 5 should not have any threads.
+												subResult = assertCustom(root.hasRightThread, false);
+												subResult = assertCustom(root.hasLeftThread, false);
+
+												// Node 8 should not have any threads.
+												subResult = assertCustom(root.right.hasRightThread, false);
+												subResult = assertCustom(root.right.hasLeftThread, false);
+
+												// Node 6 should thread back to 8 [right].
+												subResult = assertCustom(root.right.left.hasRightThread, true);
+												subResult = assertCustom(root.right.left.right.data, 8);
+												// Node 6 should thread back to 5 [left].
+												subResult = assertCustom(root.right.left.hasLeftThread, true);
+												subResult = assertCustom(root.right.left.left.data, 5);
+
+												// Node 2 should not have any threads.
+												subResult = assertCustom(root.left.hasRightThread, false);
+												subResult = assertCustom(root.left.hasLeftThread, false);
+
+												// Node 1 should have thread back to 2 [right].
+												subResult = assertCustom(root.left.left.hasRightThread, true);
+												subResult = assertCustom(root.left.left.right.data, 2);
+												// Node 1 should not have a left thread.
+												subResult = assertCustom(root.left.left.hasLeftThread, false);
+
+												// Node 4 should have thread back to 5 [right].
+												subResult = assertCustom(root.left.right.hasRightThread, true);
+												subResult = assertCustom(root.left.right.right.data, 5);
+												// Node 4 should have thread back to 2 [left].
+												subResult = assertCustom(root.left.right.hasLeftThread, true);
+												subResult = assertCustom(root.left.right.left.data, 2);
+
+												// TEST CASE FOOTER
+												result = result & subResult;
+												printSubTestFooter(subResult);
+
+												// FOOTER
+												printFooter(title, result);
+												return result;
+												// FOOTER END
+											}
 }
