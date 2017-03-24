@@ -78,19 +78,29 @@ public class UnitTest {
 		assertsCount++;
 		assertsCountSubTest++;
 
-		if (received.equals(expected)) {
-			assertsPassed++;
-			assertsPassedSubTest++;
-			return true;
-		} else {
+		if (received == null) {
 			System.out.println();
 			System.out.println("++++ ASSERT FAIL ++++");
-			System.out.println("Recevied: \n" + received.toString() + "\n");
+			System.out.println("Recevied: \nnull\n");
 			System.out.println("Expected: \n" + expected.toString());
 			System.out.println("++++++++++++++++++++++");
-
 			return false;
+		} else {
+			if (received.equals(expected)) {
+				assertsPassed++;
+				assertsPassedSubTest++;
+				return true;
+			} else {
+				System.out.println();
+				System.out.println("++++ ASSERT FAIL ++++");
+				System.out.println("Recevied: \n" + received.toString() + "\n");
+				System.out.println("Expected: \n" + expected.toString());
+				System.out.println("++++++++++++++++++++++");
+
+				return false;
+			}
 		}
+
 	}
 
 	public <T> boolean assertNull(T received) {

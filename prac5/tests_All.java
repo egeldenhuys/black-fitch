@@ -408,7 +408,7 @@ public class tests_All extends UnitTest{
 		ret = findKey(root,43546, recv);
 		recv.append("The fourth result is " + ret.getValue() + "\n");
 
-		expected = "Accessed priority of swing\nAccessed priority of daisy\nAccessed key of doggo\nAccessed key of daisy\nAccessed key of cat\nAccessed key of hold\nThe fourth result is hold\n";
+		expected = "Accessed key of doggo\nAccessed key of daisy\nAccessed key of cat\nAccessed key of hold\nThe fourth result is hold\n";
 
 		/*
 		Accessed key of doggo
@@ -419,6 +419,90 @@ public class tests_All extends UnitTest{
 		*/
 
 		subResult = subResult & assertCustom(recv.toString(), expected);
+
+		// =========================================================
+		result = result & subResult;
+		printSubTestFooter(subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		printSubTest("Rotate Left Basic");
+		subResult = true;
+		// ==========================================================
+
+
+		node1 = new Node(500, 50, "1");
+		node2 = new Node(450, 40, "2");
+		node3 = new Node(700, 38, "3");
+		node4 = new Node(600, 20, "4");
+		node5 = new Node(750, 25, "5");
+
+		root = node1;
+		node1.leftChild_ = node2; node2.parent_ = node1;
+		node1.rightChild_ = node3; node3.parent_ = node1;
+			node3.leftChild_ = node4; node4.parent_ = node3;
+			node3.rightChild_ = node5; node5.parent_ = node3;
+
+		TreapOperations.rotateLeft(root);
+
+		subResult = subResult & assertCustom(node3.leftChild_, node1);
+		subResult = subResult & assertNull(node3.parent_);
+		subResult = subResult & assertCustom(node1.parent_, node3);
+		subResult = subResult & assertCustom(node1.leftChild_, node2);
+		subResult = subResult & assertCustom(node1.rightChild_, node4);
+		subResult = subResult & assertCustom(node2.parent_, node1);
+		subResult = subResult & assertCustom(node4.parent_, node1);
+		subResult = subResult & assertNull(node2.leftChild_);
+		subResult = subResult & assertNull(node2.rightChild_);
+		subResult = subResult & assertNull(node4.leftChild_);
+		subResult = subResult & assertNull(node4.rightChild_);
+		subResult = subResult & assertCustom(node3.rightChild_, node5);
+		subResult = subResult & assertCustom(node5.parent_, node3);
+		subResult = subResult & assertNull(node5.leftChild_);
+		subResult = subResult & assertNull(node5.rightChild_);
+
+		System.out.println("\nROTATE LEFT AGAIN...");
+
+		TreapOperations.rotateLeft(node3);
+
+		subResult = subResult & assertCustom(node3.leftChild_, node1);
+		subResult = subResult & assertCustom(node3.parent_, node5);
+		subResult = subResult & assertCustom(node1.parent_, node3);
+		subResult = subResult & assertCustom(node1.leftChild_, node2);
+		subResult = subResult & assertCustom(node1.rightChild_, node4);
+		subResult = subResult & assertCustom(node2.parent_, node1);
+		subResult = subResult & assertCustom(node4.parent_, node1);
+		subResult = subResult & assertNull(node2.leftChild_);
+		subResult = subResult & assertNull(node2.rightChild_);
+		subResult = subResult & assertNull(node4.leftChild_);
+		subResult = subResult & assertNull(node4.rightChild_);
+		subResult = subResult & assertNull(node3.rightChild_);
+		subResult = subResult & assertNull(node5.parent_);
+		subResult = subResult & assertCustom(node5.leftChild_, node3);
+		subResult = subResult & assertNull(node5.rightChild_);
+
+		System.out.println("\nROTATE LEFT AGAIN...");
+
+		TreapOperations.rotateLeft(node5);
+
+		subResult = subResult & assertCustom(node3.leftChild_, node1);
+		subResult = subResult & assertCustom(node3.parent_, node5);
+		subResult = subResult & assertCustom(node1.parent_, node3);
+		subResult = subResult & assertCustom(node1.leftChild_, node2);
+		subResult = subResult & assertCustom(node1.rightChild_, node4);
+		subResult = subResult & assertCustom(node2.parent_, node1);
+		subResult = subResult & assertCustom(node4.parent_, node1);
+		subResult = subResult & assertNull(node2.leftChild_);
+		subResult = subResult & assertNull(node2.rightChild_);
+		subResult = subResult & assertNull(node4.leftChild_);
+		subResult = subResult & assertNull(node4.rightChild_);
+		subResult = subResult & assertNull(node3.rightChild_);
+		subResult = subResult & assertNull(node5.parent_);
+		subResult = subResult & assertCustom(node5.leftChild_, node3);
+		subResult = subResult & assertNull(node5.rightChild_);
 
 		// =========================================================
 		result = result & subResult;
