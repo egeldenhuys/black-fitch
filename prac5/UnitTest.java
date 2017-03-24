@@ -85,7 +85,7 @@ public class UnitTest {
 		} else {
 			System.out.println();
 			System.out.println("++++ ASSERT FAIL ++++");
-			System.out.println("Received: \n" + received.toString() + "\n");
+			System.out.println("Recevied: \n" + received.toString() + "\n");
 			System.out.println("Expected: \n" + expected.toString());
 			System.out.println("++++++++++++++++++++++");
 
@@ -105,7 +105,7 @@ public class UnitTest {
 		} else {
 			System.out.println();
 			System.out.println("++++ ASSERT FAIL ++++");
-			System.out.println("Received: \n" + received.toString() + "\n");
+			System.out.println("Recevied: \n" + received.toString() + "\n");
 			System.out.println("Expected: \n" + "null");
 			System.out.println("++++++++++++++++++++++");
 
