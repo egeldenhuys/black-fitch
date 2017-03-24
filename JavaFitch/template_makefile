@@ -1,15 +1,11 @@
 # To be configured by configure.sh:
 # 	black_fitch_path=/path/to/black-fitch/prac5
 
-# Always need:
-#	"$(black_fitch_path)/../catch/catchConfig.cpp"
-# ONLY ONCE in the test path
-
-task1_source_files=*.java
-
 task1_test_files_local=JavaFitchRunner.java UnitTest.java tests_Task1.java
 
-task1_test_files_black_fitch=$(black_fitch_path)/JavaTestRunner.java $(black_fitch_path)/UnitTest.java \
+task1_source_files=$(task1_test_files_local) TreapOperations.java Node.java
+
+task1_test_files_black_fitch=$(black_fitch_path)/JavaFitchRunner.java $(black_fitch_path)/UnitTest.java \
 $(black_fitch_path)/tests_Task1.java
 
 task1_main=JavaFitchRunner
@@ -19,14 +15,13 @@ task1:
 	cp -f $(task1_test_files_black_fitch) .
 	@echo ""
 
-	javac *.java
+	javac $(task1_source_files)
 	java $(task1_main)
 
 	@echo "\nCleaning up..."
 	rm -f $(task1_test_files_local)
 
 clean:
-	rm -f *.o *.out
 	rm -f $(task1_test_files_local)
 	rm -f *.class
 
