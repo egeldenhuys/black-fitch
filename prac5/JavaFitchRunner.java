@@ -15,8 +15,8 @@ public class JavaFitchRunner {
 
 		boolean result = true;
 
-		UnitTest suite_Task1 = new tests_Task1();
-		printHeader("Task 1");
+		UnitTest suite_Task1 = new tests_All();
+		printHeader("All Tasks");
 		result = result & suite_Task1.run();
 
 		testsCount += suite_Task1.testsCount;
@@ -24,7 +24,8 @@ public class JavaFitchRunner {
 		assertsCount += suite_Task1.assertsCount;
 		assertsPassed += suite_Task1.assertsPassed;
 
-		printFooter("Task 1", suite_Task1.testResult, suite_Task1.testsPassed, suite_Task1.testsCount, suite_Task1.assertsPassed, suite_Task1.assertsCount);
+		printFooter("All Tasks", suite_Task1.testResult, suite_Task1.testsPassed, suite_Task1.testsCount, suite_Task1.assertsPassed, suite_Task1.assertsCount);
+
 		printFooter("OVERALL", result, testsPassed, testsCount, assertsPassed, assertsPassed);
 	}
 
