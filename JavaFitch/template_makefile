@@ -1,0 +1,41 @@
+# To be configured by configure.sh:
+# 	black_fitch_path=/path/to/black-fitch/prac5
+
+task1_test_files_local=JavaFitchRunner.java UnitTest.java tests_Task1.java
+
+task1_source_files=$(task1_test_files_local) TreapOperations.java Node.java
+
+task1_test_files_black_fitch=$(black_fitch_path)/JavaFitchRunner.java $(black_fitch_path)/UnitTest.java \
+$(black_fitch_path)/tests_Task1.java
+
+task1_main=JavaFitchRunner
+
+task1:
+	@echo "\nCopying Java Fitch..."
+	cp -f $(task1_test_files_black_fitch) .
+	@echo ""
+
+	javac $(task1_source_files)
+	java $(task1_main)
+
+	@echo "\nCleaning up..."
+	rm -f $(task1_test_files_local)
+
+clean:
+	rm -f $(task1_test_files_local)
+	rm -f *.class
+
+# Configure and copy the latest makefile
+update:
+	@cd "$(black_fitch_path)" && ./configure.sh -q
+	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
+
+# Pull black-fitch, configure and copy the latest makefile
+pull:
+	@echo "Pull black-fitch from  GitHub..."
+	cd "$(black_fitch_path)" && git pull origin assignment2
+
+	@cd "$(black_fitch_path)" && ./configure.sh -q
+	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
