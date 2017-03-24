@@ -49,7 +49,7 @@ public class tests_Task1 extends UnitTest{
 		subResult = true;
 		// ==========================================================
 
-		subresult = subresult & assertCustom("a", "b");
+		subResult = subResult & assertCustom("a", "b");
 
 
 		// =========================================================
