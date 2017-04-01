@@ -105,7 +105,7 @@ public class BPlusTreeTest extends UnitTest{
 		Integer n = 70;
 		path = tree.insertElement(n);
 		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
-		subResult = subResult & assertEquals("[50][70]", path, trace);
+		subResult = subResult & assertEquals("[50]", path, trace);
 		/* Tree:
 			 [50][70]
 		*/
@@ -113,7 +113,7 @@ public class BPlusTreeTest extends UnitTest{
 		n = 120;
 		path = tree.insertElement(n);
 		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
-		subResult = subResult & assertEquals("[50][70][120]", path, trace);
+		subResult = subResult & assertEquals("[50][70]", path, trace);
 		/* Tree:
 			 [50][70][120]
 		*/
@@ -121,7 +121,7 @@ public class BPlusTreeTest extends UnitTest{
 		i = 10;
 		path = tree.insertElement(n);
 		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
-		subResult = subResult & assertEquals("[10][50][70][120]", path, trace);
+		subResult = subResult & assertEquals("[50][70][120]", path, trace);
 		/* Tree:
 			 [10][50][70][120]
 		*/
