@@ -28,9 +28,7 @@ public class tests_Task1 extends UnitTest{
 	public boolean run() {
 
 		boolean result = true;
-		// result = result & tree_single_node("Case: Single Node");
-
-
+		result = result & test_template("Case: Single Node");
 
 		return result;
 	}
@@ -45,16 +43,15 @@ public class tests_Task1 extends UnitTest{
 
 		// =========================================================
 		// TEST CASE START										VVVV
-		printSubTest("Test Template");
-		subResult = true;
+		subResult = start_test_case("Creating a new BPlusTree with M = 5");
 		// ==========================================================
 
-		subResult = subResult & assertCustom("a", "b");
+		int trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
+		subResult = subResult & assertEquals("expected", "received", trace);
 
 
 		// =========================================================
-		result = result & subResult;
-		printSubTestFooter(subResult);
+		result = end_test_case(result, subResult);
 		// TEST CASE END										^^^^
 		// =========================================================
 
@@ -63,7 +60,6 @@ public class tests_Task1 extends UnitTest{
 		printFooter(title, result);
 		return result;
 		// FOOTER END
-
 	}
 
 
