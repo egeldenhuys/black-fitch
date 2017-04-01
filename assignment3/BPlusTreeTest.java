@@ -102,6 +102,10 @@ public class BPlusTreeTest extends UnitTest{
 			 [50]
 		*/
 
+		path = tree.search(33);
+		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
+		subResult = subResult & assertEquals("[50],*NULL*", path, trace);
+
 		Integer n = 70;
 		path = tree.insertElement(n);
 		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
@@ -109,6 +113,10 @@ public class BPlusTreeTest extends UnitTest{
 		/* Tree:
 			 [50][70]
 		*/
+
+		path = tree.search(33);
+		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
+		subResult = subResult & assertEquals("[50][70],*NULL*", path, trace);
 
 		n = 120;
 		path = tree.insertElement(n);
@@ -118,13 +126,23 @@ public class BPlusTreeTest extends UnitTest{
 			 [50][70][120]
 		*/
 
+		path = tree.search(33);
+		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
+		subResult = subResult & assertEquals("[50][70][120],*NULL*", path, trace);
+
 		i = 10;
-		path = tree.insertElement(n);
+		path = tree.insertElement(i);
 		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
 		subResult = subResult & assertEquals("[50][70][120]", path, trace);
+
 		/* Tree:
 			 [10][50][70][120]
 		*/
+
+		path = tree.search(33);
+		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
+		subResult = subResult & assertEquals("[10][50][70][120],*NULL*", path, trace);
+
 
 		// =========================================================
 		result = end_test_case(result, subResult);
