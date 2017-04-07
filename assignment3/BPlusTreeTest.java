@@ -206,13 +206,24 @@ public class BPlusTreeTest extends UnitTest{
 
 		path = tree.insertElement(80);
 		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
-		subResult = subResult & assertEquals("[50],[50][70][120]", path, trace);
+		subResult = subResult & assertEquals("[50],[50][70][75][120]", path, trace);
 
 		// Right node full, so send keys to left brother
 		/* Tree:
-		              [70]
+					  [70]
 		[10][20][50]      [70][75][80][120]
 		*/
+
+		// Left
+		path = tree.search(71);
+		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
+		subResult = subResult & assertEquals("[70],[10][20][50],*NULL*", path, trace);
+
+		// Right
+		path = tree.search(71);
+		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
+		subResult = subResult & assertEquals("[70],[70][75][80][120],*NULL*", path, trace);
+
 
 		// =========================================================
 		result = end_test_case(result, subResult);
