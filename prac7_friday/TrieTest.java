@@ -279,13 +279,13 @@ public class TrieTest extends UnitTest{
 		// TEST CASE END										^^^^
 		// =========================================================
 		// TEST CASE START										VVVV
-		subResult = start_test_case("WHEN Deleting [TYT], THEN [WT] should become [W]");
+		subResult = start_test_case("WHEN Deleting [TYT] (the second last leaf), THEN the last leaf becomes the root");
 		// ==========================================================
 
 		trie.delete("TYT");
 
 		received = getTriePrint(trie);
-		expected = "(#,0)  (Q,0)  (W,1)  (E,0)  (R,0)  (T,0)  (Y,0)  \nWRWW";
+		expected = "WRWW";
 
 		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
 		subResult = subResult & assertEquals(expected, received, trace);
@@ -295,7 +295,7 @@ public class TrieTest extends UnitTest{
 		// TEST CASE END										^^^^
 		// =========================================================
 		// TEST CASE START										VVVV
-		subResult = start_test_case("WHEN Deleting [WRWW], THEN [W] should become NULL");
+		subResult = start_test_case("WHEN Deleting [WRWW] (the root), THEN [W] should become NULL");
 		// ==========================================================
 
 		trie.delete("WRWW");
