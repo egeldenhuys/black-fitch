@@ -133,10 +133,27 @@ public class TrieTest extends UnitTest{
 		// =========================================================
 		// =========================================================
 		// TEST CASE START										VVVV
-		subResult = start_test_case("Deleting RTRRR and then WRETE. [E] in [WER] should be null and [WRW] should be child of [R] in [#WR]");
+		subResult = start_test_case("Deleting RTRRR, THEN [WER] becomes [WE]");
 		// ==========================================================
 
 		trie.delete("RTRRR");
+
+		received = getTriePrint(trie);
+		expected = "(#,0)  (Q,0)  (W,1)  (E,0)  (R,1)  (T,1)  (Y,0)  \n(#,1)  (Q,0)  (W,1)  (E,0)  (R,1)  (T,0)  (Y,0)  \n(#,0)  (Q,0)  (W,0)  (E,0)  (R,0)  (T,1)  (Y,0)  \n(#,0)  (Q,0)  (W,0)  (E,0)  (R,0)  (T,1)  (Y,1)  \nW\nWWWWW\n(#,0)  (Q,0)  (W,1)  (E,1)  (R,0)  (T,0)  (Y,0)  \n(#,0)  (Q,0)  (W,1)  (E,1)  (R,0)  (T,0)  (Y,0)  \nTTT\nTYT\nWRWW\nWRETE\n(#,0)  (Q,0)  (W,1)  (E,1)  (R,0)  (T,0)  (Y,0)  \nRTE\nRTWW\nRTWE";
+
+		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
+		subResult = subResult & assertEquals(expected, received, trace);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Deleting WRETE. THEN [WE] collapses AND [WRW] becomes child of [#WR] at [R]");
+		// ==========================================================
+
 		trie.delete("WRETE");
 
 		received = getTriePrint(trie);
