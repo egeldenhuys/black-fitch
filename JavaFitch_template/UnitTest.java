@@ -28,6 +28,16 @@ public class UnitTest {
 
 	}
 
+	public boolean start_test_case(String title) {
+		printSubTest(title);
+		return true;
+	}
+
+	public boolean end_test_case(boolean result, boolean subResult) {
+		printSubTestFooter(subResult);
+		return result & subResult;
+	}
+
 	public void printFooter(String title, boolean result) {
 		testResult = testResult & result;
 
@@ -73,7 +83,28 @@ public class UnitTest {
 		return result;
 	}
 
-	public <T> boolean assertCustom(T received, T expected) {
+	public <T> boolean assertEquals(T expected, T received, int tracer) {
+		tracer++;
+
+		assertsCount++;
+		assertsCountSubTest++;
+
+		if (received.equals(expected)) {
+			assertsPassed++;
+			assertsPassedSubTest++;
+			return true;
+		} else {
+			System.out.println();
+			System.out.println("++++ ASSERT FAIL on line " + tracer + " ++++");
+			System.out.println("Expected: \n" + expected.toString());
+			System.out.println("Received: \n" + received.toString() + "\n");
+			System.out.println("++++++++++++++++++++++");
+
+			return false;
+		}
+	}
+
+	public <T> boolean assertEquals(T expected, T received) {
 
 		assertsCount++;
 		assertsCountSubTest++;
@@ -85,8 +116,28 @@ public class UnitTest {
 		} else {
 			System.out.println();
 			System.out.println("++++ ASSERT FAIL ++++");
-			System.out.println("Received: \n" + received.toString() + "\n");
 			System.out.println("Expected: \n" + expected.toString());
+			System.out.println("Received: \n" + received.toString() + "\n");
+			System.out.println("++++++++++++++++++++++");
+
+			return false;
+		}
+	}
+
+	public <T> boolean assertNull(T received, int tracer) {
+		tracer++;
+		assertsCount++;
+		assertsCountSubTest++;
+
+		if (received == null) {
+			assertsPassed++;
+			assertsPassedSubTest++;
+			return true;
+		} else {
+			System.out.println();
+			System.out.println("++++ ASSERT FAIL on line " + tracer + " ++++");
+			System.out.println("Expected: \n" + "null");
+			System.out.println("Received: \n" + received.toString() + "\n");
 			System.out.println("++++++++++++++++++++++");
 
 			return false;
@@ -105,8 +156,8 @@ public class UnitTest {
 		} else {
 			System.out.println();
 			System.out.println("++++ ASSERT FAIL ++++");
-			System.out.println("Received: \n" + received.toString() + "\n");
 			System.out.println("Expected: \n" + "null");
+			System.out.println("Received: \n" + received.toString() + "\n");
 			System.out.println("++++++++++++++++++++++");
 
 			return false;

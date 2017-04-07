@@ -1,0 +1,32 @@
+# Example make file showing relative paths to Black Fitch directories
+
+black_fitch_path=../prac6
+
+# To be configured by configure.sh:
+# 	black_fitch_path=/path/to/black-fitch/prac5
+
+junit_dir=$(black_fitch_path)/../../JUnit
+test_name=CalculatorTest
+
+task1:
+	javac -cp .:$(junit_dir)/* $(black_fitch_path)/$(test_name).java *.java -d .
+	java -cp .:$(junit_dir)/* org.junit.runner.JUnitCore $(test_name)
+
+clean:
+	rm -f $(task1_test_files_local)
+	rm -f *.class
+
+# Configure and copy the latest makefile
+update:
+	@cd "$(black_fitch_path)" && ./configure.sh -q
+	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
+
+# Pull black-fitch, configure and copy the latest makefile
+pull:
+	@echo "Pull black-fitch from  GitHub..."
+	cd "$(black_fitch_path)" && git pull origin assignment2
+
+	@cd "$(black_fitch_path)" && ./configure.sh -q
+	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
