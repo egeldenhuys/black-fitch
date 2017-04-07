@@ -206,7 +206,7 @@ public class BPlusTreeTest extends UnitTest{
 
 		path = tree.insertElement(80);
 		trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
-		subResult = subResult & assertEquals("[70],[70][75][80][120]", path, trace);
+		subResult = subResult & assertEquals("[50],[50][70][120]", path, trace);
 
 		// Right node full, so send keys to left brother
 		/* Tree:

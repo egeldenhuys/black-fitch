@@ -26,6 +26,7 @@ public class JavaFitchRunner {
 
 		printFooter("Testing Template", suite_Task1.testResult, suite_Task1.testsPassed, suite_Task1.testsCount, suite_Task1.assertsPassed, suite_Task1.assertsCount);
 		printFooter("OVERALL", result, testsPassed, testsCount, assertsPassed, assertsPassed);
+
 	}
 
 	public static void printHeader(String title) {
