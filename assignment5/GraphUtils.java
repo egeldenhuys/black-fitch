@@ -31,6 +31,9 @@ public class GraphUtils {
     public static String matrixToString(Vertex[] vArray, int[][][] mat) {
         String result = "  ";
 
+        if (vArray == null) {
+            return "vArray == null\n";
+        }
         // Print header
         for (int i = 0; i < vArray.length; i++) {
             result += vArray[i] != null ? vArray[i].label + " " : "null ";

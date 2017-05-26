@@ -13,7 +13,7 @@ public class tests_white_Task1 extends JavaFitchUnitTest{
 		boolean result = true;
 		result = result & test_reconstructGraph("reconstructGraph() and new Graph()");
 		result = result & test_clone("clone()");
-
+		result = result & test_getNumEdges("Load graph from file with duplicate edges");
 		return result;
 	}
 
@@ -54,6 +54,20 @@ public class tests_white_Task1 extends JavaFitchUnitTest{
 		// TEST CASE END										^^^^
 		// =========================================================
 
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Reconstructing graph from duplicates.txt ( reconstructGraph() )");
+		// ==========================================================
+		s = false;
+
+		s = g.reconstructGraph("duplicates.txt");
+
+		subResult = subResult & assertEquals("  A B C D \nA 0 1,1 0 0 \nB 1,1 0 2,2,2 0 \nC 0 2,2,2 0 3 \nD 0 0 3 0 \n", GraphUtils.matrixToString(g.vertices, g.matrix));
+		subResult = subResult & assertEquals(true, s);
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
 
 		// FOOTER
 		printFooter(title, result);
@@ -115,8 +129,6 @@ public class tests_white_Task1 extends JavaFitchUnitTest{
 		result = end_test_case(result, subResult);
 		// TEST CASE END										^^^^
 		// =========================================================
-
-
 
 		// FOOTER
 		printFooter(title, result);
