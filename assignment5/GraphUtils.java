@@ -1,5 +1,22 @@
 public class GraphUtils {
 
+    // TODO:
+    public static int getLongestField(Vertex[] vArray, int[][] mat) {
+
+        int longest = 0;
+        int result = 0;
+
+        for (int i = 0; i < vArray.length; i++) {
+            result = vArray[i] != null ? vArray[i].label.length() : 0;
+
+            if (result > longest) {
+                longest = result;
+            }
+        }
+
+        return longest;
+    }
+
     /*
       A B C D
     A 0 2 1 4
