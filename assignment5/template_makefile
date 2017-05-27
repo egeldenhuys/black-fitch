@@ -25,10 +25,12 @@ javaFitchRunnerName=JavaFitchRunner
 DummyLogFile=$(javaFitchPath)/JLogger_Stub.java
 
 graphsDir=$(black_fitch_path)/graphs
-graphs=$(graphsDir)/g1.txt $(graphsDir)/duplicates.txt $(graphsDir)/tree.txt $(graphsDir)/graph.txt
+graphs=$(graphsDir)/duplicates.txt $(graphsDir)/tree.txt $(graphsDir)/graph.txt \
+$(graphsDir)/house.txt $(graphsDir)/doubleHouse.txt $(graphsDir)/hexagon.txt
 
 localGraphDir=black-fitch_graph_files
-graphsLocal=$(localGraphDir)/g1.txt $(localGraphDir)/duplicates.txt $(localGraphDir)/tree.txt $(localGraphDir)/graph.txt
+graphsLocal=$(localGraphDir)/duplicates.txt $(localGraphDir)/tree.txt $(localGraphDir)/graph.txt \
+$(localGraphDir)/house.txt $(localGraphDir)/doubleHouse.txt $(localGraphDir)/hexagon.txt
 
 task1:
 	@echo "\nCopying Java Fitch..."

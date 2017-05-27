@@ -7,7 +7,7 @@ import java.lang.Object.*;
 
 public class GraphUtils {
 
-    public static final String GRAPH_CONFIG = "splines=curved;sep=\"+25,+25\"; nodesep=\"1\";overlap=scalexy";
+    public static final String GRAPH_CONFIG = "splines=curved;sep=\"+25,+25\"; nodesep=\"2\";overlap=false";
 
     // // TODO:
     // public static int getLongestField(Vertex[] vArray, int[][] mat) {
@@ -134,9 +134,11 @@ public class GraphUtils {
     }
 
     public static boolean arrayContainsString(String[] arr, String str) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != null && arr[i].equals(str)) {
-                return true;
+        if (arr != null) {
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i] != null && arr[i].equals(str)) {
+                    return true;
+                }
             }
         }
 
@@ -194,6 +196,11 @@ public class GraphUtils {
         return result;
     }
 
+
+    public static void graphToImage(Graph g, String graphFile, String imageFile, String[] srcName, String[] targetName, String active, String[][] jumpList) {
+        String dot = graphToDot(g, graphFile, srcName, targetName, active, jumpList);
+        drawGraphFromDot(dot, imageFile);
+    }
 
     public static void graphToImage(Graph g, String graphFile, String imageFile, String[] srcName, String[] targetName) {
         String dot = graphToDot(g, graphFile, srcName, targetName, "", null);
