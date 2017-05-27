@@ -5,11 +5,11 @@
 
 javaFitchPath=$(black_fitch_path)/../java-fitch
 javaFitchFiles=$(javaFitchPath)/JavaFitch.java $(black_fitch_path)/JavaFitchRunner.java $(javaFitchPath)/JavaFitchUnitTest.java \
-$(javaFitchPath)/JavaFitchLogger.java $(black_fitch_path)/JavaFitchRunner_white.java $(black_fitch_path)/GraphUtils.java
+$(javaFitchPath)/JLogger.java $(black_fitch_path)/JavaFitchRunner_white.java $(black_fitch_path)/GraphUtils.java
 
-javaFitchFilesLocal=JavaFitchRunner.java JavaFitchUnitTest.java JavaFitchLogger.java JavaFitch.java GraphUtils.java
+javaFitchFilesLocal=JavaFitchRunner.java JavaFitchUnitTest.java JLogger.java JavaFitch.java GraphUtils.java
 
-javaFitchFilesLocal_white=JavaFitchUnitTest.java JavaFitchLogger.java JavaFitch.java JavaFitchRunner_white.java GraphUtils.java
+javaFitchFilesLocal_white=JavaFitchUnitTest.java JLogger.java JavaFitch.java JavaFitchRunner_white.java GraphUtils.java
 
 task1_TestFiles=$(black_fitch_path)/tests_Task1.java
 task1_TestFilesLocal=tests_Task1.java
@@ -22,7 +22,7 @@ task1_UserSources=Graph.java
 
 javaFitchRunnerName=JavaFitchRunner
 
-DummyLogFile=$(javaFitchPath)/JavaFitchLoggerDummy.java
+DummyLogFile=$(javaFitchPath)/JLogger_Stub.java
 
 graphsDir=$(black_fitch_path)/graphs
 graphs=$(graphsDir)/g1.txt $(graphsDir)/duplicates.txt
@@ -43,7 +43,7 @@ task1:
 	rm -f $(javaFitchFilesLocal)
 	rm -f $(javaFitchFilesLocal_white)
 	rm -f $(graphsLocal)
-	cp -f $(DummyLogFile) JavaFitchLogger.java
+	cp -f $(DummyLogFile) JLogger.java
 
 task1_white:
 	@echo "\nCopying Java Fitch..."
@@ -60,7 +60,7 @@ task1_white:
 	rm -f $(javaFitchFilesLocal_white)
 	rm -f $(graphsLocal)
 	rm -f $(javaFitchFilesLocal)
-	cp -f $(DummyLogFile) JavaFitchLogger.java
+	cp -f $(DummyLogFile) JLogger.java
 
 clean:
 	rm -f $(task1_test_files_local)

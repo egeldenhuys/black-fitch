@@ -3,6 +3,7 @@ import java.io.InputStreamReader;
 import java.io.*;
 import java.util.Scanner;
 import java.util.*;
+import java.lang.Object.*;
 
 public class GraphUtils {
 
@@ -79,7 +80,7 @@ public class GraphUtils {
     }
 
     public static String getDotFromGraphFile(String fileName) {
-        String result = "graph {labelloc=\"t\";label=\"Graph on disk from " + fileName + "\";";
+        String result = "graph {labelloc=\"t\";label=\"Expected " + fileName + "\";";
 
         result += GRAPH_CONFIG + ";";
 
@@ -179,7 +180,7 @@ public class GraphUtils {
     }
 
     public static String graphToDot(Graph g, String graphFile) {
-        String result = "graph {labelloc=\"t\";label=\"Graph in memory from " + graphFile + "\";";
+        String result = "graph {labelloc=\"t\";label=\"Receieved " + graphFile + "\";";
         result += GRAPH_CONFIG + ";";
 
         String[] vertices = getVerticesFromGraphFile(graphFile);
@@ -211,7 +212,10 @@ public class GraphUtils {
 
     public static void drawGraphFromDot(String dot, String outputFile) {
 
-        JavaFitchLogger jLog = new JavaFitchLogger("graphviz", JavaFitchLogger.DEBUG);
+        File file = new File(outputFile);
+        File parentDir = file.getParentFile(); // to get the parent dir
+        //String parentDirName = file.getParent(); // to get the parent dir name
+        parentDir.mkdirs();
 
         ProcessBuilder builder = new ProcessBuilder("neato", "-T", "png", "-o", outputFile);
         builder.redirectErrorStream(true);
@@ -233,12 +237,14 @@ public class GraphUtils {
 
             Scanner scanner = new Scanner(stdout);
             while (scanner.hasNextLine()) {
-                jLog.log(JavaFitchLogger.ERROR, scanner.nextLine());
+                JLogger.log(JLogger.ERROR, scanner.nextLine());
             }
 
         } catch (IOException e) {
-            jLog.log(JavaFitchLogger.ERROR, e.toString());
-            System.exit(1);
+            JLogger.log(JLogger.ERROR, e.toString());
+            JLogger.log(JLogger.ERROR, "Please install graphviz for the ability to draw graphs.");
+            JLogger.log(JLogger.ERROR, "$ sudo pacman -S graphviz");
+            JLogger.log(JLogger.ERROR, "$ sudo apt-get install graphviz");
         }
 
     }
