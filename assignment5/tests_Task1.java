@@ -618,7 +618,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		g = new Graph(GRAPH_FILE_DIR + "/hexagon.txt");
 		path = g.depthFirstTraversal("A");
 
-		subResult = subResult & assertEquals("A,B,C,D,A,F,E,D,G,A,B,Cs,E,F", path);
+		subResult = subResult & assertEquals("A,B,C,D,A,F,E,D,G,A,B,C,E,F", path);
 		JLogger.log(JLogger.DEBUG, subResult);
 
 		// =========================================================
