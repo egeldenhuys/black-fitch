@@ -1,0 +1,7 @@
+7
+ROOT,B,1
+ROOT,C,7
+B,D,4
+B,G,10
+C,E,3
+C,F,10

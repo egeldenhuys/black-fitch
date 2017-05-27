@@ -37,6 +37,8 @@ public class GraphUtils {
         - index
         - label
     */
+
+    // WARNING: white-box
     public static String matrixToString(Vertex[] vArray, int[][][] mat) {
         String result = "  ";
 
@@ -121,6 +123,16 @@ public class GraphUtils {
         drawGraphFromDot(dot, outputFile);
     }
 
+    public static int getIndexByString(String[] arr, String str) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] != null && arr[i].equals(str)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     public static boolean arrayContainsString(String[] arr, String str) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] != null && arr[i].equals(str)) {
@@ -131,7 +143,10 @@ public class GraphUtils {
         return false;
     }
 
-    public static String[] getVerticesFromGraphFile(String fileName) {
+    /*
+    Need to give two arrays if nodes in the graph have been renamed to make node discovery possible
+    */
+    public static String[] getVerticesFromGraphFile(String fileName, String[] srcName, String[] targetName) {
         String[] result = new String[1];
         int resultCount = 0;
 
@@ -158,6 +173,12 @@ public class GraphUtils {
 
                         if (elements.length == 3) {
                             for (int i = 0; i < 2; i++) {
+
+                                // Rename element
+                                if (arrayContainsString(srcName, elements[i])) {
+                                    elements[i] = targetName[getIndexByString(srcName, elements[i])];
+                                }
+
                                 if (!arrayContainsString(result, elements[i])) {
                                     result[resultCount++] = elements[i];
                                 }
@@ -174,16 +195,21 @@ public class GraphUtils {
     }
 
 
-    public static void graphToImage(Graph g, String graphFile, String imageFile) {
-        String dot = graphToDot(g, graphFile);
+    public static void graphToImage(Graph g, String graphFile, String imageFile, String[] srcName, String[] targetName) {
+        String dot = graphToDot(g, graphFile, srcName, targetName);
         drawGraphFromDot(dot, imageFile);
     }
 
-    public static String graphToDot(Graph g, String graphFile) {
+    public static void graphToImage(Graph g, String graphFile, String imageFile) {
+        String dot = graphToDot(g, graphFile, new String[0], new String[0]);
+        drawGraphFromDot(dot, imageFile);
+    }
+
+    public static String graphToDot(Graph g, String graphFile, String[] srcName, String[] targetName) {
         String result = "graph {labelloc=\"t\";label=\"Receieved " + graphFile + "\";";
         result += GRAPH_CONFIG + ";";
 
-        String[] vertices = getVerticesFromGraphFile(graphFile);
+        String[] vertices = getVerticesFromGraphFile(graphFile, srcName, targetName);
         ArrayList<String> checked = new ArrayList<String>();
 
         // Take every node

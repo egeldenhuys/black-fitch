@@ -25,13 +25,16 @@ javaFitchRunnerName=JavaFitchRunner
 DummyLogFile=$(javaFitchPath)/JLogger_Stub.java
 
 graphsDir=$(black_fitch_path)/graphs
-graphs=$(graphsDir)/g1.txt $(graphsDir)/duplicates.txt
-graphsLocal=g1.txt duplicates.txt
+graphs=$(graphsDir)/g1.txt $(graphsDir)/duplicates.txt $(graphsDir)/tree.txt $(graphsDir)/graph.txt
+
+localGraphDir=black-fitch_graph_files
+graphsLocal=$(localGraphDir)/g1.txt $(localGraphDir)/duplicates.txt $(localGraphDir)/tree.txt $(localGraphDir)/graph.txt
 
 task1:
 	@echo "\nCopying Java Fitch..."
+	mkdir -p $(localGraphDir)
 	cp -f $(javaFitchFiles) .
-	cp -f $(graphs) .
+	cp -f $(graphs) $(localGraphDir)
 	cp -f $(task1_TestFiles) .
 	@echo ""
 
@@ -42,11 +45,12 @@ task1:
 	rm -f $(task1_TestFilesLocal)
 	rm -f $(javaFitchFilesLocal)
 	rm -f $(javaFitchFilesLocal_white)
-	rm -f $(graphsLocal)
+	rm -frd $(localGraphDir)
 	cp -f $(DummyLogFile) JLogger.java
 
 task1_white:
 	@echo "\nCopying Java Fitch..."
+	mkdirs $(localGraphDir)
 	cp -f $(javaFitchFiles) .
 	cp -f $(graphs) .
 	cp -f $(task1_white_TestFiles) .
