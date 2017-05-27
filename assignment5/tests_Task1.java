@@ -64,7 +64,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 
 		Graph g = new Graph("graph.txt");
 		GraphUtils.graphToImage(g, "graph.txt", GRAPH_DIR + "/graph_received.png");
-		GraphUtils.drawGraphFromFile("graph.txt", GRAPH_DIR + "/graph_expected.png");
+		GraphUtils.graphFileToImage("graph.txt", GRAPH_DIR + "/graph_expected.png");
 
 		// =========================================================
 		result = end_test_case(result, subResult);
@@ -78,7 +78,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 
 		g = new Graph("duplicates.txt");
 		GraphUtils.graphToImage(g, "duplicates.txt", GRAPH_DIR + "/duplicates_received.png");
-		GraphUtils.drawGraphFromFile("duplicates.txt", GRAPH_DIR + "/duplicates_expected.png");
+		GraphUtils.graphFileToImage("duplicates.txt", GRAPH_DIR + "/duplicates_expected.png");
 
 		// =========================================================
 		result = end_test_case(result, subResult);

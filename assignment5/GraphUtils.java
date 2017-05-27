@@ -116,7 +116,7 @@ public class GraphUtils {
         return result;
     }
 
-    public static void drawGraphFromFile(String inputFile, String outputFile) {
+    public static void graphFileToImage(String inputFile, String outputFile) {
         String dot = getDotFromGraphFile(inputFile);
         drawGraphFromDot(dot, outputFile);
     }
