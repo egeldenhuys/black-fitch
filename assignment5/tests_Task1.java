@@ -19,6 +19,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		result = result & test_numEdges("numEdges()");
 		result = result & test_getDegree("getDegree()");
 		result = result & test_changeLabel("changeLabel()");
+		result = result & test_depthFristTraversal("depthFirstTraversal()");
 
 		return result;
 	}
@@ -206,6 +207,35 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		GraphUtils.graphToImage(g, GRAPH_FILE_DIR + "/tree.txt", GRAPH_DIR + "/tree_changeLabel_receieved.png", new String[]{"ROOT"}, new String[]{"Bob"});
 		subResult = subResult & assertEquals(r, true);
 
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+
+		// FOOTER
+		printFooter(title, result);
+		return result;
+		// FOOTER END
+	}
+
+	public boolean test_depthFristTraversal(String title) {
+		// HEADER
+		printHeader(title);
+		boolean result = true;
+		boolean subResult = true;
+		// HEADER END
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading graph.txt. Testing depthFirstTraversal()");
+		// ==========================================================
+
+		Graph g = new Graph(GRAPH_FILE_DIR + "/graph.txt");
+		String path = g.depthFirstTraversal("A");
+
+		subResult = subResult & assertEquals("A,B,C,A,D,B,C", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);

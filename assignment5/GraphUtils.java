@@ -196,16 +196,57 @@ public class GraphUtils {
 
 
     public static void graphToImage(Graph g, String graphFile, String imageFile, String[] srcName, String[] targetName) {
-        String dot = graphToDot(g, graphFile, srcName, targetName);
+        String dot = graphToDot(g, graphFile, srcName, targetName, "", null);
+        drawGraphFromDot(dot, imageFile);
+    }
+
+    public static void graphToImage(Graph g, String graphFile, String imageFile, String activeVertex, String[][] path) {
+        String dot = graphToDot(g, graphFile, new String[0], new String[0], activeVertex, path);
         drawGraphFromDot(dot, imageFile);
     }
 
     public static void graphToImage(Graph g, String graphFile, String imageFile) {
-        String dot = graphToDot(g, graphFile, new String[0], new String[0]);
+        String dot = graphToDot(g, graphFile, new String[0], new String[0], "", null);
         drawGraphFromDot(dot, imageFile);
     }
 
-    public static String graphToDot(Graph g, String graphFile, String[] srcName, String[] targetName) {
+    public static String[][] pathToEdgeArray(String path) {
+        String[] elems = path.split(",");
+
+        String[][] master = new String[elems.length - 1][2];
+
+        for (int i = 0; i < elems.length - 1; i++) {
+            master[i][0] = elems[i];
+            master[i][1] = elems[i+1];
+        }
+
+        return master;
+    }
+
+    public static boolean edgeInTraveled(String[][] path, String vertA, String vertB) {
+
+        if (path != null) {
+            for (int i = 0; i < path.length; i++) {
+                // Check if one of the vertices are in the current entry
+                if (path[i][0] != null) {
+                    if (path[i][0].equals(vertA)) {
+                        if (path[i][1].equals(vertB)) {
+                            return true;
+                        }
+                    } else if (path[i][0].equals(vertB)) {
+                        if (path[i][1].equals(vertA)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+    public static String graphToDot(Graph g, String graphFile, String[] srcName, String[] targetName, String activeVertex, String[][] jumps) {
         String result = "graph {labelloc=\"t\";label=\"Receieved " + graphFile + "\";";
         result += GRAPH_CONFIG + ";";
 
@@ -221,7 +262,15 @@ public class GraphUtils {
                     int edges = g.numEdges(vertices[i], vertices[j]);
                     // Record if there are edges
                     for (int k = 0; k < edges; k++) {
-                        result += vertices[i] + "--" + vertices[j] + ";";
+
+
+                        if (edgeInTraveled(jumps, vertices[i], vertices[j])) {
+                            result += vertices[i] + "--" + vertices[j] + " [dir=none; color=blue];";
+                        } else {
+                            result += vertices[i] + "--" + vertices[j] + ";";
+                        }
+
+
                     }
                 }
             }
@@ -230,6 +279,11 @@ public class GraphUtils {
             checked.add(vertices[i]);
         }
         // To what does each node connect?
+
+        if (activeVertex != "") {
+            // node [shape=box, color=blue]
+            result += activeVertex + " [style=filled, fillcolor=firebrick1];";
+        }
 
         result += "}";
 
