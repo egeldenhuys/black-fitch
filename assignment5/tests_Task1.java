@@ -34,7 +34,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 
 		// =========================================================
 		// TEST CASE START										VVVV
-		subResult = start_test_case("Testing...");
+		subResult = start_test_case("Template");
 		// ==========================================================
 
 		Graph g = new Graph(GRAPH_FILE_DIR + "/graph.txt");
@@ -241,6 +241,22 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		result = end_test_case(result, subResult);
 		// TEST CASE END										^^^^
 		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading duplicates.txt. Testing depthFirstTraversal()");
+		// ==========================================================
+
+		g = new Graph(GRAPH_FILE_DIR + "/duplicates.txt");
+		path = g.depthFirstTraversal("A");
+
+		subResult = subResult & assertEquals("A,B,C,A,D,B,C", path);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
 
 
 		// FOOTER

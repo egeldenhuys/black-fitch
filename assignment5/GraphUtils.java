@@ -223,6 +223,30 @@ public class GraphUtils {
         return master;
     }
 
+    public static int getJumpCount(String[][] jumps, String vertA, String vertB) {
+
+        int count = 0;
+
+        if (jumps != null) {
+            for (int i = 0; i < jumps.length; i++) {
+                // Check if one of the vertices are in the current entry
+                if (jumps[i][0] != null) {
+                    if (jumps[i][0].equals(vertA)) {
+                        if (jumps[i][1].equals(vertB)) {
+                            count++;
+                        }
+                    } else if (jumps[i][0].equals(vertB)) {
+                        if (jumps[i][1].equals(vertA)) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
     public static boolean edgeInTraveled(String[][] path, String vertA, String vertB) {
 
         if (path != null) {
@@ -251,6 +275,13 @@ public class GraphUtils {
         result += GRAPH_CONFIG + ";";
 
         String[] vertices = getVerticesFromGraphFile(graphFile, srcName, targetName);
+        int[][] edgeSeenCount = null;
+
+        if (jumps != null) {
+            edgeSeenCount = new int[jumps.length][jumps.length];
+        }
+
+
         ArrayList<String> checked = new ArrayList<String>();
 
         // Take every node
@@ -263,9 +294,21 @@ public class GraphUtils {
                     // Record if there are edges
                     for (int k = 0; k < edges; k++) {
 
+                        // Only highlight as many edges as there are in the jump list
+                        // the rest should be plain
+
 
                         if (edgeInTraveled(jumps, vertices[i], vertices[j])) {
-                            result += vertices[i] + "--" + vertices[j] + " [dir=none; color=blue, penwidth=2];";
+
+                            if (edgeSeenCount != null & edgeSeenCount[i][j] < getJumpCount(jumps, vertices[i], vertices[j])) {
+                                result += vertices[i] + "--" + vertices[j] + " [dir=none; color=blue, penwidth=2];";
+                                edgeSeenCount[i][j]++;
+                                edgeSeenCount[j][i]++;
+                            } else {
+                                result += vertices[i] + "--" + vertices[j] + ";";
+                            }
+
+
                         } else {
                             result += vertices[i] + "--" + vertices[j] + ";";
                         }
@@ -279,7 +322,7 @@ public class GraphUtils {
             checked.add(vertices[i]);
         }
 
-        // NOTE: This function created a lot of duplicate data
+        // NOTE: This function creates a lot of duplicate data
         if (jumps != null) {
             for (int i = 0; i < jumps.length; i++) {
                 if (jumps[i][0] != null && jumps[i][1] != null) {
