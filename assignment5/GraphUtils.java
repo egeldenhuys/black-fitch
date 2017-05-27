@@ -2,8 +2,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.*;
 import java.util.Scanner;
+import java.util.*;
 
 public class GraphUtils {
+
+    public static final String GRAPH_CONFIG = "splines=curved;sep=\"+25,+25\"; nodesep=\"1\";overlap=scalexy";
 
     // // TODO:
     // public static int getLongestField(Vertex[] vArray, int[][] mat) {
@@ -76,9 +79,9 @@ public class GraphUtils {
     }
 
     public static String getDotFromGraphFile(String fileName) {
-        String result = "";
+        String result = "graph {labelloc=\"t\";label=\"Graph on disk from " + fileName + "\";";
 
-        result += "graph{splines=curved;sep=\"+25,+25\"; nodesep=\"1\";overlap=scalexy;";
+        result += GRAPH_CONFIG + ";";
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -115,6 +118,95 @@ public class GraphUtils {
     public static void drawGraphFromFile(String inputFile, String outputFile) {
         String dot = getDotFromGraphFile(inputFile);
         drawGraphFromDot(dot, outputFile);
+    }
+
+    public static boolean arrayContainsString(String[] arr, String str) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] != null && arr[i].equals(str)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static String[] getVerticesFromGraphFile(String fileName) {
+        String[] result = new String[1];
+        int resultCount = 0;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String line;
+            int lineCount = 1;
+
+            while ((line = br.readLine()) != null) {
+                if (lineCount == 1) {
+                    int count = Integer.parseInt(line);
+                    result = new String[count];
+
+                    lineCount++;
+                } else {
+                    line = line.trim();
+                    line = line.replace(" ", "");
+                    line = line.replace("\n", "").replace("\r", "");
+
+                    if (!line.equals("")) {
+
+                        // Add to the array
+                        String[] elements = line.split(",");
+
+                        if (elements.length == 3) {
+                            for (int i = 0; i < 2; i++) {
+                                if (!arrayContainsString(result, elements[i])) {
+                                    result[resultCount++] = elements[i];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+
+        }
+
+        return result;
+    }
+
+
+    public static void graphToImage(Graph g, String graphFile, String imageFile) {
+        String dot = graphToDot(g, graphFile);
+        drawGraphFromDot(dot, imageFile);
+    }
+
+    public static String graphToDot(Graph g, String graphFile) {
+        String result = "graph {labelloc=\"t\";label=\"Graph in memory from " + graphFile + "\";";
+        result += GRAPH_CONFIG + ";";
+
+        String[] vertices = getVerticesFromGraphFile(graphFile);
+        ArrayList<String> checked = new ArrayList<String>();
+
+        // Take every node
+        for ( int i = 0; i < vertices.length; i++) {
+
+            // Compare with other nodes
+            for ( int j = 0; j < vertices.length; j++) {
+                if (!checked.contains(vertices[j])) {
+                    int edges = g.numEdges(vertices[i], vertices[j]);
+                    // Record if there are edges
+                    for (int k = 0; k < edges; k++) {
+                        result += vertices[i] + "--" + vertices[j] + ";";
+                    }
+                }
+            }
+
+            // Mark node as visted
+            checked.add(vertices[i]);
+        }
+        // To what does each node connect?
+
+        result += "}";
+
+        return result;
     }
 
     public static void drawGraphFromDot(String dot, String outputFile) {

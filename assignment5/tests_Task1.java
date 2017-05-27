@@ -59,6 +59,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		subResult = start_test_case("Loading graph with duplicate edges");
 		// ==========================================================
 
+
 		Graph g = new Graph("duplicates.txt");
 
 		subResult = subResult & assertEquals(g.numEdges("A", "B"), 2);
