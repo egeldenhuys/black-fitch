@@ -4,7 +4,7 @@ Example test suite
 
 public class tests_Task1 extends JavaFitchUnitTest{
 
-	public static final String GRAPH_DIR = "graphs/";
+	public static final String GRAPH_DIR = "black-fitch_graphs/";
 
 	public tests_Task1(String n) {
 		super(n);

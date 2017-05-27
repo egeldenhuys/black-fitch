@@ -65,6 +65,7 @@ task1_white:
 clean:
 	rm -f $(task1_test_files_local)
 	rm -f *.class
+	rm -fr black-fitch_graphs
 
 # Configure and copy the latest makefile
 update:
