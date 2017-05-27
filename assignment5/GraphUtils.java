@@ -265,7 +265,7 @@ public class GraphUtils {
 
 
                         if (edgeInTraveled(jumps, vertices[i], vertices[j])) {
-                            result += vertices[i] + "--" + vertices[j] + " [dir=none; color=blue];";
+                            result += vertices[i] + "--" + vertices[j] + " [dir=none; color=blue, penwidth=2];";
                         } else {
                             result += vertices[i] + "--" + vertices[j] + ";";
                         }
@@ -278,7 +278,17 @@ public class GraphUtils {
             // Mark node as visted
             checked.add(vertices[i]);
         }
-        // To what does each node connect?
+
+        // NOTE: This function created a lot of duplicate data
+        if (jumps != null) {
+            for (int i = 0; i < jumps.length; i++) {
+                if (jumps[i][0] != null && jumps[i][1] != null) {
+                    result += jumps[i][0] + " [style=filled, fillcolor=green];";
+                    result += jumps[i][1] + " [style=filled, fillcolor=green];";
+                }
+
+            }
+        }
 
         if (activeVertex != "") {
             // node [shape=box, color=blue]
