@@ -196,24 +196,28 @@ public class GraphUtils {
         return result;
     }
 
+    public static void graphToImage(Graph g, String graphFile, String imageFile, String[] srcName, String[] targetName, String active, String[][] jumpList, String path) {
+        String dot = graphToDot(g, graphFile, srcName, targetName, active, jumpList, path);
+        drawGraphFromDot(dot, imageFile);
+    }
 
     public static void graphToImage(Graph g, String graphFile, String imageFile, String[] srcName, String[] targetName, String active, String[][] jumpList) {
-        String dot = graphToDot(g, graphFile, srcName, targetName, active, jumpList);
+        String dot = graphToDot(g, graphFile, srcName, targetName, active, jumpList, "");
         drawGraphFromDot(dot, imageFile);
     }
 
     public static void graphToImage(Graph g, String graphFile, String imageFile, String[] srcName, String[] targetName) {
-        String dot = graphToDot(g, graphFile, srcName, targetName, "", null);
+        String dot = graphToDot(g, graphFile, srcName, targetName, "", null, "");
         drawGraphFromDot(dot, imageFile);
     }
 
     public static void graphToImage(Graph g, String graphFile, String imageFile, String activeVertex, String[][] path) {
-        String dot = graphToDot(g, graphFile, new String[0], new String[0], activeVertex, path);
+        String dot = graphToDot(g, graphFile, new String[0], new String[0], activeVertex, path, "");
         drawGraphFromDot(dot, imageFile);
     }
 
     public static void graphToImage(Graph g, String graphFile, String imageFile) {
-        String dot = graphToDot(g, graphFile, new String[0], new String[0], "", null);
+        String dot = graphToDot(g, graphFile, new String[0], new String[0], "", null, "");
         drawGraphFromDot(dot, imageFile);
     }
 
@@ -277,8 +281,17 @@ public class GraphUtils {
 
     }
 
-    public static String graphToDot(Graph g, String graphFile, String[] srcName, String[] targetName, String activeVertex, String[][] jumps) {
-        String result = "graph {labelloc=\"t\";label=\"Receieved " + graphFile + "\";";
+    public static String graphToDot(Graph g, String graphFile, String[] srcName, String[] targetName, String activeVertex, String[][] jumps, String path) {
+
+        String title = "\"Receieved " + graphFile + "\"";
+
+        if (path != "") {
+            title = "\"Receieved " + graphFile + "\n" + path + "\"";
+        }
+
+        String result = "graph {labelloc=\"t\";label=" + title + ";";
+
+
         result += GRAPH_CONFIG + ";";
 
         String[] vertices = getVerticesFromGraphFile(graphFile, srcName, targetName);

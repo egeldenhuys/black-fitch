@@ -147,6 +147,34 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		// TEST CASE END										^^^^
 		// =========================================================
 
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Drawing circular.txt...");
+		// ==========================================================
+
+		g = new Graph(GRAPH_FILE_DIR + "/circular.txt");
+		GraphUtils.graphToImage(g,  GRAPH_FILE_DIR + "/circular.txt", GRAPH_DIR + "/circular_received.png");
+		GraphUtils.graphFileToImage(GRAPH_FILE_DIR + "/circular.txt", GRAPH_DIR + "/circular_expected.png");
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Drawing large.txt...");
+		// ==========================================================
+
+		g = new Graph(GRAPH_FILE_DIR + "/large.txt");
+		GraphUtils.graphToImage(g,  GRAPH_FILE_DIR + "/large.txt", GRAPH_DIR + "/large_received.png");
+		GraphUtils.graphFileToImage(GRAPH_FILE_DIR + "/large.txt", GRAPH_DIR + "/large_expected.png");
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
 		// FOOTER
 		printFooter(title, result);
 		return result;
@@ -181,13 +209,14 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		subResult = start_test_case("Testing with DFS()");
 		// ==========================================================
 
+		// graph.txt
 		String path = g2.depthFirstTraversal("A");
-		subResult = subResult & assertEquals("A,B,C,A,D,B,C", path);
+		subResult = subResult & assertEquals("A,B,C,D", path);
 
 		g = null;
 
 		path = g2.depthFirstTraversal("A");
-		subResult = subResult & assertEquals("A,B,C,A,D,B,C", path);
+		subResult = subResult & assertEquals("A,B,C,D", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);
@@ -216,7 +245,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 
 		String path = g.depthFirstTraversal("A");
 
-		subResult = subResult & assertEquals("A,B,C,A,D,B,C", path);
+		subResult = subResult & assertEquals("A,B,C,D", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);
@@ -232,7 +261,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 
 		path = g.depthFirstTraversal("A");
 
-		subResult = subResult & assertEquals("A,B,C,D,A,F,E,D,G,A,B,C,E,F", path);
+		subResult = subResult & assertEquals("A,B,C,D,E,F,G", path);
 		subResult = subResult & assertEquals(true, r);
 
 		// =========================================================
@@ -492,12 +521,13 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		subResult = start_test_case("Testing depthFirstTraversal() after label change");
 		// ==========================================================
 
+		// graph.txt
 		String path = g.depthFirstTraversal("C");
-		subResult = subResult & assertEquals("C,B,D,C,JOHN,B,D", path);
+		subResult = subResult & assertEquals("C,B,D,JOHN", path);
 
 		path = g.depthFirstTraversal("JOHN");
 
-		subResult = subResult & assertEquals("JOHN,B,C,D,B,JOHN,C", path);
+		subResult = subResult & assertEquals("JOHN,B,C,D", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);
@@ -541,8 +571,16 @@ public class tests_Task1 extends JavaFitchUnitTest{
 
 		Graph g = new Graph(GRAPH_FILE_DIR + "/graph.txt");
 		String path = g.depthFirstTraversal("A");
+		subResult = subResult & assertEquals("A,B,C,D", path);
 
-		subResult = subResult & assertEquals("A,B,C,A,D,B,C", path);
+		path = g.depthFirstTraversal("B");
+		subResult = subResult & assertEquals("B,A,C,D", path);
+
+		path = g.depthFirstTraversal("C");
+		subResult = subResult & assertEquals("C,A,B,D", path);
+
+		path = g.depthFirstTraversal("D");
+		subResult = subResult & assertEquals("D,A,B,C", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);
@@ -570,9 +608,15 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		// ==========================================================
 
 		g = new Graph(GRAPH_FILE_DIR + "/duplicates.txt");
-		path = g.depthFirstTraversal("A");
 
-		subResult = subResult & assertEquals("A,B,A,C,B,C,D", path);
+		path = g.depthFirstTraversal("A");
+		subResult = subResult & assertEquals("A,B,C,D", path);
+
+		path = g.depthFirstTraversal("C");
+		subResult = subResult & assertEquals("C,B,A,D", path);
+
+		path = g.depthFirstTraversal("D");
+		subResult = subResult & assertEquals("D,C,B,A", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);
@@ -587,7 +631,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		g = new Graph(GRAPH_FILE_DIR + "/house.txt");
 		path = g.depthFirstTraversal("A");
 
-		subResult = subResult & assertEquals("A,B,D,A,C,E,B", path);
+		subResult = subResult & assertEquals("A,B,D,C,E", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);
@@ -602,7 +646,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		g = new Graph(GRAPH_FILE_DIR + "/doubleHouse.txt");
 		path = g.depthFirstTraversal("D");
 
-		subResult = subResult & assertEquals("D,A,B,D,C,E,B,F,A", path);
+		subResult = subResult & assertEquals("D,A,B,E,C,F", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);
@@ -616,10 +660,44 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		// ==========================================================
 
 		g = new Graph(GRAPH_FILE_DIR + "/hexagon.txt");
-		path = g.depthFirstTraversal("A");
+		path = g.depthFirstTraversal("G");
+		subResult = subResult & assertEquals("G,A,B,C,D,E,F", path);
 
-		subResult = subResult & assertEquals("A,B,C,D,A,F,E,D,G,A,B,C,E,F", path);
-		JLogger.log(JLogger.DEBUG, subResult);
+		path = g.depthFirstTraversal("F");
+		subResult = subResult & assertEquals("F,A,B,C,D,E,G", path);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading circular.txt. Testing depthFirstTraversal()");
+		// ==========================================================
+
+		g = new Graph(GRAPH_FILE_DIR + "/circular.txt");
+
+		path = g.depthFirstTraversal("B");
+		subResult = subResult & assertEquals("B,C,E,A,D", path);
+
+		path = g.depthFirstTraversal("E");
+		subResult = subResult & assertEquals("E,A,D,B,C", path);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading large.txt. Testing depthFirstTraversal()");
+		// ==========================================================
+
+		g = new Graph(GRAPH_FILE_DIR + "/large.txt");
+
+		path = g.depthFirstTraversal("X");
+		subResult = subResult & assertEquals("X,C,Q,V,T,D,A,F,E,Y,G,H,M,J,K,L,I,N,P,W,U,R,S,B", path);
 
 		// =========================================================
 		result = end_test_case(result, subResult);

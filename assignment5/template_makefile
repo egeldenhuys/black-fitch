@@ -26,11 +26,13 @@ DummyLogFile=$(javaFitchPath)/JLogger_Stub.java
 
 graphsDir=$(black_fitch_path)/graphs
 graphs=$(graphsDir)/duplicates.txt $(graphsDir)/tree.txt $(graphsDir)/graph.txt \
-$(graphsDir)/house.txt $(graphsDir)/doubleHouse.txt $(graphsDir)/hexagon.txt
+$(graphsDir)/house.txt $(graphsDir)/doubleHouse.txt $(graphsDir)/hexagon.txt \
+$(graphsDir)/circular.txt $(graphsDir)/large.txt
 
 localGraphDir=black-fitch_graph_files
 graphsLocal=$(localGraphDir)/duplicates.txt $(localGraphDir)/tree.txt $(localGraphDir)/graph.txt \
-$(localGraphDir)/house.txt $(localGraphDir)/doubleHouse.txt $(localGraphDir)/hexagon.txt
+$(localGraphDir)/house.txt $(localGraphDir)/doubleHouse.txt $(localGraphDir)/hexagon.txt \
+$(localGraphDir)/circular.txt $(localGraphDir)/large.txt
 
 task1:
 	@echo "\nCopying Java Fitch..."
