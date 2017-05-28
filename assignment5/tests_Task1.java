@@ -16,12 +16,12 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		boolean result = true;
 		//result = result & test_template("Read File");
 		result = result & test_draw_graphs("Drawing graphs");
-		result = result & test_clone("clone()");
-		result = result & test_reconstructGraph("reconstructGraph()");
 		result = result & test_numEdges("numEdges()");
 		result = result & test_getDegree("getDegree()");
-		result = result & test_changeLabel("changeLabel()");
 		result = result & test_depthFristTraversal("depthFirstTraversal()");
+		result = result & test_clone("clone()");
+		result = result & test_reconstructGraph("reconstructGraph()");
+		result = result & test_changeLabel("changeLabel()");
 
 		return result;
 	}
