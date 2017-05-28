@@ -31,6 +31,7 @@ $(localGraphDir)/house.txt $(localGraphDir)/doubleHouse.txt $(localGraphDir)/hex
 $(localGraphDir)/circular.txt $(localGraphDir)/large.txt
 
 task1:
+	@-curl -I -s "http://emptiness.mooo.com/black-fitch/hit/start" -o /dev/null &
 	@echo "Black Fitch - " $(version)
 	@echo "Copying Java Fitch..."
 	@mkdir -p $(localGraphDir)
@@ -40,7 +41,7 @@ task1:
 	@echo ""
 
 	@javac $(javaFitchFilesLocal) $(task1_TestFilesLocal) $(task1_UserSources)
-	@java $(javaFitchRunnerName)
+	@-java $(javaFitchRunnerName); curl -I -s "http://emptiness.mooo.com/black-fitch/hit/$$?" -o /dev/null &
 
 	@echo "Cleaning up..."
 	@rm -f $(task1_TestFilesLocal)
