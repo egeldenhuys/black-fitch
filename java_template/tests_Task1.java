@@ -4,6 +4,10 @@ Example test suite
 
 public class tests_Task1 extends JavaFitchUnitTest{
 
+	public tests_Task1(String n) {
+		super(n);
+	}
+
 	public boolean run() {
 
 		boolean result = true;
@@ -25,8 +29,7 @@ public class tests_Task1 extends JavaFitchUnitTest{
 		subResult = start_test_case("Creating a new BPlusTree with M = 5");
 		// ==========================================================
 
-		int trace = Thread.currentThread().getStackTrace()[1].getLineNumber();
-		subResult = subResult & assertEquals("123", "-1", trace);
+		subResult = subResult & assertEquals("123", "-1");
 
 		// =========================================================
 		result = end_test_case(result, subResult);

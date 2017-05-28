@@ -1,7 +1,3 @@
-/*
-Example test suite
-*/
-
 public class tests_Task1 extends JavaFitchUnitTest{
 
 	public static final String GRAPH_DIR = "black-fitch_graphs";
@@ -14,7 +10,6 @@ public class tests_Task1 extends JavaFitchUnitTest{
 	public boolean run() {
 
 		boolean result = true;
-		//result = result & test_template("Read File");
 		result = result & test_draw_graphs("Drawing graphs");
 		result = result & test_numEdges("numEdges()");
 		result = result & test_getDegree("getDegree()");

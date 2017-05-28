@@ -1,16 +1,11 @@
 # Change Log
+All notable changes to this project will be documented in this file.
 
-All notable changes to unit tests will be documented in this file.
+## 2017-05-28 10:40
+### Added
+- Add tests for Assignment 5 - Task 1
 
-## 2017-04-07
-
-### Tests
-#### Added
-- Moved Assignment3 unit tests to archive
-
-### JavaFitch
-#### Added
-- JavaFitch assert line numbers
-
-#### Changed
-- `assertCustom(receieved, expected)` changed to `assertEquals(expected, receieved, tracer)`
+### Changed
+- Change license from MIT to GPL-3.0
+- Archived Practical 7 - Friday
+- Split Java Fitch into a separate repository
