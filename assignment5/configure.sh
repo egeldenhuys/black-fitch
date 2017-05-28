@@ -1,5 +1,8 @@
 #!/bin/bash
 
+git submodule init
+git submodule update
+
 # This script sets the black_fitch_path in black-fitch-makefile by prepending it to the
 # makefile_template in the current directory
 
