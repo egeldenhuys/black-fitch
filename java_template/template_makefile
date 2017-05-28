@@ -1,0 +1,51 @@
+# To be configured by configure.sh:
+# 	black_fitch_path=/path/to/black-fitch/prac5
+
+# TODO: More elegant solution than these duplicate values
+# Need some type of resource manager for install/uninstall
+
+javaFitchPath=$(black_fitch_path)/../java-fitch
+javaFitchFiles=$(javaFitchPath)/JavaFitch.java $(black_fitch_path)/JavaFitchRunner.java $(javaFitchPath)/JavaFitchUnitTest.java \
+$(javaFitchPath)/JLogger.java $(black_fitch_path)/GraphUtils.java
+
+javaFitchFilesLocal=JavaFitchRunner.java JavaFitchUnitTest.java JLogger.java JavaFitch.java GraphUtils.java
+
+task1_TestFiles=$(black_fitch_path)/tests_Task1.java
+task1_TestFilesLocal=tests_Task1.java
+
+task1_UserSources=Graph.java
+javaFitchRunnerName=JavaFitchRunner
+
+task1:
+	@echo "\nCopying Java Fitch..."
+	mkdir -p $(localGraphDir)
+	cp -f $(javaFitchFiles) .
+	cp -f $(task1_TestFiles) .
+	@echo ""
+
+	javac $(javaFitchFilesLocal) $(task1_TestFilesLocal) $(task1_UserSources)
+	java $(javaFitchRunnerName)
+
+	@echo "\nCleaning up..."
+	rm -f $(task1_TestFilesLocal)
+	rm -f $(javaFitchFilesLocal)
+	rm -frd $(localGraphDir)
+
+clean:
+	rm -f $(task1_test_files_local)
+	rm -f *.class
+
+# Configure and copy the latest makefile
+update:
+	@cd "$(black_fitch_path)" && ./configure.sh -q
+	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
+
+# Pull black-fitch, configure and copy the latest makefile
+pull:
+	@echo "Pull black-fitch from  GitHub..."
+	cd "$(black_fitch_path)" && git pull origin assignment2
+
+	@cd "$(black_fitch_path)" && ./configure.sh -q
+	@mv "$(black_fitch_path)/black-fitch-makefile" .
+	@echo "black-fitch-makefile has been updated to the latest version!"
