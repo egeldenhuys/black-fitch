@@ -318,7 +318,7 @@ public class GraphUtils {
 
             Scanner scanner = new Scanner(stdout);
             while (scanner.hasNextLine()) {
-                JLogger.log(JLogger.ERROR, scanner.nextLine());
+                JLogger.log(JLogger.ERROR, "[GraphUtils.java] " + scanner.nextLine());
             }
 
         } catch (IOException e) {

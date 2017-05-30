@@ -4,19 +4,23 @@
 # TODO: More elegant solution than these duplicate values
 # Need some type of resource manager for install/uninstall
 
-version="2017-05-28 10:40"
+version="2017-05-28 dev"
 
 javaFitchPath=$(black_fitch_path)/../java-fitch
-javaFitchFiles=$(javaFitchPath)/JavaFitch.java $(black_fitch_path)/JavaFitchRunner.java $(javaFitchPath)/JavaFitchUnitTest.java \
+javaFitchFiles=$(javaFitchPath)/JavaFitch.java $(javaFitchPath)/JavaFitchUnitTest.java \
 $(javaFitchPath)/JLogger.java $(black_fitch_path)/GraphUtils.java
 
-javaFitchFilesLocal=JavaFitchRunner.java JavaFitchUnitTest.java JLogger.java JavaFitch.java GraphUtils.java
+javaFitchFilesLocal=JavaFitchUnitTest.java JLogger.java JavaFitch.java GraphUtils.java
 
-task1_TestFiles=$(black_fitch_path)/tests_Task1.java
-task1_TestFilesLocal=tests_Task1.java
+task1_TestFiles=$(black_fitch_path)/tests_Task1.java $(black_fitch_path)/JavaFitchRunner.java
+task1_TestFilesLocal=tests_Task1.java JavaFitchRunner.java
+
+task2_TestFiles=$(black_fitch_path)/tests_Task2.java $(black_fitch_path)/JavaFitchRunner_task2.java
+task2_TestFilesLocal=tests_Task2.java JavaFitchRunner_task2.java
 
 task1_UserSources=Graph.java
-javaFitchRunnerName=JavaFitchRunner
+javaFitchRunnerName_task1=JavaFitchRunner
+javaFitchRunnerName_task2=JavaFitchRunner_task2
 
 DummyLogFile=$(javaFitchPath)/JLogger_Stub.java
 
@@ -31,7 +35,7 @@ $(localGraphDir)/house.txt $(localGraphDir)/doubleHouse.txt $(localGraphDir)/hex
 $(localGraphDir)/circular.txt $(localGraphDir)/large.txt
 
 task1:
-	@-curl -I -s "http://emptiness.mooo.com/black-fitch/hit/start" -o /dev/null &
+	@-curl -I -s "http://emptiness.mooo.com/black-fitch/hit/a5-t1/s" -o /dev/null &
 	@echo "Black Fitch - " $(version)
 	@echo "Copying Java Fitch..."
 	@mkdir -p $(localGraphDir)
@@ -41,10 +45,29 @@ task1:
 	@echo ""
 
 	@javac $(javaFitchFilesLocal) $(task1_TestFilesLocal) $(task1_UserSources)
-	@-java $(javaFitchRunnerName); curl -I -s "http://emptiness.mooo.com/black-fitch/hit/$$?" -o /dev/null &
+	@-java $(javaFitchRunnerName_task1); curl -I -s "http://emptiness.mooo.com/black-fitch/hit/a5-t1/$$?" -o /dev/null &
 
 	@echo "Cleaning up..."
 	@rm -f $(task1_TestFilesLocal)
+	@rm -f $(javaFitchFilesLocal)
+	@rm -frd $(localGraphDir)
+	@cp -f $(DummyLogFile) JLogger.java
+
+task2:
+	@-curl -I -s "http://emptiness.mooo.com/black-fitch/hit/a5-t2/s" -o /dev/null &
+	@echo "Black Fitch - " $(version)
+	@echo "Copying Java Fitch..."
+	@mkdir -p $(localGraphDir)
+	@cp -f $(javaFitchFiles) .
+	@cp -f $(graphs) $(localGraphDir)
+	@cp -f $(task2_TestFiles) .
+	@echo ""
+
+	@javac $(javaFitchFilesLocal) $(task2_TestFilesLocal) $(task1_UserSources)
+	@-java $(javaFitchRunnerName_task2); curl -I -s "http://emptiness.mooo.com/black-fitch/hit/a5-t2/$$?" -o /dev/null &
+
+	@echo "Cleaning up..."
+	@rm -f $(task2_TestFilesLocal)
 	@rm -f $(javaFitchFilesLocal)
 	@rm -frd $(localGraphDir)
 	@cp -f $(DummyLogFile) JLogger.java
