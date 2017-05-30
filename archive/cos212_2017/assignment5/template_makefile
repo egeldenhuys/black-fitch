@@ -35,7 +35,6 @@ $(localGraphDir)/house.txt $(localGraphDir)/doubleHouse.txt $(localGraphDir)/hex
 $(localGraphDir)/circular.txt $(localGraphDir)/large.txt
 
 task1:
-	@-curl -I -s "http://emptiness.mooo.com/black-fitch/hit/a5-t1/s" -o /dev/null &
 	@echo "Black Fitch - " $(version)
 	@echo "Copying Java Fitch..."
 	@mkdir -p $(localGraphDir)
@@ -45,7 +44,7 @@ task1:
 	@echo ""
 
 	@javac $(javaFitchFilesLocal) $(task1_TestFilesLocal) $(task1_UserSources)
-	@-java $(javaFitchRunnerName_task1); curl -I -s "http://emptiness.mooo.com/black-fitch/hit/a5-t1/$$?" -o /dev/null &
+	@-java $(javaFitchRunnerName_task1)
 
 	@echo "Cleaning up..."
 	@rm -f $(task1_TestFilesLocal)
@@ -54,7 +53,6 @@ task1:
 	@cp -f $(DummyLogFile) JLogger.java
 
 task2:
-	@-curl -I -s "http://emptiness.mooo.com/black-fitch/hit/a5-t2/s" -o /dev/null &
 	@echo "Black Fitch - " $(version)
 	@echo "Copying Java Fitch..."
 	@mkdir -p $(localGraphDir)
@@ -64,7 +62,7 @@ task2:
 	@echo ""
 
 	@javac $(javaFitchFilesLocal) $(task2_TestFilesLocal) $(task1_UserSources)
-	@-java $(javaFitchRunnerName_task2); curl -I -s "http://emptiness.mooo.com/black-fitch/hit/a5-t2/$$?" -o /dev/null &
+	@-java $(javaFitchRunnerName_task2)
 
 	@echo "Cleaning up..."
 	@rm -f $(task2_TestFilesLocal)
