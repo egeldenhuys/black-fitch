@@ -18,6 +18,7 @@ public class tests_Task2 extends JavaFitchUnitTest{
 		boolean result = true;
 		result = result & test_getOdd("Testing getOdd()");
 		result = result & test_getPath("Testing getPath()");
+		result = result & test_getChinesePostmanCost("Testing getChinesePostmanCost()");
 
 		return result;
 	}
@@ -65,6 +66,28 @@ public class tests_Task2 extends JavaFitchUnitTest{
 		// TEST CASE END										^^^^
 		// =========================================================
 
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Does not break when called twice");
+		// ==========================================================
+
+		g = new Graph(FILE_CIRCULAR);
+		odd = g.getOdd();
+		subResult = subResult & assertEquals("", odd);
+		odd = g.getOdd();
+
+		subResult = subResult & assertEquals("", odd);
+
+		g = new Graph(FILE_HOUSE);
+		odd = g.getOdd();
+		subResult = subResult & assertEquals("B,D", odd);
+		odd = g.getOdd();
+		subResult = subResult & assertEquals("B,D", odd);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
 
 		// FOOTER
 		printFooter(title, result);
@@ -151,6 +174,102 @@ public class tests_Task2 extends JavaFitchUnitTest{
 		return result;
 		// FOOTER END
 	}
+
+	public boolean test_getChinesePostmanCost(String title) {
+		// HEADER
+		printHeader(title);
+		boolean result = true;
+		boolean subResult = true;
+		// HEADER END
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading graph.txt. getPath() should return the sum of all edges");
+		// ==========================================================
+
+		Graph g = new Graph(FILE_GRAPH);
+		int len = g.getChinesePostmanCost();
+
+		subResult = subResult & assertEquals(26, len);
+
+		len = g.getChinesePostmanCost();
+		subResult = subResult & assertEquals(26, len);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading graph.txt. ");
+		// ==========================================================
+
+		g = new Graph(FILE_GRAPH);
+		Graph john = g.getChinesePostmanGraph();
+		String p = john.getChinesePostmanRoute("A");
+
+		subResult = subResult & assertEquals(26, p);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading graph.txt. ");
+		// ==========================================================
+
+		g = new Graph(FILE_CIRCULAR);
+		len = g.getChinesePostmanCost();
+
+		subResult = subResult & assertEquals(21, len);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading graph.txt. getPath() should return the sum of all edges");
+		// ==========================================================
+
+		g = new Graph("cancer.txt");
+		len = g.getChinesePostmanCost();
+
+		subResult = subResult & assertEquals(6, len);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// =========================================================
+		// TEST CASE START										VVVV
+		subResult = start_test_case("Loading hexagon.txt. getPath() should return the shortest path");
+		// ==========================================================
+
+		g = new Graph(FILE_HEXAGON);
+
+		len = g.getChinesePostmanCost();
+		subResult = subResult & assertEquals(178, len);
+
+		//subResult = subResult & assertEquals(27, len);
+
+		// =========================================================
+		result = end_test_case(result, subResult);
+		// TEST CASE END										^^^^
+		// =========================================================
+
+		// FOOTER
+		printFooter(title, result);
+		return result;
+		// FOOTER END
+	}
+
+
 
 
 }
