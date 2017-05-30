@@ -4,13 +4,6 @@ Unit tests for fitchfork practicals and assignments.
 
 These tests are to be used as a guideline only and are not guaranteed to reflect the test cases used by fitchfork.
 
-## Status
-Currently tests are available for:
-#### COS 212 Assignment 5
-- [X] Task 1
-- [ ] Task 2 (In progress)
-- [ ] Task 3
-
 ## Usage
 ### Clone and configure Black Fitch
 1. `git clone https://github.com/egeldenhuys/black-fitch.git`
