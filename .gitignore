@@ -1,6 +1,7 @@
 # black-fitch config files
 black-fitch-makefile
 
+catch.hpp
 # Compiled Object files
 *.slo
 *.lo
