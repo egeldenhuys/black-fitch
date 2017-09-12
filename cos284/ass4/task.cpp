@@ -33,13 +33,18 @@
     recieved = std::string(buffer);
 
 extern "C" void strPrinter(char * formatZstr, ...);
+extern "C" void get_non_volatile(long long *l);
+extern "C" void set_non_volatile(long long *l);
+extern "C" long long get_rsp();
 
 using namespace std;
 
 SCENARIO("Testing Single token operations") {
-    cout << "Testing single tokens..." << endl;
+
 
     WHEN("## is encountered") {
+        cout << "Testing single ## token..." << endl;
+
         INIT_CAPTURE;
 
         START_CAPTURE;
@@ -54,6 +59,8 @@ SCENARIO("Testing Single token operations") {
     }
 
     WHEN("#i is encountered") {
+        cout << "Testing single #i token..." << endl;
+
         INIT_CAPTURE;
 
         START_CAPTURE;
@@ -67,6 +74,8 @@ SCENARIO("Testing Single token operations") {
     }
 
     WHEN("#s is encountered") {
+        cout << "Testing single #s token..." << endl;
+
         INIT_CAPTURE;
 
         START_CAPTURE;
@@ -80,6 +89,8 @@ SCENARIO("Testing Single token operations") {
     }
 
     WHEN("#? is encountered") {
+        cout << "Testing single #? token..." << endl;
+
         INIT_CAPTURE;
 
         START_CAPTURE;
@@ -135,7 +146,7 @@ SCENARIO("Testing Multiple token operations") {
     }
 
     WHEN("6 #i tokens are passed") {
-        cout << "Testing 6 tokens..." << endl;
+        cout << "Testing 6 #i tokens..." << endl;
 
         INIT_CAPTURE;
         START_CAPTURE;
@@ -148,7 +159,23 @@ SCENARIO("Testing Multiple token operations") {
         }
     }
 
-    WHEN("A combination of tokens are passed, THEN no crash") {
+    WHEN("6 #s tokens are passed") {
+        cout << "Testing 6 #s tokens..." << endl;
+
+        INIT_CAPTURE;
+        START_CAPTURE;
+        strPrinter("#s #s #s #s #s #s", "1", "2", "3", "4", "5", "6");
+        END_CAPTURE;
+
+        THEN("No crash") {
+            string expected = "1 2 3 4 5 6";
+            REQUIRE(expected == recieved);
+        }
+    }
+
+    WHEN("A combination of tokens are passed") {
+        cout << "Testing combination of tokens..." << endl;
+
         INIT_CAPTURE;
 
         START_CAPTURE;
@@ -159,5 +186,35 @@ SCENARIO("Testing Multiple token operations") {
             string expected = "#This is mah _invalid_specifier_we_lolcat_ome 7643 string 555 yes more 66567heuheuhe 12345678 Still alive? # _invalid_specifier_";
             REQUIRE(expected == recieved);
         }
+    }
+}
+
+SCENARIO("Testing non-volatile Registers and the stack") {
+
+    WHEN("strPrinter is called") {
+        cout << "Testing the stack and non-volatile registers" << endl;
+        long long expected[5] = {1000,2000,3000,4000,5000};
+        long long recieved_registers[5];
+
+        INIT_CAPTURE;
+
+        START_CAPTURE;
+        set_non_volatile(expected);
+        long long orig_rsp = get_rsp();
+        strPrinter("## This should #s all #i #h paths #i #i #s #i #s", "execute", 55, 62, 75, "lolcat", 78, "lel");
+        long long new_rsp = get_rsp();
+        get_non_volatile(recieved_registers);
+        END_CAPTURE;
+
+        THEN("rsp is not changed. The stack is not trashed.") {
+            REQUIRE(orig_rsp == new_rsp);
+        }
+
+        THEN("rbx (1000), r12 (2000), r13 (3000), r14 (4000) and r15 (5000) are preserved") {
+            for (int i = 0; i < 5; i++) {
+                REQUIRE(expected[i] == recieved_registers[i]);
+            }
+        }
+
     }
 }
