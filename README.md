@@ -4,6 +4,9 @@ Unit tests for fitchfork practicals and assignments.
 
 These tests are to be used as a guideline only and are not guaranteed to reflect the test cases used by fitchfork.
 
+## Dependencies
+- curl
+
 ## Usage
 ### Clone and configure Black Fitch
 1. `git clone https://github.com/egeldenhuys/black-fitch.git`

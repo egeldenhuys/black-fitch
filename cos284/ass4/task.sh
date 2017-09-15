@@ -10,6 +10,14 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 if [ ! -e "$DIR/catch.hpp" ]; then
+    c="y"
+    echo "curl is required to download catch.cpp"
+    read -p "We will now download the catch framework. Continue? [Y/n]: " c
+
+    if [ ! "$c" = "y" ] | [ -e "$c" ]; then
+        exit 0
+    fi
+    
     echo "Downloading catch.hpp..."
     curl -L 'https://github.com/philsquared/Catch/releases/download/v1.10.0/catch.hpp' -o $DIR/catch.hpp
 fi

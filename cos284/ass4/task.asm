@@ -2,6 +2,7 @@ section .start
     global get_non_volatile
     global set_non_volatile
     global get_rsp
+    global get_rbp
 
 ; -----------------------------
 ; get_non_volatile
@@ -68,4 +69,19 @@ get_rsp:
     mov rax, rcx
 
     pop rbp
+    ret
+
+; -----------------------------
+; get_rbp
+; ----------------
+;   DESCRIPTION:
+;       Returns the value of rbp outside this function
+;   ARGS:
+;       none
+;   RETURNS:
+;       rax - the value of rbp
+; outside +24
+; RET + 16
+get_rbp:
+    mov rax, rbp
     ret
